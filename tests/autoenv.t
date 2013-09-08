@@ -18,15 +18,19 @@ Now try to make it accept it
   $ _dotenv_read_answer() { answer='y' }
   $ cd .
   Attempting to load unauthorized env: /tmp/cramtests-??????/autoenv.t/.env (glob)
-
+  
   **********************************************
-
+  
   echo blah
-
+  
   **********************************************
-
+  
   Would you like to authorize it? (y/n)
   blah
+
+
+
+
 
 The last "blah" is because it executed the command
 
@@ -38,15 +42,19 @@ Now lets see that it actually checks the shasum value
   $ echo "$PWD/.env:$(echo mischief | shasum)" > $ENV_AUTHORIZATION_FILE
   $ cd .
   Attempting to load unauthorized env: /tmp/cramtests-??????/autoenv.t/.env (glob)
-
+  
   **********************************************
-
+  
   echo blah
-
+  
   **********************************************
-
+  
   Would you like to authorize it? (y/n)
   blah
+
+
+
+
 
 Now, will it take no for an answer?
 
@@ -54,24 +62,28 @@ Now, will it take no for an answer?
   $ _dotenv_read_answer() { answer='n' }
   $ cd .
   Attempting to load unauthorized env: /tmp/cramtests-??????/autoenv.t/.env (glob)
-
+  
   **********************************************
-
+  
   echo blah
-
+  
   **********************************************
-
+  
   Would you like to authorize it? (y/n)
+
+
+
+
 
 Lets also try one more time to ensure it didnt add it
 
   $ cd .
   Attempting to load unauthorized env: /tmp/cramtests-??????/autoenv.t/.env (glob)
-
+  
   **********************************************
-
+  
   echo blah
-
+  
   **********************************************
-
+  
   Would you like to authorize it? (y/n)
