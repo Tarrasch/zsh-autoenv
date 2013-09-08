@@ -39,6 +39,11 @@ _dotenv_print_unauthorized_message() {
   echo "Would you like to authorize it? (y/n)"
 }
 
+# This function can be mocked in tests
+_dotenv_read_answer() {
+  read answer
+}
+
 _dotenv_source_env() {
   local env_file="$PWD/.env"
 
@@ -52,7 +57,7 @@ _dotenv_source_env() {
 
     _dotenv_print_unauthorized_message $env_file
 
-    read answer
+    _dotenv_read_answer
 
     if [[ $answer == 'y' ]]
     then
