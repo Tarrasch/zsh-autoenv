@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/Tarrasch/zsh-autoenv.png)](https://travis-ci.org/Tarrasch/zsh-autoenv)
+
 # Autoenv for zsh
 
 This is is a zsh optimized version of
