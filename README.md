@@ -1,3 +1,5 @@
+[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/Tarrasch/zsh-autoenv/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
+
 [![Build Status](https://travis-ci.org/Tarrasch/zsh-autoenv.png)](https://travis-ci.org/Tarrasch/zsh-autoenv)
 
 # Autoenv for zsh
