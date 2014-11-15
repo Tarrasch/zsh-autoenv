@@ -57,6 +57,9 @@ _dotenv_read_answer() {
 }
 
 _dotenv_check_authorized_env_file() {
+  if ! [[ -f $1 ]]; then
+    return 1
+  fi
   if ! _dotenv_authorized_env_file $1; then
     echo "Attempting to load unauthorized env file: $1"
     echo ""
@@ -109,7 +112,7 @@ _dotenv_chpwd_handler() {
     fi
   fi
 
-  if ! [[ -f $env_file ]] || ! _dotenv_check_authorized_env_file $env_file; then
+  if ! _dotenv_check_authorized_env_file $env_file; then
     return
   fi
 
