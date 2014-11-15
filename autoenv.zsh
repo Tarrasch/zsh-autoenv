@@ -82,6 +82,18 @@ _dotenv_check_authorized_env_file() {
   return 0
 }
 
+_dotenv_source() {
+  local env_file=$1
+  _dotenv_event=$2
+  _dotenv_cwd=$PWD
+
+  cd -q ${env_file:h}
+  source $env_file
+  cd -q -
+
+  unset _dotenv_event _dotenv_cwd
+}
+
 _dotenv_chpwd_handler() {
   local env_file="$PWD/$DOTENV_FILE_ENTER"
 
@@ -91,9 +103,7 @@ _dotenv_chpwd_handler() {
       if ! [[ ${PWD}/ == ${prev_dir}/* ]]; then
         local env_file_leave=$prev_dir/$DOTENV_FILE_LEAVE
         if _dotenv_check_authorized_env_file $env_file_leave; then
-          _dotenv_event=leave
-          source $env_file_leave
-          unset _dotenv_event
+          _dotenv_source $env_file_leave leave
         fi
         # Remove this entry from the stack.
         _dotenv_stack_entered=(${_dotenv_stack_entered#$prev_dir})
@@ -123,9 +133,7 @@ _dotenv_chpwd_handler() {
 
   _dotenv_stack_entered+=(${env_file:A:h})
 
-  _dotenv_event=enter
-  source $env_file
-  unset _dotenv_event
+  _dotenv_source $env_file enter
 }
 
 autoload -U add-zsh-hook
