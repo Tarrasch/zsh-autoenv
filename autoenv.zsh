@@ -87,9 +87,9 @@ _dotenv_source() {
   _dotenv_event=$2
   _dotenv_cwd=$PWD
 
-  cd -q ${env_file:h}
+  builtin cd -q ${env_file:h}
   source $env_file
-  cd -q -
+  builtin cd -q $_dotenv_cwd
 
   unset _dotenv_event _dotenv_cwd
 }
