@@ -4,26 +4,26 @@
 export ENV_AUTHORIZATION_FILE=$HOME/.env_auth
 
 _dotenv_hash_pair() {
-  env_file=$1
+  local env_file=$1
   env_shasum=$(shasum $env_file | cut -d' ' -f1)
   echo "$env_file:$env_shasum"
 }
 
 _dotenv_authorized_env_file() {
-  env_file=$1
-  pair=$(_dotenv_hash_pair $env_file)
+  local env_file=$1
+  local pair=$(_dotenv_hash_pair $env_file)
   touch $ENV_AUTHORIZATION_FILE
   \grep -Gq $pair $ENV_AUTHORIZATION_FILE
 }
 
 _dotenv_authorize() {
-  env_file=$1
+  local env_file=$1
   _dotenv_deauthorize $env_file
   _dotenv_hash_pair $env_file >> $ENV_AUTHORIZATION_FILE
 }
 
 _dotenv_deauthorize() {
-  env_file=$1
+  local env_file=$1
   echo $(\grep -Gv $env_file $ENV_AUTHORIZATION_FILE) > $ENV_AUTHORIZATION_FILE
 }
 
