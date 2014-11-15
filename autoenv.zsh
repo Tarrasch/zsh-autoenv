@@ -82,14 +82,26 @@ _dotenv_check_authorized_env_file() {
   return 0
 }
 
+: ${_dotenv_sourced_varstash:=0}
+_dotenv_this_dir=${0:A:h}
+
 _dotenv_source() {
   local env_file=$1
   _dotenv_event=$2
-  _dotenv_cwd=$PWD
+  _dotenv_cwd=$3
 
-  builtin cd -q ${env_file:h}
-  source $env_file
+  # Source varstash library once.
+  if [[ $_dotenv_sourced_varstash == 0 ]]; then
+    source $_dotenv_this_dir/lib/varstash
+    export _dotenv_sourced_varstash=1
+  fi
+  # varstash_dir=${env_file:h}
+
+  # Change to directory of env file, source it and cd back.
+  local new_dir=$PWD
   builtin cd -q $_dotenv_cwd
+  source $env_file
+  builtin cd -q $new_dir
 
   unset _dotenv_event _dotenv_cwd
 }
@@ -103,7 +115,7 @@ _dotenv_chpwd_handler() {
       if ! [[ ${PWD}/ == ${prev_dir}/* ]]; then
         local env_file_leave=$prev_dir/$DOTENV_FILE_LEAVE
         if _dotenv_check_authorized_env_file $env_file_leave; then
-          _dotenv_source $env_file_leave leave
+          _dotenv_source $env_file_leave leave $prev_dir
         fi
         # Remove this entry from the stack.
         _dotenv_stack_entered=(${_dotenv_stack_entered#$prev_dir})
@@ -136,7 +148,7 @@ _dotenv_chpwd_handler() {
 
   _dotenv_stack_entered+=(${env_file_dir})
 
-  _dotenv_source $env_file enter
+  _dotenv_source $env_file enter $PWD
 }
 
 autoload -U add-zsh-hook
