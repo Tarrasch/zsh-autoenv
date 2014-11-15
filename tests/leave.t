@@ -78,3 +78,13 @@ Now check with subdirs, not looking at parent dirs.
   $ cd child
   $ cd ../..
   LEFT
+
+
+Test that .env is sourced only once with DOTENV_HANDLE_LEAVE=0.
+
+  $ unset _dotenv_stack_entered
+  $ DOTENV_HANDLE_LEAVE=0
+  $ cd sub
+  ENTERED
+  $ cd ..
+  $ cd sub
