@@ -24,7 +24,7 @@ _dotenv_authorize() {
 
 _dotenv_deauthorize() {
   env_file=$1
-  echo $(grep -Gv $env_file $ENV_AUTHORIZATION_FILE) > $ENV_AUTHORIZATION_FILE
+  echo $(\grep -Gv $env_file $ENV_AUTHORIZATION_FILE) > $ENV_AUTHORIZATION_FILE
 }
 
 _dotenv_print_unauthorized_message() {
