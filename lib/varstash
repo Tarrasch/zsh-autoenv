@@ -1,6 +1,8 @@
 ################################################################################
 # Stash/unstash support for per-directory variables
 #
+# Adopted for zsh-autoenv.
+#
 #   Copyright (c) 2009,2012 Dave Olszewski <cxreg@pobox.com>
 #   http://github.com/cxreg/smartcd
 #
@@ -36,18 +38,6 @@
 #
 #       autostash PATH=/something/else
 #
-#   If you run stash, unstash, or varstash interactively, they will instruct
-#   you on how to create smartcd scripts for performing those actions
-#   automatically.  You can affect this behavior with several variables:
-#
-#     VARSTASH_QUIET       - Set if you'd rather not see these notices
-#
-#     VARSTASH_AUTOCONFIG  - Set if you want the suggested actions to be
-#                            performed automatically
-#
-#     VARSTASH_AUTOEDIT   - Set if you want it to set the values, but also
-#                           give you an opportunity to edit the file
-#
 #   If you attempt to stash the same value twice, a warning will be displayed
 #   and the second stash will not occur.  To make it happen anyway, pass -f
 #   as the first argument to stash.
@@ -65,21 +55,50 @@
 #
 ################################################################################
 
+
+# Library functions, from smartcd's lib/core/arrays. {{{
+function apush() {
+    local var=$1; shift
+    eval "$var=(\${$var[@]} \"\$@\")"
+}
+
+function alen() {
+    local var=$1
+
+    if [[ -n $var ]]; then
+        eval "echo \${#$var[@]}"
+    fi
+}
+
+function afirst() {
+    setopt localoptions && setopt ksharrays
+    local var=$1
+
+    if [[ -n $var ]] && (( $(eval "echo \${#$var[@]}") >= 1 )); then
+        eval "echo \"\${$var""[0]}\""
+    fi
+}
+
+function ashift() {
+    setopt localoptions && setopt ksharrays
+    local var=$1
+
+    local _ashift_return=
+
+    if [[ -n $var ]] && (( $(eval "echo \${#$var[@]}") >= 1 )); then
+        eval "_ashift_return=\"\${$var""[0]}\""
+        eval "$var""[0]=()"
+
+        echo "$_ashift_return"
+    fi
+}
+# }}}
+
+
 function stash() {
     if [[ $1 == "-f" ]]; then
         local force=1; shift
     fi
-
-    if [[ -n $1 ]] && [[ -z $run_from_smartcd ]] && [[ -z $run_from_autostash ]]; then
-        local working_dir="${varstash_dir:-$(pwd)}"
-        local smartcd_dir="$(_smartcd_base)/scripts$working_dir"
-        local help_action="stashing a variable"
-        local help_dir=$smartcd_dir
-        local help_cmd="echo stash $@ >> \"$smartcd_dir/bash_enter\""
-        local help_which="bash_enter"
-        _manual_stash_help
-    fi
-
 
     while [[ -n $1 ]]; do
         if [[ $1 == "alias" && $2 =~ "=" ]]; then
@@ -210,16 +229,6 @@ function stash() {
 }
 
 function autostash() {
-    if [[ -n $1 ]] && [[ -z $run_from_smartcd ]]; then
-        local working_dir="${varstash_dir:-$(pwd)}"
-        local smartcd_dir="$(_smartcd_base)/scripts$working_dir"
-        local help_action="autostashing a variable"
-        local help_dir=$smartcd_dir
-        local help_cmd="echo autostash $@ >> \"$smartcd_dir/bash_enter\""
-        local help_which="bash_enter"
-        _manual_stash_help
-    fi
-
     local run_from_autostash=1
     while [[ -n $1 ]]; do
         if [[ $1 == "alias" && $2 =~ "=" ]]; then
@@ -240,16 +249,6 @@ function autostash() {
 }
 
 function unstash() {
-    if [[ -n $1 ]] && [[ -z $run_from_smartcd ]] && [[ -z $run_from_autounstash ]]; then
-        local working_dir=${varstash_dir:-$(pwd)}
-        local smartcd_dir="$(_smartcd_base)/scripts$working_dir"
-        local help_action="unstashing a variable"
-        local help_dir=$smartcd_dir
-        local help_cmd="echo unstash $@ >> \"$smartcd_dir/bash_leave\""
-        local help_which="bash_leave"
-        _manual_stash_help
-    fi
-
     while [[ -n $1 ]]; do
         local unstash_which=$1
         if [[ -z $unstash_which ]]; then
@@ -335,74 +334,10 @@ function autounstash() {
 }
 
 function _mangle_var() {
-    local mangle_var_where="${varstash_dir:-$(pwd)}"
+    local mangle_var_where="${varstash_dir:-$PWD}"
     mangle_var_where=${mangle_var_where//[^A-Za-z0-9]/_}
     local mangled_name=${1//[^A-Za-z0-9]/_}
     echo "_tmp_${mangle_var_where}_${mangled_name}"
 }
-
-function _manual_stash_help() {
-    # instruct user how to create bash_enter or bash_leave
-    if [[ -n $VARSTASH_AUTOEDIT || -n $VARSTASH_AUTOCONFIG ]]; then
-        if [[ -z $VARSTASH_QUIET ]]; then
-            echo "varstash: Automatically running $help_cmd"
-        fi
-
-        if [[ ! -d $help_dir ]]; then
-            mkdir -p "$help_dir"
-        fi
-        eval $help_cmd
-
-        if [[ -n $VARSTASH_AUTOEDIT ]]; then
-            varstash_edit $help_which
-        fi
-    elif [[ -z $VARSTASH_QUIET ]]; then
-        echo "############################################################################"
-        echo "# You are manually $help_action.  To automatically perform this"
-        echo "# whenever you enter this directory, paste the following command(s):"
-
-        if [[ ! -d $help_dir ]]; then
-            echo "mkdir -p \"$help_dir\""
-        fi
-        echo "$help_cmd"
-        echo "############################################################################"
-    fi
-}
-
-# A couple convenient aliases for smartcd_edit
-function autostash_edit() {
-    varstash_edit "$@"
-}
-
-function varstash_edit() {
-    local file="$1"
-    local dir="$2"
-
-    if [[ -n $ZSH_VERSION ]]; then
-        if [[ $(type smartcd_edit) == "smartcd_edit is a shell function" ]]; then
-            local can_run=1
-        fi
-    else
-        if [[ $(type -t smartcd_edit) == "function" ]]; then
-            local can_run=1
-        fi
-    fi
-
-    if [[ -n "$can_run" ]]; then
-        # XXX - no support for "--host" or "--system" with this (yet?)
-        _smartcd_file_check "$file" "global" "" edit "$dir"
-    else
-        echo "smartcd not loaded, cannot run smartcd_edit"
-    fi
-}
-
-# Run deferred smartcd if we're waiting for it, and arrays is also loaded
-if [[ -n "$smartcd_initially_deferred" && -n "$(fn_exists apush)" && -z "$SMARTCD_NOINITIAL" ]]; then
-    smartcd_skip_action=1
-    smartcd_run_mainline=1
-    smartcd cd
-    unset smartcd_skip_action
-    unset smartcd_initially_deferred
-fi
 
 # vim: filetype=sh autoindent expandtab shiftwidth=4 softtabstop=4
