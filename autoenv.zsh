@@ -25,8 +25,7 @@ _dotenv_stack_entered=()
 
 _dotenv_hash_pair() {
   local env_file=$1
-  env_shasum=$(shasum $env_file | cut -d' ' -f1)
-  echo "$env_file:$env_shasum"
+  echo "$env_file:$env_shasum:1"
 }
 
 _dotenv_authorized_env_file() {
