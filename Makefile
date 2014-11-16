@@ -1,7 +1,7 @@
-.PHONY: itests tests
+.PHONY: itest test
 
-itests:
+itest:
 	ZDOTDIR="${PWD}/tests" cram -i --shell=zsh tests
 
-tests:
+test:
 	ZDOTDIR="${PWD}/tests" cram --shell=zsh tests
