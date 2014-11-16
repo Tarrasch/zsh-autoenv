@@ -56,6 +56,7 @@ _dotenv_read_answer() {
   echo $answer
 }
 
+# Args: 1: absolute path to env file (resolved symlinks).
 _dotenv_check_authorized_env_file() {
   if ! [[ -f $1 ]]; then
     return 1
@@ -112,6 +113,7 @@ _dotenv_chpwd_handler() {
   fi
 
   if ! [[ -f $env_file ]] && [[ $DOTENV_LOOK_UPWARDS == 1 ]]; then
+    # Look for files in parent dirs, using an extended Zsh glob.
     setopt localoptions extendedglob
     local m
     m=((../)#${DOTENV_FILE_ENTER}(N))
@@ -126,12 +128,14 @@ _dotenv_chpwd_handler() {
     return
   fi
 
-  # Load the env file only once.
-  if (( ${+_dotenv_stack_entered[(r)${env_file:A:h}]} )); then
+  # Load the env file only once: check if $env_file's parent
+  # is in $_dotenv_stack_entered.
+  local env_file_dir=${env_file:A:h}
+  if (( ${+_dotenv_stack_entered[(r)${env_file_dir}]} )); then
     return
   fi
 
-  _dotenv_stack_entered+=(${env_file:A:h})
+  _dotenv_stack_entered+=(${env_file_dir})
 
   _dotenv_source $env_file enter
 }
