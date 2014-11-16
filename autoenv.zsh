@@ -82,7 +82,11 @@ _dotenv_check_authorized_env_file() {
   return 0
 }
 
+# Initialize $_dotenv_sourced_varstash, but do not overwrite an existing one
+# from e.g. `exec zsh` (to reload your shell config).
 : ${_dotenv_sourced_varstash:=0}
+
+# Get directory of this file (absolute, with resolved symlinks).
 _dotenv_this_dir=${0:A:h}
 
 _dotenv_source() {
@@ -94,8 +98,9 @@ _dotenv_source() {
   if [[ $_dotenv_sourced_varstash == 0 ]]; then
     source $_dotenv_this_dir/lib/varstash
     export _dotenv_sourced_varstash=1
+    # NOTE: Varstash uses $PWD as default for varstash_dir, we might set it to
+    # ${env_file:h}.
   fi
-  # varstash_dir=${env_file:h}
 
   # Change to directory of env file, source it and cd back.
   local new_dir=$PWD
