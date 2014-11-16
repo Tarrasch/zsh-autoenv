@@ -12,7 +12,7 @@ export ENV_AUTHORIZATION_FILE=$HOME/.env_auth
 : ${DOTENV_FILE_LEAVE:=.env.leave}
 
 # Look for .env in parent dirs?
-: ${DOTENV_LOOK_UPWARDS:=0}
+: ${DOTENV_LOOK_UPWARDS:=1}
 
 # Handle leave events when changing away from a subtree, where an "enter"
 # event was handled?
