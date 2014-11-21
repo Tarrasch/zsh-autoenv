@@ -1,8 +1,7 @@
 # Initially based on
 # https://github.com/joshuaclayton/dotfiles/blob/master/zsh_profile.d/autoenv.zsh
 
-# TODO: move this to DOTENV_*?!
-export ENV_AUTHORIZATION_FILE=$HOME/.env_auth
+export AUTOENV_ENV_FILENAME=$HOME/.env_auth
 
 # Name of file to look for when entering directories.
 : ${DOTENV_FILE_ENTER:=.env}
@@ -31,20 +30,20 @@ _dotenv_hash_pair() {
 _dotenv_authorized_env_file() {
   local env_file=$1
   local pair=$(_dotenv_hash_pair $env_file)
-  test -f $ENV_AUTHORIZATION_FILE \
-    && \grep -qF $pair $ENV_AUTHORIZATION_FILE
+  test -f $AUTOENV_ENV_FILENAME \
+    && \grep -qF $pair $AUTOENV_ENV_FILENAME
 }
 
 _dotenv_authorize() {
   local env_file=$1
   _dotenv_deauthorize $env_file
-  _dotenv_hash_pair $env_file >> $ENV_AUTHORIZATION_FILE
+  _dotenv_hash_pair $env_file >> $AUTOENV_ENV_FILENAME
 }
 
 _dotenv_deauthorize() {
   local env_file=$1
-  if [[ -f $ENV_AUTHORIZATION_FILE ]]; then
-    echo $(\grep -vF $env_file $ENV_AUTHORIZATION_FILE) > $ENV_AUTHORIZATION_FILE
+  if [[ -f $AUTOENV_ENV_FILENAME ]]; then
+    echo $(\grep -vF $env_file $AUTOENV_ENV_FILENAME) > $AUTOENV_ENV_FILENAME
   fi
 }
 

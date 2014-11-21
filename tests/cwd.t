@@ -12,8 +12,8 @@ Setup env actions / output.
 
 Manually create auth files.
 
-  $ echo "$PWD/$DOTENV_FILE_ENTER:$(echo $(<$DOTENV_FILE_ENTER) | shasum)" > $ENV_AUTHORIZATION_FILE
-  $ echo "$PWD/$DOTENV_FILE_LEAVE:$(echo $(<$DOTENV_FILE_LEAVE) | shasum)" >> $ENV_AUTHORIZATION_FILE
+  $ echo "$PWD/$DOTENV_FILE_ENTER:$(echo $(<$DOTENV_FILE_ENTER) | shasum)" > $AUTOENV_ENV_FILENAME
+  $ echo "$PWD/$DOTENV_FILE_LEAVE:$(echo $(<$DOTENV_FILE_LEAVE) | shasum)" >> $AUTOENV_ENV_FILENAME
 
 The actual tests.
 
