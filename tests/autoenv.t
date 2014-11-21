@@ -6,7 +6,7 @@ Lets set a simple .env action
 
 Manually create auth file
 
-  $ echo "$PWD/.env:$(echo echo ENTERED | shasum)" > $AUTOENV_ENV_FILENAME
+  $ test_autoenv_add_to_env $PWD/.env
   $ cd .
   ENTERED
 
@@ -41,7 +41,7 @@ Now lets see that it actually checks the shasum value
 
   $ unset _dotenv_stack_entered
   $ rm $AUTOENV_ENV_FILENAME
-  $ echo "$PWD/.env:$(echo mischief | shasum)" > $AUTOENV_ENV_FILENAME
+  $ test_autoenv_add_to_env $PWD/.env mischief
   $ cd .
   Attempting to load unauthorized env file: /tmp/cramtests-??????/autoenv.t/.env (glob)
   

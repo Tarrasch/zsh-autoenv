@@ -16,8 +16,7 @@ Setup test environment.
 
 Manually create auth file
 
-  $ echo "$PWD/$DOTENV_FILE_ENTER:$(echo $(<$DOTENV_FILE_ENTER) | shasum)" > $AUTOENV_ENV_FILENAME
-  $ echo "$PWD/$DOTENV_FILE_LEAVE:$(echo $(<$DOTENV_FILE_LEAVE) | shasum)" >> $AUTOENV_ENV_FILENAME
+  $ test_autoenv_auth_env_files
 
 Set environment variable.
 

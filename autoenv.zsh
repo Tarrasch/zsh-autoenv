@@ -24,6 +24,11 @@ _dotenv_stack_entered=()
 
 _dotenv_hash_pair() {
   local env_file=$1
+  if (( $+2 )); then
+    env_shasum=$2
+  else
+    env_shasum=$(shasum $env_file | cut -d' ' -f1)
+  fi
   echo "$env_file:$env_shasum:1"
 }
 
