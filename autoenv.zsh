@@ -96,7 +96,9 @@ _dotenv_this_dir=${0:A:h}
 _dotenv_source() {
   local env_file=$1
   _dotenv_event=$2
-  _dotenv_cwd=$3
+  _dotenv_envfile_dir=$3
+  _dotenv_from_dir=$_dotenv_chpwd_prev_dir
+  _dotenv_to_dir=$PWD
 
   # Source varstash library once.
   if [[ $_dotenv_sourced_varstash == 0 ]]; then
@@ -108,13 +110,14 @@ _dotenv_source() {
 
   # Change to directory of env file, source it and cd back.
   local new_dir=$PWD
-  builtin cd -q $_dotenv_cwd
+  builtin cd -q $_dotenv_envfile_dir
   source $env_file
   builtin cd -q $new_dir
 
-  unset _dotenv_event _dotenv_cwd
+  unset _dotenv_event _dotenv_from_dir
 }
 
+_dotenv_chpwd_prev_dir=$PWD
 _dotenv_chpwd_handler() {
   local env_file="$PWD/$DOTENV_FILE_ENTER"
 
@@ -140,11 +143,13 @@ _dotenv_chpwd_handler() {
     if (( $#m )); then
       env_file=${${m[1]}:A}
     else
+      _dotenv_chpwd_prev_dir=$PWD
       return
     fi
   fi
 
   if ! _dotenv_check_authorized_env_file $env_file; then
+    _dotenv_chpwd_prev_dir=$PWD
     return
   fi
 
@@ -152,12 +157,15 @@ _dotenv_chpwd_handler() {
   # is in $_dotenv_stack_entered.
   local env_file_dir=${env_file:A:h}
   if (( ${+_dotenv_stack_entered[(r)${env_file_dir}]} )); then
+    _dotenv_chpwd_prev_dir=$PWD
     return
   fi
 
   _dotenv_stack_entered+=(${env_file_dir})
 
   _dotenv_source $env_file enter $PWD
+
+  _dotenv_chpwd_prev_dir=$PWD
 }
 
 autoload -U add-zsh-hook
