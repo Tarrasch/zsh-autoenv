@@ -1,14 +1,14 @@
-Test $PWD, $_dotenv_from_dir and _dotenv_to_dir.
+Test $PWD, $_autoenv_from_dir and _autoenv_to_dir.
 
   $ source $TESTDIR/setup.sh
 
 Setup env actions / output.
 
-  $ DOTENV_LOOK_UPWARDS=1
+  $ AUTOENV_LOOK_UPWARDS=1
   $ mkdir -p sub/sub2
   $ cd sub
-  $ echo 'echo ENTERED: PWD:${PWD:t} from:${_dotenv_from_dir:t} to:${_dotenv_to_dir:t}' > .env
-  $ echo 'echo LEFT: PWD:${PWD:t} from:${_dotenv_from_dir:t} to:${_dotenv_to_dir:t}' > .env.leave
+  $ echo 'echo ENTERED: PWD:${PWD:t} from:${_autoenv_from_dir:t} to:${_autoenv_to_dir:t}' > .env
+  $ echo 'echo LEFT: PWD:${PWD:t} from:${_autoenv_from_dir:t} to:${_autoenv_to_dir:t}' > .env.leave
 
 Manually create auth files.
 

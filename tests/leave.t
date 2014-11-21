@@ -9,7 +9,7 @@ Lets set a simple .env action
 
 Change to the directory.
 
-  $ _dotenv_read_answer() { echo 'y' }
+  $ _autoenv_read_answer() { echo 'y' }
   $ cd .
   Attempting to load unauthorized env file: /tmp/cramtests-??????/leave.t/sub/.env (glob)
   
@@ -25,7 +25,7 @@ Change to the directory.
 
 Leave the directory and answer "no".
 
-  $ _dotenv_read_answer() { echo 'n' }
+  $ _autoenv_read_answer() { echo 'n' }
   $ cd ..
   Attempting to load unauthorized env file: /tmp/cramtests-??????/leave.t/sub/.env.leave (glob)
   
@@ -40,7 +40,7 @@ Leave the directory and answer "no".
 
   $ cd sub
   ENTERED
-  $ _dotenv_read_answer() { echo 'y' }
+  $ _autoenv_read_answer() { echo 'y' }
   $ cd ..
   Attempting to load unauthorized env file: /tmp/cramtests-??????/leave.t/sub/.env.leave (glob)
   
@@ -56,7 +56,7 @@ Leave the directory and answer "no".
 
 Now check with subdirs, looking upwards.
 
-  $ DOTENV_LOOK_UPWARDS=1
+  $ AUTOENV_LOOK_UPWARDS=1
   $ mkdir sub/child
   $ cd sub/child
   ENTERED
@@ -68,7 +68,7 @@ Now check with subdirs, looking upwards.
 
 Now check with subdirs, not looking at parent dirs.
 
-  $ DOTENV_LOOK_UPWARDS=0
+  $ AUTOENV_LOOK_UPWARDS=0
   $ cd sub/child
   $ cd ..
   ENTERED
@@ -77,10 +77,10 @@ Now check with subdirs, not looking at parent dirs.
   LEFT
 
 
-Test that .env is sourced only once with DOTENV_HANDLE_LEAVE=0.
+Test that .env is sourced only once with AUTOENV_HANDLE_LEAVE=0.
 
-  $ unset _dotenv_stack_entered
-  $ DOTENV_HANDLE_LEAVE=0
+  $ unset _autoenv_stack_entered
+  $ AUTOENV_HANDLE_LEAVE=0
   $ cd sub
   ENTERED
   $ cd ..

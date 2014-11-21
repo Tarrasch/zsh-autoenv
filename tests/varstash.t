@@ -6,8 +6,8 @@ Setup test environment.
 
   $ mkdir sub
   $ cd sub
-  $ echo "autostash FOO=baz" > $DOTENV_FILE_ENTER
-  $ echo "autounstash" > $DOTENV_FILE_LEAVE
+  $ echo "autostash FOO=baz" > $AUTOENV_FILE_ENTER
+  $ echo "autounstash" > $AUTOENV_FILE_LEAVE
 
 Manually create auth file
 

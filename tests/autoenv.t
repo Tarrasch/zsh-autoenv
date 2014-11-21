@@ -12,9 +12,9 @@ Manually create auth file
 
 Now try to make it accept it
 
-  $ unset _dotenv_stack_entered
+  $ unset _autoenv_stack_entered
   $ rm $AUTOENV_ENV_FILENAME
-  $ _dotenv_read_answer() { echo 'y' }
+  $ _autoenv_read_answer() { echo 'y' }
   $ cd .
   Attempting to load unauthorized env file: /tmp/cramtests-??????/autoenv.t/.env (glob)
   
@@ -35,11 +35,11 @@ The last "ENTERED" is because it executed the command
 
 Now lets see that it actually checks the shasum value
 
-  $ unset _dotenv_stack_entered
+  $ unset _autoenv_stack_entered
   $ cd .
   ENTERED
 
-  $ unset _dotenv_stack_entered
+  $ unset _autoenv_stack_entered
   $ rm $AUTOENV_ENV_FILENAME
   $ test_autoenv_add_to_env $PWD/.env mischief
   $ cd .
@@ -60,9 +60,9 @@ Now lets see that it actually checks the shasum value
 
 Now, will it take no for an answer?
 
-  $ unset _dotenv_stack_entered
+  $ unset _autoenv_stack_entered
   $ rm $AUTOENV_ENV_FILENAME
-  $ _dotenv_read_answer() { echo 'n' }
+  $ _autoenv_read_answer() { echo 'n' }
   $ cd .
   Attempting to load unauthorized env file: /tmp/cramtests-??????/autoenv.t/.env (glob)
   
