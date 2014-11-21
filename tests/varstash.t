@@ -4,11 +4,6 @@ Test varstash integration.
 
 Setup test environment.
 
-# Defaults:
-# $ DOTENV_FILE_ENTER=.env
-# $ DOTENV_FILE_LEAVE=.env.leave
-# $ DOTENV_HANDLE_LEAVE=1
-
   $ mkdir sub
   $ cd sub
   $ echo "autostash FOO=baz" > $DOTENV_FILE_ENTER
