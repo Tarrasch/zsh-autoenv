@@ -1,6 +1,4 @@
-Ensure we have our mocked out ENV_AUTHORIZATION_FILE
-
-  $ [[ $ENV_AUTHORIZATION_FILE[0,4] == '/tmp' ]] || return 1
+  $ source $TESTDIR/setup.sh
 
 Lets set a simple .env action
 

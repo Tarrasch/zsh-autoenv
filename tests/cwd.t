@@ -1,8 +1,6 @@
 Test $PWD and $_dotenv_cwd.
 
-Ensure we have our mocked out ENV_AUTHORIZATION_FILE.
-
-  $ [[ $ENV_AUTHORIZATION_FILE[0,4] == '/tmp' ]] || return 1
+  $ source $TESTDIR/setup.sh
 
 Setup env actions / output.
 
