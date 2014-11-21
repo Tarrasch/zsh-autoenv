@@ -51,7 +51,7 @@ _dotenv_deauthorize() {
 # This function can be mocked in tests
 _dotenv_read_answer() {
   local answer
-  read -q answer
+  read $=_AUTOENV_TEST_READ_ARGS -q answer
   echo $answer
 }
 
