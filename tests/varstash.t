@@ -6,8 +6,8 @@ Setup test environment.
 
   $ mkdir sub
   $ cd sub
-  $ echo "autostash FOO=baz" > $AUTOENV_FILE_ENTER
-  $ echo "autounstash" > $AUTOENV_FILE_LEAVE
+  $ echo 'echo ENTER; autostash FOO=baz' > $AUTOENV_FILE_ENTER
+  $ echo 'echo LEAVE; autounstash' > $AUTOENV_FILE_LEAVE
 
 Manually create auth file
 
@@ -20,11 +20,13 @@ Set environment variable.
 Activating the env stashes it and applies a new value.
 
   $ cd .
+  ENTER
   $ echo $FOO
   baz
 
 Leaving the directory unstashes it.
 
   $ cd ..
+  LEAVE
   $ echo $FOO
   bar

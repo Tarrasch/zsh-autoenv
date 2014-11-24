@@ -18,12 +18,74 @@ export AUTOENV_ENV_FILENAME=$HOME/.env_auth
 : ${AUTOENV_HANDLE_LEAVE:=1}
 
 
-# Internal: stack of entered (and handled) directories.
+# Public helper functions, which can be used from your .env files:
+#
+# Source the next .env file from parent directories.
+# This is useful if you want to use a base .env file for a directory subtree.
+autoenv_source_parent() {
+  local parent_env_file=$(_autoenv_get_file_upwards $PWD)
+
+  if [[ -n $parent_env_file ]] \
+    && _autoenv_check_authorized_env_file $parent_env_file; then
+
+    local parent_env_dir=${parent_env_file:A:h}
+    _autoenv_source $parent_env_file enter $parent_env_dir
+  fi
+}
+
+
+# Internal: stack of entered (and handled) directories. {{{
 _autoenv_stack_entered=()
+typeset -A _autoenv_stack_entered_mtime
+_autoenv_stack_entered_mtime=()
+
+# Add an entry to the stack, and remember its mtime.
+_autoenv_stack_entered_add() {
+  local env_file=$1
+
+  # Remove any existing entry.
+  _autoenv_stack_entered[$_autoenv_stack_entered[(i)$1]]=()
+
+  # Append it to the stack, and remember its mtime.
+  _autoenv_stack_entered+=($env_file)
+  _autoenv_stack_entered_mtime[$env_file]=$(_autoenv_get_file_mtime $env_file)
+}
+
+_autoenv_get_file_mtime() {
+  if [[ -f $1 ]]; then
+    zstat +mtime $1
+  else
+    echo 0
+  fi
+}
+
+# Remove an entry from the stack.
+_autoenv_stack_entered_remove() {
+  local env_file=$1
+  _autoenv_stack_entered=(${_autoenv_stack_entered#$env_file})
+  _autoenv_stack_entered_mtime[$env_file]=
+}
+
+# Is the given entry already in the stack?
+_autoenv_stack_entered_contains() {
+  local env_file=$1
+  if (( ${+_autoenv_stack_entered[(r)${env_file}]} )); then
+    # Entry is in stack.
+    if [[ $_autoenv_stack_entered_mtime[$env_file] == $(_autoenv_get_file_mtime $env_file) ]]; then
+      # Entry has the expected mtime.
+      return
+    fi
+  fi
+  return 1
+}
+# }}}
+
+# Load zstat module, but only its builtin `zstat`.
+zmodload -F zsh/stat b:zstat
 
 
 _autoenv_hash_pair() {
-  local env_file=$1
+  local env_file=${1:A}
   if (( $+2 )); then
     env_shasum=$2
   else
@@ -86,24 +148,20 @@ _autoenv_check_authorized_env_file() {
   return 0
 }
 
-# Initialize $_autoenv_sourced_varstash, but do not overwrite an existing one
-# from e.g. `exec zsh` (to reload your shell config).
-: ${_autoenv_sourced_varstash:=0}
-
 # Get directory of this file (absolute, with resolved symlinks).
 _autoenv_this_dir=${0:A:h}
 
 _autoenv_source() {
   local env_file=$1
   _autoenv_event=$2
-  _autoenv_envfile_dir=$3
+  local _autoenv_envfile_dir=$3
+
   _autoenv_from_dir=$_autoenv_chpwd_prev_dir
   _autoenv_to_dir=$PWD
 
   # Source varstash library once.
-  if [[ $_autoenv_sourced_varstash == 0 ]]; then
+  if [[ -z "$functions[(I)autostash]" ]]; then
     source $_autoenv_this_dir/lib/varstash
-    export _autoenv_sourced_varstash=1
     # NOTE: Varstash uses $PWD as default for varstash_dir, we might set it to
     # ${env_file:h}.
   fi
@@ -114,8 +172,26 @@ _autoenv_source() {
   source $env_file
   builtin cd -q $new_dir
 
-  unset _autoenv_event _autoenv_from_dir
+  # Unset vars set for enter/leave scripts.
+  # This should not get done for recursion (via autoenv_source_parent),
+  # and can be useful to have in general after autoenv was used.
+  # unset _autoenv_event _autoenv_from_dir _autoenv_to_dir
 }
+
+_autoenv_get_file_upwards() {
+  local look_from=${1:-$PWD}
+  local look_for=${2:-$AUTOENV_FILE_ENTER}
+  # Look for files in parent dirs, using an extended Zsh glob.
+  setopt localoptions extendedglob
+  local m
+  # Y1: short-circuit: first match.
+  # :A: absolute path, resolving symlinks.
+  m=($look_from/(../)##${look_for}(NY1:A))
+  if (( $#m )); then
+    echo $m[1]
+  fi
+}
+
 
 _autoenv_chpwd_prev_dir=$PWD
 _autoenv_chpwd_handler() {
@@ -123,29 +199,32 @@ _autoenv_chpwd_handler() {
 
   # Handle leave event for previously sourced env files.
   if [[ $AUTOENV_HANDLE_LEAVE == 1 ]] && (( $#_autoenv_stack_entered )); then
-    for prev_dir in ${_autoenv_stack_entered}; do
+    local prev_file prev_dir
+    for prev_file in ${_autoenv_stack_entered}; do
+      prev_dir=${prev_file:A:h}
       if ! [[ ${PWD}/ == ${prev_dir}/* ]]; then
         local env_file_leave=$prev_dir/$AUTOENV_FILE_LEAVE
         if _autoenv_check_authorized_env_file $env_file_leave; then
           _autoenv_source $env_file_leave leave $prev_dir
         fi
-        # Remove this entry from the stack.
-        _autoenv_stack_entered=(${_autoenv_stack_entered#$prev_dir})
+        _autoenv_stack_entered_remove $prev_dir
       fi
     done
   fi
 
   if ! [[ -f $env_file ]] && [[ $AUTOENV_LOOK_UPWARDS == 1 ]]; then
-    # Look for files in parent dirs, using an extended Zsh glob.
-    setopt localoptions extendedglob
-    local m
-    m=((../)#${AUTOENV_FILE_ENTER}(N))
-    if (( $#m )); then
-      env_file=${${m[1]}:A}
-    else
+    env_file=$(_autoenv_get_file_upwards $PWD)
+    if [[ -z $env_file ]]; then
       _autoenv_chpwd_prev_dir=$PWD
       return
     fi
+  fi
+
+  # Load the env file only once: check if $env_file is in the stack of entered
+  # directories.
+  if _autoenv_stack_entered_contains $env_file; then
+    _autoenv_chpwd_prev_dir=$PWD
+    return
   fi
 
   if ! _autoenv_check_authorized_env_file $env_file; then
@@ -153,16 +232,9 @@ _autoenv_chpwd_handler() {
     return
   fi
 
-  # Load the env file only once: check if $env_file's parent
-  # is in $_autoenv_stack_entered.
-  local env_file_dir=${env_file:A:h}
-  if (( ${+_autoenv_stack_entered[(r)${env_file_dir}]} )); then
-    _autoenv_chpwd_prev_dir=$PWD
-    return
-  fi
+  _autoenv_stack_entered_add $env_file
 
-  _autoenv_stack_entered+=(${env_file_dir})
-
+  # Source the enter env file.
   _autoenv_source $env_file enter $PWD
 
   _autoenv_chpwd_prev_dir=$PWD
