@@ -29,6 +29,9 @@ autoenv_source_parent() {
     && _autoenv_check_authorized_env_file $parent_env_file; then
 
     local parent_env_dir=${parent_env_file:A:h}
+
+    _autoenv_stack_entered_add $parent_env_file
+
     _autoenv_source $parent_env_file enter $parent_env_dir
   fi
 }
@@ -44,7 +47,7 @@ _autoenv_stack_entered_add() {
   local env_file=$1
 
   # Remove any existing entry.
-  _autoenv_stack_entered[$_autoenv_stack_entered[(i)$1]]=()
+  _autoenv_stack_entered_remove $env_file
 
   # Append it to the stack, and remember its mtime.
   _autoenv_stack_entered+=($env_file)
@@ -62,7 +65,7 @@ _autoenv_get_file_mtime() {
 # Remove an entry from the stack.
 _autoenv_stack_entered_remove() {
   local env_file=$1
-  _autoenv_stack_entered=(${_autoenv_stack_entered#$env_file})
+  _autoenv_stack_entered[$_autoenv_stack_entered[(i)$env_file]]=()
   _autoenv_stack_entered_mtime[$env_file]=
 }
 
@@ -218,7 +221,7 @@ _autoenv_chpwd_handler() {
         if _autoenv_check_authorized_env_file $env_file_leave; then
           _autoenv_source $env_file_leave leave $prev_dir
         fi
-        _autoenv_stack_entered_remove $prev_dir
+        _autoenv_stack_entered_remove $prev_file
       fi
     done
   fi

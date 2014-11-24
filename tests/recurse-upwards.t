@@ -98,10 +98,11 @@ Add sub/sub2/.env file.
   done_sub2
 
 Go to root.
+This should not trigger the enter event, because it was handled via
+autoenv_source_parent already.
 
   $ cd ../..
   LEFT_sub: PWD:sub from:sub2 to:recurse-upwards.t
-  ENTERED_root: PWD:recurse-upwards.t from:sub2 to:recurse-upwards.t
 
 
 Changing the root .env should trigger re-authentication via autoenv_source_parent.

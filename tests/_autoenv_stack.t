@@ -50,3 +50,9 @@ Test lookup of containing elements.
   $ _autoenv_stack_entered_contains not-added
   [1]
 
+Test removing.
+
+  $ _autoenv_stack_entered_remove sub
+  $ echo ${_autoenv_stack_entered}
+  sub/sub2 non-existing sub/file
+
