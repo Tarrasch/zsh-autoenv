@@ -152,7 +152,7 @@ _autoenv_check_authorized_env_file() {
 }
 
 # Get directory of this file (absolute, with resolved symlinks).
-_autoenv_this_dir=${0:A:h}
+_autoenv_source_dir=${0:A:h}
 
 _autoenv_source() {
   local env_file=$1
@@ -164,7 +164,7 @@ _autoenv_source() {
 
   # Source varstash library once.
   if [[ -z "$functions[(I)autostash]" ]]; then
-    source $_autoenv_this_dir/lib/varstash
+    source $_autoenv_source_dir/lib/varstash
     # NOTE: Varstash uses $PWD as default for varstash_dir, we might set it to
     # ${env_file:h}.
   fi
