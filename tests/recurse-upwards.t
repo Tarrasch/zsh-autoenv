@@ -50,7 +50,7 @@ Set timestamp of auth file into the past, so it gets seen as new below.
 
 Add sub/sub2/.env file, with a call to autoenv_source_parent.
 
-  $ echo -e "echo autoenv_source_parent_from_sub2:\nautoenv_source_parent\necho done_sub2\n" > sub2/.env
+  $ echo "echo autoenv_source_parent_from_sub2:\nautoenv_source_parent\necho done_sub2\n" > sub2/.env
   $ test_autoenv_add_to_env sub2/.env
   $ cd sub2
   autoenv_source_parent_from_sub2:
@@ -71,7 +71,8 @@ Move sub/.env away, now the root .env file should get sourced.
 Prepend call to autoenv_source_parent to sub/.env file.
 
   $ cd ..
-  $ echo -e "echo autoenv_source_parent_from_sub:\nautoenv_source_parent\n$(< .env)\necho done_sub" > .env
+  $ sed -i -e "1s/^/echo autoenv_source_parent_from_sub:\nautoenv_source_parent\n/" .env
+  $ echo "echo done_sub" >> .env
   $ touch -t 201401010103 .env
   $ test_autoenv_auth_env_files
 
