@@ -181,15 +181,26 @@ _autoenv_source() {
 _autoenv_get_file_upwards() {
   local look_from=${1:-$PWD}
   local look_for=${2:-$AUTOENV_FILE_ENTER}
-  # Look for files in parent dirs, using an extended Zsh glob.
-  setopt localoptions extendedglob
-  local m
-  # Y1: short-circuit: first match.
-  # :A: absolute path, resolving symlinks.
-  m=($look_from/(../)##${look_for}(NY1:A))
-  if (( $#m )); then
-    echo $m[1]
-  fi
+
+  # Manually look in parent dirs. An extended Zsh glob should use Y1 for
+  # performance reasons, which is only available in zsh-5.0.5-146-g9381bb6.
+  local last
+  local parent_dir="$look_from/.."
+  while true; do
+    parent_dir=${parent_dir:A}
+    if [[ $parent_dir == $last ]]; then
+      break
+    fi
+    parent_file="${parent_dir}/${look_for}"
+
+    if [[ -f $parent_file ]]; then
+      echo $parent_file
+      break
+    fi
+
+    last=$parent_dir
+    parent_dir="${parent_dir}/.."
+  done
 }
 
 
