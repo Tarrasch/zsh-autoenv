@@ -157,7 +157,7 @@ _autoenv_source_dir=${0:A:h}
 _autoenv_source() {
   local env_file=$1
   _autoenv_event=$2
-  local _autoenv_envfile_dir=$3
+  local _autoenv_envfile_dir=${3:-${1:A:h}}
 
   _autoenv_from_dir=$_autoenv_chpwd_prev_dir
   _autoenv_to_dir=$PWD
@@ -249,7 +249,7 @@ _autoenv_chpwd_handler() {
   _autoenv_stack_entered_add $env_file
 
   # Source the enter env file.
-  _autoenv_source $env_file enter $PWD
+  _autoenv_source $env_file enter
 
   _autoenv_chpwd_prev_dir=$PWD
 }

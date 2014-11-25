@@ -23,4 +23,4 @@ The actual tests.
   LEFT: PWD:sub from:sub to:cwd.t
 
   $ cd sub/sub2
-  ENTERED: PWD:sub2 from:cwd.t to:sub2
+  ENTERED: PWD:sub from:cwd.t to:sub2

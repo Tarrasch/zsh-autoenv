@@ -16,7 +16,7 @@ Create env files in sub dir.
 
   $ mkdir -p sub/sub2
   $ cd sub
-  ENTERED_root: PWD:sub from:recurse-upwards.t to:sub
+  ENTERED_root: PWD:recurse-upwards.t from:recurse-upwards.t to:sub
 
   $ echo 'echo ENTERED_sub: PWD:${PWD:t} from:${_autoenv_from_dir:t} to:${_autoenv_to_dir:t}' > .env
   $ echo 'echo LEFT_sub: PWD:${PWD:t} from:${_autoenv_from_dir:t} to:${_autoenv_to_dir:t}' > .env.leave
@@ -31,7 +31,7 @@ The actual tests.
   LEFT_sub: PWD:sub from:sub to:recurse-upwards.t
 
   $ cd sub/sub2
-  ENTERED_sub: PWD:sub2 from:recurse-upwards.t to:sub2
+  ENTERED_sub: PWD:sub from:recurse-upwards.t to:sub2
 
   $ cd ..
 
@@ -150,3 +150,16 @@ Touching the .env file will now source the parent env file.
   ENTERED_sub: PWD:sub from:sub to:sub
   ENTER2
   done_sub
+
+
+  $ cd ..
+  LEFT_sub: PWD:sub from:sub to:recurse-upwards.t
+  $ mkdir sub/sub2/sub3
+  $ cd sub/sub2/sub3
+  autoenv_source_parent_from_sub2:
+  autoenv_source_parent_from_sub:
+  NEW
+  ENTERED_sub: PWD:sub from:recurse-upwards.t to:sub
+  ENTER2
+  done_sub
+  done_sub2
