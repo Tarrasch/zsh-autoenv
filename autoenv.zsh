@@ -17,6 +17,8 @@ export AUTOENV_ENV_FILENAME=$HOME/.env_auth
 # event was handled?
 : ${AUTOENV_HANDLE_LEAVE:=1}
 
+# Enable debugging. Multiple levels are supported (max 2).
+: ${AUTOENV_DEBUG:=0}
 
 # Public helper functions, which can be used from your .env files:
 #
@@ -27,6 +29,7 @@ autoenv_source_parent() {
 
   if [[ -n $parent_env_file ]] \
     && _autoenv_check_authorized_env_file $parent_env_file; then
+    _autoenv_debug "Calling autoenv_source_parent: parent_env_file:$parent_env_file"
 
     local parent_env_dir=${parent_env_file:A:h}
 
@@ -36,7 +39,7 @@ autoenv_source_parent() {
   fi
 }
 
-
+# Internal functions. {{{
 # Internal: stack of entered (and handled) directories. {{{
 _autoenv_stack_entered=()
 typeset -A _autoenv_stack_entered_mtime
@@ -45,6 +48,8 @@ _autoenv_stack_entered_mtime=()
 # Add an entry to the stack, and remember its mtime.
 _autoenv_stack_entered_add() {
   local env_file=$1
+
+  _autoenv_debug "[stack] adding: $env_file" 2
 
   # Remove any existing entry.
   _autoenv_stack_entered_remove $env_file
@@ -65,6 +70,7 @@ _autoenv_get_file_mtime() {
 # Remove an entry from the stack.
 _autoenv_stack_entered_remove() {
   local env_file=$1
+  _autoenv_debug "[stack] removing: $env_file" 2
   _autoenv_stack_entered[$_autoenv_stack_entered[(i)$env_file]]=()
   _autoenv_stack_entered_mtime[$env_file]=
 }
@@ -80,6 +86,35 @@ _autoenv_stack_entered_contains() {
     fi
   fi
   return 1
+}
+# }}}
+
+# Internal function for debug output. {{{
+_autoenv_debug() {
+  local msg=$1
+  local level=${2:-1}
+  if [[ $AUTOENV_DEBUG -lt $level ]]; then
+    return
+  fi
+  # Load zsh color support.
+  if [[ -z $colors ]]; then
+    autoload colors
+    colors
+  fi
+  # Build $indent prefix.
+  local indent=
+  if [[ $_autoenv_debug_indent -gt 0 ]]; then
+    for i in {1..${_autoenv_debug_indent}}; do
+      indent="  $indent"
+    done
+  fi
+
+  # Split $msg by \n (not newline).
+  lines=(${(ps:\\n:)msg})
+  for line in $lines; do
+    echo -n "${fg_bold[blue]}[autoenv]${fg_no_bold[default]} " >&2
+    echo ${indent}${line} >&2
+  done
 }
 # }}}
 
@@ -172,7 +207,11 @@ _autoenv_source() {
   # Change to directory of env file, source it and cd back.
   local new_dir=$PWD
   builtin cd -q $_autoenv_envfile_dir
+  _autoenv_debug "== SOURCE: ${bold_color}$env_file${reset_color}\n      PWD: $PWD"
+  (( _autoenv_debug_indent++ ))
   source $env_file
+  (( _autoenv_debug_indent-- ))
+  _autoenv_debug "== END SOURCE =="
   builtin cd -q $new_dir
 
   # Unset vars set for enter/leave scripts.
@@ -211,6 +250,8 @@ _autoenv_chpwd_prev_dir=$PWD
 _autoenv_chpwd_handler() {
   local env_file="$PWD/$AUTOENV_FILE_ENTER"
 
+  _autoenv_debug "Calling chpwd handler: PWD=$PWD"
+
   # Handle leave event for previously sourced env files.
   if [[ $AUTOENV_HANDLE_LEAVE == 1 ]] && (( $#_autoenv_stack_entered )); then
     local prev_file prev_dir
@@ -237,6 +278,7 @@ _autoenv_chpwd_handler() {
   # Load the env file only once: check if $env_file is in the stack of entered
   # directories.
   if _autoenv_stack_entered_contains $env_file; then
+    _autoenv_debug "Already in stack: $env_file"
     _autoenv_chpwd_prev_dir=$PWD
     return
   fi
@@ -249,10 +291,14 @@ _autoenv_chpwd_handler() {
   _autoenv_stack_entered_add $env_file
 
   # Source the enter env file.
+  _autoenv_debug "Sourcing from chpwd handler: $env_file"
   _autoenv_source $env_file enter
 
   _autoenv_chpwd_prev_dir=$PWD
+
+  (( _autoenv_debug_indent++ ))
 }
+# }}}
 
 autoload -U add-zsh-hook
 add-zsh-hook chpwd _autoenv_chpwd_handler
