@@ -1,4 +1,6 @@
 test -f "$TESTDIR/.zcompdump" && rm "$TESTDIR/.zcompdump"
 
+AUTOENV_DEBUG=0
+
 source "$TESTDIR/../autoenv.plugin.zsh"
-export ENV_AUTHORIZATION_FILE="$PWD/.env_auth"
+export AUTOENV_ENV_FILENAME="$PWD/.env_auth"
