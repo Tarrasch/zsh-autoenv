@@ -9,9 +9,10 @@ Lets set a simple .env action
 
 Change to the directory.
 
-  $ _autoenv_read_answer() { echo 'y' }
+  $ _autoenv_ask_for_yes() { echo "yes"; return 0 }
   $ cd .
-  Attempting to load unauthorized env file: /tmp/cramtests-??????/leave.t/sub/.env (glob)
+  Attempting to load unauthorized env file!
+  -* /tmp/cramtests-*/leave.t/sub/.env (glob)
   
   **********************************************
   
@@ -19,15 +20,16 @@ Change to the directory.
   
   **********************************************
   
-  Would you like to authorize it? [y/N] 
+  Would you like to authorize it? (type 'yes') yes
   ENTERED
 
 
 Leave the directory and answer "no".
 
-  $ _autoenv_read_answer() { echo 'n' }
+  $ _autoenv_ask_for_yes() { echo "no"; return 1 }
   $ cd ..
-  Attempting to load unauthorized env file: /tmp/cramtests-??????/leave.t/sub/.env.leave (glob)
+  Attempting to load unauthorized env file!
+  -* /tmp/cramtests-*/leave.t/sub/.env.leave (glob)
   
   **********************************************
   
@@ -35,14 +37,15 @@ Leave the directory and answer "no".
   
   **********************************************
   
-  Would you like to authorize it? [y/N] 
+  Would you like to authorize it? (type 'yes') no
 
 
   $ cd sub
   ENTERED
-  $ _autoenv_read_answer() { echo 'y' }
+  $ _autoenv_ask_for_yes() { echo "yes"; return 0 }
   $ cd ..
-  Attempting to load unauthorized env file: /tmp/cramtests-??????/leave.t/sub/.env.leave (glob)
+  Attempting to load unauthorized env file!
+  -* /tmp/cramtests-*/leave.t/sub/.env.leave (glob)
   
   **********************************************
   
@@ -50,7 +53,7 @@ Leave the directory and answer "no".
   
   **********************************************
   
-  Would you like to authorize it? [y/N] 
+  Would you like to authorize it? (type 'yes') yes
   LEFT
 
 

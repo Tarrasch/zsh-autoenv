@@ -14,9 +14,10 @@ Now try to make it accept it
 
   $ unset _autoenv_stack_entered
   $ rm $AUTOENV_ENV_FILENAME
-  $ _autoenv_read_answer() { echo 'y' }
+  $ _autoenv_ask_for_yes() { echo "yes" }
   $ cd .
-  Attempting to load unauthorized env file: /tmp/cramtests-??????/autoenv.t/.env (glob)
+  Attempting to load unauthorized env file!
+  -* /tmp/cramtests-*/autoenv.t/.env (glob)
   
   **********************************************
   
@@ -24,16 +25,13 @@ Now try to make it accept it
   
   **********************************************
   
-  Would you like to authorize it? [y/N] 
+  Would you like to authorize it? (type 'yes') yes
   ENTERED
 
 
+The last "ENTERED" is because it executed the command.
 
-
-
-The last "ENTERED" is because it executed the command
-
-Now lets see that it actually checks the shasum value
+Now lets see that it actually checks the shasum value.
 
   $ unset _autoenv_stack_entered
   $ cd .
@@ -43,7 +41,8 @@ Now lets see that it actually checks the shasum value
   $ rm $AUTOENV_ENV_FILENAME
   $ test_autoenv_add_to_env $PWD/.env mischief
   $ cd .
-  Attempting to load unauthorized env file: /tmp/cramtests-??????/autoenv.t/.env (glob)
+  Attempting to load unauthorized env file!
+  -* /tmp/cramtests-*/autoenv.t/.env (glob)
   
   **********************************************
   
@@ -51,20 +50,18 @@ Now lets see that it actually checks the shasum value
   
   **********************************************
   
-  Would you like to authorize it? [y/N] 
+  Would you like to authorize it? (type 'yes') yes
   ENTERED
-
-
-
 
 
 Now, will it take no for an answer?
 
   $ unset _autoenv_stack_entered
   $ rm $AUTOENV_ENV_FILENAME
-  $ _autoenv_read_answer() { echo 'n' }
+  $ _autoenv_ask_for_yes() { echo "no"; return 1 }
   $ cd .
-  Attempting to load unauthorized env file: /tmp/cramtests-??????/autoenv.t/.env (glob)
+  Attempting to load unauthorized env file!
+  -* /tmp/cramtests-*/autoenv.t/.env (glob)
   
   **********************************************
   
@@ -72,16 +69,14 @@ Now, will it take no for an answer?
   
   **********************************************
   
-  Would you like to authorize it? [y/N] 
+  Would you like to authorize it? (type 'yes') no
 
 
-
-
-
-Lets also try one more time to ensure it didnt add it
+Lets also try one more time to ensure it didn't add it.
 
   $ cd .
-  Attempting to load unauthorized env file: /tmp/cramtests-??????/autoenv.t/.env (glob)
+  Attempting to load unauthorized env file!
+  -* /tmp/cramtests-*/autoenv.t/.env (glob)
   
   **********************************************
   
@@ -89,4 +84,4 @@ Lets also try one more time to ensure it didnt add it
   
   **********************************************
   
-  Would you like to authorize it? [y/N] 
+  Would you like to authorize it? (type 'yes') no

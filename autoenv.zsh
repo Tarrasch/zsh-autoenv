@@ -154,10 +154,14 @@ _autoenv_deauthorize() {
 }
 
 # This function can be mocked in tests
-_autoenv_read_answer() {
+_autoenv_ask_for_yes() {
   local answer
-  read $=_AUTOENV_TEST_READ_ARGS -q answer
-  echo $answer
+  read answer
+  if [[ $answer == "yes" ]]; then
+    return 0
+  else
+    return 1
+  fi
 }
 
 # Args: 1: absolute path to env file (resolved symlinks).
@@ -166,7 +170,8 @@ _autoenv_check_authorized_env_file() {
     return 1
   fi
   if ! _autoenv_authorized_env_file $1; then
-    echo "Attempting to load unauthorized env file: $1"
+    echo "Attempting to load unauthorized env file!"
+    command ls -l $1
     echo ""
     echo "**********************************************"
     echo ""
@@ -174,11 +179,9 @@ _autoenv_check_authorized_env_file() {
     echo ""
     echo "**********************************************"
     echo ""
-    echo -n "Would you like to authorize it? [y/N] "
+    echo -n "Would you like to authorize it? (type 'yes') "
 
-    local answer=$(_autoenv_read_answer)
-    echo
-    if [[ $answer != 'y' ]]; then
+    if ! _autoenv_ask_for_yes; then
       return 1
     fi
 
