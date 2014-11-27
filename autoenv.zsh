@@ -124,7 +124,8 @@ zmodload -F zsh/stat b:zstat
 
 _autoenv_hash_pair() {
   local env_file=${1:A}
-  if (( $+2 )); then
+  local env_shasum
+  if [[ -n $2 ]]; then
     env_shasum=$2
   else
     env_shasum=$(shasum $env_file | cut -d' ' -f1)
