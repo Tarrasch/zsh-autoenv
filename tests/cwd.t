@@ -24,3 +24,14 @@ The actual tests.
 
   $ cd sub/sub2
   ENTERED: PWD:sub from:cwd.t to:sub2
+
+Check that symlinked dirs get handled correctly.
+
+  $ cd ../..
+  LEFT: PWD:sub from:sub2 to:cwd.t
+  $ ln -s sub sub_linked
+  $ cd sub_linked
+  ENTERED: PWD:sub from:cwd.t to:sub_linked
+  $ cd sub2
+  ENTERED: PWD:sub from:sub_linked to:sub2
+  $ cd .

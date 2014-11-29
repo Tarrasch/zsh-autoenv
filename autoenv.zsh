@@ -261,7 +261,7 @@ _autoenv_chpwd_handler() {
     local prev_file prev_dir
     for prev_file in ${_autoenv_stack_entered}; do
       prev_dir=${prev_file:A:h}
-      if ! [[ ${PWD}/ == ${prev_dir}/* ]]; then
+      if ! [[ ${PWD:A}/ == ${prev_dir}/* ]]; then
         local env_file_leave=$prev_dir/$AUTOENV_FILE_LEAVE
         if _autoenv_check_authorized_env_file $env_file_leave; then
           _autoenv_source $env_file_leave leave $prev_dir
