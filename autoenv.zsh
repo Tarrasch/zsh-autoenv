@@ -154,8 +154,8 @@ _autoenv_authorize() {
 
 _autoenv_deauthorize() {
   local env_file=$1
-  if [[ -f $AUTOENV_ENV_FILENAME ]]; then
-    echo $(\grep -vF $env_file $AUTOENV_ENV_FILENAME) > $AUTOENV_ENV_FILENAME
+  if [[ -s $AUTOENV_ENV_FILENAME ]]; then
+    echo "$(\grep -vF $env_file $AUTOENV_ENV_FILENAME)" > $AUTOENV_ENV_FILENAME
   fi
 }
 
