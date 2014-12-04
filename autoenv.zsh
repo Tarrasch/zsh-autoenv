@@ -152,6 +152,9 @@ _autoenv_authorize() {
   _autoenv_hash_pair $env_file >> $AUTOENV_ENV_FILENAME
 }
 
+# Deauthorize a given filename, by removing it from the auth file.
+# This uses `test -s` to only handle non-empty files, and a subshell to
+# allow for writing to the same file again.
 _autoenv_deauthorize() {
   local env_file=${1:A}
   if [[ -s $AUTOENV_ENV_FILENAME ]]; then
