@@ -136,7 +136,7 @@ _autoenv_hash_pair() {
     fi
     env_shasum=$(shasum $env_file | cut -d' ' -f1)
   fi
-  echo "$env_file:$env_shasum:1"
+  echo ":${env_file}:${env_shasum}:1"
 }
 
 _autoenv_authorized_env_file() {
@@ -147,15 +147,15 @@ _autoenv_authorized_env_file() {
 }
 
 _autoenv_authorize() {
-  local env_file=$1
+  local env_file=${1:A}
   _autoenv_deauthorize $env_file
   _autoenv_hash_pair $env_file >> $AUTOENV_ENV_FILENAME
 }
 
 _autoenv_deauthorize() {
-  local env_file=$1
+  local env_file=${1:A}
   if [[ -s $AUTOENV_ENV_FILENAME ]]; then
-    echo "$(\grep -vF $env_file $AUTOENV_ENV_FILENAME)" > $AUTOENV_ENV_FILENAME
+    echo "$(\grep -vF :${env_file}: $AUTOENV_ENV_FILENAME)" > $AUTOENV_ENV_FILENAME
   fi
 }
 
