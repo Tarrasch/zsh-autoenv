@@ -122,15 +122,21 @@ _autoenv_debug() {
 zmodload -F zsh/stat b:zstat
 
 
+# Generate hash pair for a given file ($1).
+# A fixed hash value can be given as 2nd arg, but is used with tests only.
 _autoenv_hash_pair() {
   local env_file=${1:A}
   local env_shasum
   if [[ -n $2 ]]; then
     env_shasum=$2
   else
+    if ! [[ -e $env_file ]]; then
+      echo "Missing file argument for _autoenv_hash_pair!" >&2
+      return 1
+    fi
     env_shasum=$(shasum $env_file | cut -d' ' -f1)
   fi
-  echo "$env_file:$env_shasum:1"
+  echo ":${env_file}:${env_shasum}:1"
 }
 
 _autoenv_authorized_env_file() {
@@ -141,15 +147,18 @@ _autoenv_authorized_env_file() {
 }
 
 _autoenv_authorize() {
-  local env_file=$1
+  local env_file=${1:A}
   _autoenv_deauthorize $env_file
   _autoenv_hash_pair $env_file >> $AUTOENV_ENV_FILENAME
 }
 
+# Deauthorize a given filename, by removing it from the auth file.
+# This uses `test -s` to only handle non-empty files, and a subshell to
+# allow for writing to the same file again.
 _autoenv_deauthorize() {
-  local env_file=$1
-  if [[ -f $AUTOENV_ENV_FILENAME ]]; then
-    echo $(\grep -vF $env_file $AUTOENV_ENV_FILENAME) > $AUTOENV_ENV_FILENAME
+  local env_file=${1:A}
+  if [[ -s $AUTOENV_ENV_FILENAME ]]; then
+    echo "$(\grep -vF :${env_file}: $AUTOENV_ENV_FILENAME)" > $AUTOENV_ENV_FILENAME
   fi
 }
 
