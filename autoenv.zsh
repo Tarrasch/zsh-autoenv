@@ -275,6 +275,10 @@ _autoenv_chpwd_handler() {
         if _autoenv_check_authorized_env_file $env_file_leave; then
           _autoenv_source $env_file_leave leave $prev_dir
         fi
+
+        # Unstash any autostash'd stuff.
+        varstash_dir=$prev_dir autounstash
+
         _autoenv_stack_entered_remove $prev_file
       fi
     done
