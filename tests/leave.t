@@ -4,8 +4,8 @@ Lets set a simple .env action
 
   $ mkdir sub
   $ cd sub
-  $ echo 'echo ENTERED' >> .env
-  $ echo 'echo LEFT' >> .env.leave
+  $ echo 'echo ENTERED' > .env
+  $ echo 'echo LEFT' > .env.leave
 
 Change to the directory.
 

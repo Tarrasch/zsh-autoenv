@@ -8,11 +8,11 @@
 [[ $AUTOENV_ENV_FILENAME[0,4] == '/tmp' ]] || return 1
 
 # Reset any authentication.
-echo -n > $AUTOENV_ENV_FILENAME
+echo -n >| $AUTOENV_ENV_FILENAME
 
 # Add file $1 (with optional hash $2) to authentication file.
 test_autoenv_add_to_env() {
-  _autoenv_hash_pair $1 ${2:-} >> $AUTOENV_ENV_FILENAME
+  _autoenv_hash_pair $1 ${2:-} >>| $AUTOENV_ENV_FILENAME
 }
 
 # Add enter and leave env files to authentication file.
