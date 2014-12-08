@@ -2,6 +2,7 @@
 # https://github.com/joshuaclayton/dotfiles/blob/master/zsh_profile.d/autoenv.zsh
 
 export AUTOENV_ENV_FILENAME=$HOME/.env_auth
+[ -e $AUTOENV_ENV_FILENAME ] || touch $AUTOENV_ENV_FILENAME
 
 # Name of file to look for when entering directories.
 : ${AUTOENV_FILE_ENTER:=.env}
