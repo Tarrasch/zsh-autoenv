@@ -56,7 +56,7 @@ _autoenv_stack_entered_add() {
 
   # Append it to the stack, and remember its mtime.
   _autoenv_stack_entered+=($env_file)
-  _autoenv_stack_entered_mtime[$env_file]=$(_autoenv_get_file_mtime $env_file)
+  # _autoenv_stack_entered_mtime[$env_file]=$(_autoenv_get_file_mtime $env_file)
 }
 
 _autoenv_get_file_mtime() {
@@ -71,8 +71,8 @@ _autoenv_get_file_mtime() {
 _autoenv_stack_entered_remove() {
   local env_file=$1
   _autoenv_debug "[stack] removing: $env_file" 2
-  _autoenv_stack_entered[$_autoenv_stack_entered[(i)$env_file]]=()
-  _autoenv_stack_entered_mtime[$env_file]=
+  _autoenv_stack_entered[_autoenv_stack_entered[(i)$env_file]]=()
+  # _autoenv_stack_entered_mtime[$env_file]=
 }
 
 # Is the given entry already in the stack?
