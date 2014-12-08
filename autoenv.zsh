@@ -147,7 +147,7 @@ _autoenv_authorized_env_file() {
 _autoenv_authorize() {
   local env_file=${1:A}
   _autoenv_deauthorize $env_file
-  _autoenv_hash_pair $env_file >> $AUTOENV_ENV_FILENAME
+  _autoenv_hash_pair $env_file >>| $AUTOENV_ENV_FILENAME
 }
 
 # Deauthorize a given filename, by removing it from the auth file.
@@ -156,7 +156,7 @@ _autoenv_authorize() {
 _autoenv_deauthorize() {
   local env_file=${1:A}
   if [[ -s $AUTOENV_ENV_FILENAME ]]; then
-    echo "$(\grep -vF :${env_file}: $AUTOENV_ENV_FILENAME)" > $AUTOENV_ENV_FILENAME
+    echo "$(\grep -vF :${env_file}: $AUTOENV_ENV_FILENAME)" >| $AUTOENV_ENV_FILENAME
   fi
 }
 

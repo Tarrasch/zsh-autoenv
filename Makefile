@@ -1,10 +1,17 @@
-.PHONY: itest test
+export ZDOTDIR=${PWD}/tests/ZDOTDIR
 
 test:
-	ZDOTDIR="${PWD}/tests" cram --shell=zsh -v tests
+	cram --shell=zsh -v tests
 
 itest:
-	ZDOTDIR="${PWD}/tests" cram -i --shell=zsh tests
+	cram -i --shell=zsh tests
+
+# Run tests with all ZDOTDIRs.
+test_full:
+	for i in $(wildcard tests/ZDOTDIR*); do \
+		echo "ZDOTDIR=$$i"; \
+		ZDOTDIR=${PWD}/$$i cram --shell=zsh -v tests; \
+	done
 
 # Define targets for test files, with relative and abolute path.
 # Use verbose output, which is useful with Vim's 'errorformat'.
@@ -15,3 +22,5 @@ _TESTS_REL_AND_ABS:=$(call uniq,$(abspath $(TESTS)) $(TESTS))
 $(_TESTS_REL_AND_ABS):
 	ZDOTDIR="${PWD}/tests" cram --shell=zsh -v $@
 .PHONY: $(_TESTS_REL_AND_ABS)
+
+.PHONY: itest test

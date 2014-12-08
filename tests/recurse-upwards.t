@@ -86,7 +86,7 @@ Prepend call to autoenv_source_parent to sub/.env file.
 
 Add sub/sub2/.env file.
 
-  $ echo -e "echo autoenv_source_parent_from_sub2:\nautoenv_source_parent\necho done_sub2\n" > sub2/.env
+  $ echo -e "echo autoenv_source_parent_from_sub2:\nautoenv_source_parent\necho done_sub2\n" >| sub2/.env
   $ test_autoenv_add_to_env sub2/.env
   $ cd sub2
   autoenv_source_parent_from_sub2:
@@ -109,7 +109,7 @@ Changing the root .env should trigger re-authentication via autoenv_source_paren
 
 First, let's answer "no".
 
-  $ echo "echo NEW" > .env
+  $ echo "echo NEW" >| .env
   $ _autoenv_ask_for_yes() { echo "no"; return 1 }
   $ cd sub
   autoenv_source_parent_from_sub:

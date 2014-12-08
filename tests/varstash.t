@@ -39,8 +39,8 @@ Setup:
   $ unset VAR
   $ cd sub
   ENTER
-  $ echo 'echo ENTER; autostash VAR=changed' > $AUTOENV_FILE_ENTER
-  $ echo 'echo LEAVE; echo "no explicit call to autounstash"' > $AUTOENV_FILE_LEAVE
+  $ echo 'echo ENTER; autostash VAR=changed' >| $AUTOENV_FILE_ENTER
+  $ echo 'echo LEAVE; echo "no explicit call to autounstash"' >| $AUTOENV_FILE_LEAVE
   $ test_autoenv_auth_env_files
 
 $VAR is unset:

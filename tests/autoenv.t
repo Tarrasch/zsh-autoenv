@@ -2,7 +2,7 @@
 
 Lets set a simple .env action
 
-  $ echo 'echo ENTERED' >> .env
+  $ echo 'echo ENTERED' > .env
 
 Manually create auth file
 
