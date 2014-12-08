@@ -41,9 +41,8 @@ autoenv_source_parent() {
 
 # Internal functions. {{{
 # Internal: stack of entered (and handled) directories. {{{
-_autoenv_stack_entered=()
+typeset -a _autoenv_stack_entered
 typeset -A _autoenv_stack_entered_mtime
-_autoenv_stack_entered_mtime=()
 
 # Add an entry to the stack, and remember its mtime.
 _autoenv_stack_entered_add() {
@@ -126,10 +125,8 @@ zmodload -F zsh/stat b:zstat
 # A fixed hash value can be given as 2nd arg, but is used with tests only.
 _autoenv_hash_pair() {
   local env_file=${1:A}
-  local env_shasum
-  if [[ -n $2 ]]; then
-    env_shasum=$2
-  else
+  local env_shasum=${2:-}
+  if [[ -z $env_shasum ]]; then
     if ! [[ -e $env_file ]]; then
       echo "Missing file argument for _autoenv_hash_pair!" >&2
       return 1
@@ -220,7 +217,7 @@ _autoenv_source() {
   # Change to directory of env file, source it and cd back.
   local new_dir=$PWD
   builtin cd -q $_autoenv_envfile_dir
-  _autoenv_debug "== SOURCE: ${bold_color}$env_file${reset_color}\n      PWD: $PWD"
+  _autoenv_debug "== SOURCE: ${bold_color:-}$env_file${reset_color:-}\n      PWD: $PWD"
   (( _autoenv_debug_indent++ ))
   source $env_file
   (( _autoenv_debug_indent-- ))
@@ -276,7 +273,7 @@ _autoenv_chpwd_handler() {
           _autoenv_source $env_file_leave leave $prev_dir
         fi
 
-        # Unstash any autostash'd stuff.
+        # Unstash any autostashed stuff.
         varstash_dir=$prev_dir autounstash
 
         _autoenv_stack_entered_remove $prev_file

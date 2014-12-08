@@ -36,31 +36,23 @@ Test autounstashing when leaving a directory.  {{{
 
 Setup:
 
+  $ unset VAR
   $ cd sub
   ENTER
   $ echo 'echo ENTER; autostash VAR=changed' > $AUTOENV_FILE_ENTER
   $ echo 'echo LEAVE; echo "no explicit call to autounstash"' > $AUTOENV_FILE_LEAVE
   $ test_autoenv_auth_env_files
 
-$VAR is empty:
+$VAR is unset:
 
-  $ echo VAR:$VAR
-  VAR:
+  $ echo VAR_set:$+VAR
+  VAR_set:0
 
-Set it:
+Trigger the autostashing in the enter file.
 
-  $ VAR=orig
   $ cd ..
   LEAVE
   no explicit call to autounstash
-
-Leaving the directory keeps it intact - nothing had been stashed yet.
-
-  $ echo $VAR
-  orig
-
-Enter the dir, trigger the autostashing.
-
   $ cd sub
   ENTER
   $ echo $VAR
@@ -71,9 +63,8 @@ Now leave again.
   $ cd ..
   LEAVE
   no explicit call to autounstash
-  $ echo $VAR
-  orig
-
+  $ echo VAR_set:$+VAR
+  VAR_set:0
 
 Remove the leave file, auto-unstashing should still happen.
 
@@ -83,7 +74,20 @@ Remove the leave file, auto-unstashing should still happen.
   $ echo $VAR
   changed
   $ cd ..
+  $ echo VAR_set:$+VAR
+  VAR_set:0
+
+And once again where a value gets restored.
+
+  $ VAR=orig_2
   $ echo $VAR
-  orig
+  orig_2
+  $ cd sub
+  ENTER
+  $ echo $VAR
+  changed
+  $ cd ..
+  $ echo $VAR
+  orig_2
 
 }}}

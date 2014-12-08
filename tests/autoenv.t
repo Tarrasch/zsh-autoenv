@@ -12,7 +12,7 @@ Manually create auth file
 
 Now try to make it accept it
 
-  $ unset _autoenv_stack_entered
+  $ _autoenv_stack_entered=()
   $ rm $AUTOENV_ENV_FILENAME
   $ _autoenv_ask_for_yes() { echo "yes" }
   $ cd .
@@ -33,11 +33,11 @@ The last "ENTERED" is because it executed the command.
 
 Now lets see that it actually checks the shasum value.
 
-  $ unset _autoenv_stack_entered
+  $ _autoenv_stack_entered=()
   $ cd .
   ENTERED
 
-  $ unset _autoenv_stack_entered
+  $ _autoenv_stack_entered=()
   $ rm $AUTOENV_ENV_FILENAME
   $ test_autoenv_add_to_env $PWD/.env mischief
   $ cd .
@@ -56,7 +56,7 @@ Now lets see that it actually checks the shasum value.
 
 Now, will it take no for an answer?
 
-  $ unset _autoenv_stack_entered
+  $ _autoenv_stack_entered=()
   $ rm $AUTOENV_ENV_FILENAME
   $ _autoenv_ask_for_yes() { echo "no"; return 1 }
   $ cd .
