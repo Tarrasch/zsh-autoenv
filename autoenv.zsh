@@ -49,10 +49,10 @@ typeset -A _autoenv_stack_entered_mtime
 _autoenv_stack_entered_add() {
   local env_file=$1
 
-  _autoenv_debug "[stack] adding: $env_file" 2
-
   # Remove any existing entry.
   _autoenv_stack_entered_remove $env_file
+
+  _autoenv_debug "[stack] adding: $env_file" 2
 
   # Append it to the stack, and remember its mtime.
   _autoenv_stack_entered+=($env_file)
