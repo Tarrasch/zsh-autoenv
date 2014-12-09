@@ -99,7 +99,7 @@ _autoenv_debug() {
     return
   fi
   # Load zsh color support.
-  if [[ -z $colors ]]; then
+  if [[ -z $color ]]; then
     autoload colors
     colors
   fi
