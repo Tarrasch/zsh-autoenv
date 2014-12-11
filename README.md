@@ -15,9 +15,16 @@ This is is a zsh optimized version of
 
 ## Installation
 
-Using [antigen](https://github.com/zsh-users/antigen)
+### Using [antigen](https://github.com/zsh-users/antigen)
 
     antigen-bundle Tarrasch/zsh-autoenv
+
+### Manually
+
+Clone the repository and source it from your `~/.zshrc` file:
+
+    git clone https://github.com/Tarrasch/zsh-autoenv ~/.dotfiles/lib/zsh-autoenv
+    echo 'source ~/.dotfiles/lib/zsh-autoenv/autoenv.zsh' >> ~/.zshrc
 
 ## Credits
 
