@@ -101,7 +101,7 @@ function stash() {
     fi
 
     while [[ -n $1 ]]; do
-        if [[ $1 == "alias" && $2 =~ "=" ]]; then
+        if [[ $1 == "alias" && $2 == *=* ]]; then
             shift
             local _stashing_alias_assign=1
             continue
@@ -179,13 +179,13 @@ function stash() {
             else
                 local pattern="^declare"
             fi
-            if [[ $vartype =~ $pattern" -a" ]]; then
+            if [[ $vartype == $pattern" -a"* ]]; then
                 # varible is an array
                 if [[ -z $already_stashed ]]; then
                     eval "__varstash_array__$stash_name=(\"\${$stash_which""[@]}\")"
                 fi
 
-            elif [[ $vartype =~ $pattern" -x" ]]; then
+            elif [[ $vartype == $pattern" -x"* ]]; then
                 # variable is exported
                 if [[ -z $already_stashed ]]; then
                     eval "__varstash_export__$stash_name=\"\$$stash_which\""
@@ -310,7 +310,8 @@ function unstash() {
         fi
         if [[ ( -n "$nostash" && -z "$unstashed" ) || ( -n "$unstashed" && -z "$unstashed_variable" ) ]]; then
             # Don't try to unset illegal variable names
-            if ! [[ $unstash_which =~ [^a-zA-Z0-9_] || $unstash_which =~ ^[0-9] ]]; then
+            # Using substitution to avoid using regex, which might fail to load on Zsh (minimal system).
+            if [[ ${unstash_which//[^a-zA-Z0-9_]/} == $unstash_which && $unstash_which != [0-9]* ]]; then
                 unset -v $unstash_which
             fi
         fi
