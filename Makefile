@@ -11,6 +11,7 @@ test_full:
 	for i in $(wildcard tests/ZDOTDIR*); do \
 		echo "ZDOTDIR=$$i"; \
 		ZDOTDIR=${PWD}/$$i cram --shell=zsh -v tests; \
+		echo; \
 	done
 
 # Define targets for test files, with relative and abolute path.
