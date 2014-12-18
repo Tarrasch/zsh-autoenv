@@ -175,9 +175,9 @@ function stash() {
         local vartype="$(declare -p $stash_which 2>/dev/null)"
         if [[ -n $vartype ]]; then
             if [[ -n $ZSH_VERSION ]]; then
-                local pattern="^typeset"
+                local pattern="typeset"
             else
-                local pattern="^declare"
+                local pattern="declare"
             fi
             if [[ $vartype == $pattern" -a"* ]]; then
                 # varible is an array
