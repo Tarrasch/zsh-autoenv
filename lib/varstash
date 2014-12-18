@@ -231,7 +231,7 @@ function stash() {
 function autostash() {
     local run_from_autostash=1
     while [[ -n $1 ]]; do
-        if [[ $1 == "alias" && $2 = *=* ]]; then
+        if [[ $1 == "alias" && $2 == *=* ]]; then
             shift
             local _stashing_alias_assign=1
         fi
