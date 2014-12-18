@@ -122,7 +122,14 @@ _autoenv_debug() {
 # }}}
 
 # Load zstat module, but only its builtin `zstat`.
-zmodload -F zsh/stat b:zstat
+if ! zmodload -F zsh/stat b:zstat 2>/dev/null; then
+  # If the module is not available, define a wrapper around `stat`, and use its
+  # terse output instead of format, which is not supported by busybox.
+  # Assume '+mtime' as $1.
+  zstat() {
+    stat -t $2 | cut -f13 -d ' '
+  }
+fi
 
 
 # Generate hash pair for a given file ($1).
