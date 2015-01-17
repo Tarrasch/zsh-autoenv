@@ -1,4 +1,4 @@
-export ZDOTDIR=${PWD}/tests/ZDOTDIR
+export ZDOTDIR=${CURDIR}/tests/ZDOTDIR
 
 test:
 	cram --shell=zsh -v tests
@@ -10,7 +10,7 @@ itest:
 test_full:
 	for i in $(wildcard tests/ZDOTDIR*); do \
 		echo "ZDOTDIR=$$i"; \
-		ZDOTDIR=${PWD}/$$i cram --shell=zsh -v tests; \
+		ZDOTDIR=${CURDIR}/$$i cram --shell=zsh -v tests; \
 		echo; \
 	done
 
@@ -21,7 +21,7 @@ TESTS:=$(wildcard tests/*.t)
 uniq = $(if $1,$(firstword $1) $(call uniq,$(filter-out $(firstword $1),$1)))
 _TESTS_REL_AND_ABS:=$(call uniq,$(abspath $(TESTS)) $(TESTS))
 $(_TESTS_REL_AND_ABS):
-	ZDOTDIR="${PWD}/tests" cram --shell=zsh -v $@
+	ZDOTDIR="${CURDIR}/tests" cram --shell=zsh -v $@
 .PHONY: $(_TESTS_REL_AND_ABS)
 
 .PHONY: itest test
