@@ -212,6 +212,7 @@ _autoenv_source() {
 
   autoenv_from_dir=$_autoenv_chpwd_prev_dir
   autoenv_to_dir=$PWD
+  autoenv_env_file=$env_file
 
   # Source varstash library once.
   if [[ -z "$functions[(I)autostash]" ]]; then
@@ -237,7 +238,7 @@ _autoenv_source() {
   # Unset vars set for enter/leave scripts.
   # This should not get done for recursion (via autoenv_source_parent),
   # and can be useful to have in general after autoenv was used.
-  # unset autoenv_event autoenv_from_dir autoenv_to_dir
+  # unset autoenv_event autoenv_from_dir autoenv_to_dir autoenv_env_file
 }
 
 _autoenv_get_file_upwards() {
