@@ -26,7 +26,7 @@ export AUTOENV_ENV_FILENAME=$HOME/.env_auth
 # Source the next .env file from parent directories.
 # This is useful if you want to use a base .env file for a directory subtree.
 autoenv_source_parent() {
-  local parent_env_file=$(_autoenv_get_file_upwards $PWD)
+  local parent_env_file=$(_autoenv_get_file_upwards ${autoenv_env_file:h})
 
   if [[ -n $parent_env_file ]] \
     && _autoenv_check_authorized_env_file $parent_env_file; then
@@ -223,13 +223,11 @@ _autoenv_source() {
 
   # Change to directory of env file, source it and cd back.
   local new_dir=$PWD
-  builtin cd -q $_autoenv_envfile_dir
   _autoenv_debug "== SOURCE: ${bold_color:-}$env_file${reset_color:-}\n      PWD: $PWD"
   (( _autoenv_debug_indent++ ))
   source $env_file
   (( _autoenv_debug_indent-- ))
   _autoenv_debug "== END SOURCE =="
-  builtin cd -q $new_dir
 
   if [[ $autoenv_event == enter ]]; then
     _autoenv_stack_entered_add $env_file
