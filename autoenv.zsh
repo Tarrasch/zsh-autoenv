@@ -31,12 +31,7 @@ autoenv_source_parent() {
   if [[ -n $parent_env_file ]] \
     && _autoenv_check_authorized_env_file $parent_env_file; then
     _autoenv_debug "Calling autoenv_source_parent: parent_env_file:$parent_env_file"
-
-    local parent_env_dir=${parent_env_file:A:h}
-
-    _autoenv_stack_entered_add $parent_env_file
-
-    _autoenv_source $parent_env_file enter $parent_env_dir
+    _autoenv_source $parent_env_file enter
   fi
 }
 
@@ -235,6 +230,10 @@ _autoenv_source() {
   _autoenv_debug "== END SOURCE =="
   builtin cd -q $new_dir
 
+  if [[ $autoenv_event == enter ]]; then
+    _autoenv_stack_entered_add $env_file
+  fi
+
   # Unset vars set for enter/leave scripts.
   # This should not get done for recursion (via autoenv_source_parent),
   # and can be useful to have in general after autoenv was used.
@@ -312,8 +311,6 @@ _autoenv_chpwd_handler() {
     _autoenv_chpwd_prev_dir=$PWD
     return
   fi
-
-  _autoenv_stack_entered_add $env_file
 
   # Source the enter env file.
   _autoenv_debug "Sourcing from chpwd handler: $env_file"
