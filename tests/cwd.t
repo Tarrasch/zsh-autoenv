@@ -33,5 +33,8 @@ Check that symlinked dirs get handled correctly.
   $ cd sub_linked
   ENTERED: PWD:sub_linked pwd:sub_linked from:cwd.t to:sub_linked event:enter
   $ cd sub2
-  ENTERED: PWD:sub2 pwd:sub2 from:sub_linked to:sub2 event:enter
-  $ cd .
+
+  $ cd ../..
+  LEFT: PWD:cwd.t pwd:cwd.t from:sub2 to:cwd.t event:leave
+  $ cd sub_linked/sub2
+  ENTERED: PWD:sub2 pwd:sub2 from:cwd.t to:sub2 event:enter
