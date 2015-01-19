@@ -21,7 +21,7 @@ TESTS:=$(wildcard tests/*.t)
 uniq = $(if $1,$(firstword $1) $(call uniq,$(filter-out $(firstword $1),$1)))
 _TESTS_REL_AND_ABS:=$(call uniq,$(abspath $(TESTS)) $(TESTS))
 $(_TESTS_REL_AND_ABS):
-	ZDOTDIR="${CURDIR}/tests" cram --shell=zsh -v $@
+	cram --shell=zsh -v $@
 .PHONY: $(_TESTS_REL_AND_ABS)
 
 .PHONY: itest test
