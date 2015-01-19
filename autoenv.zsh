@@ -267,9 +267,15 @@ _autoenv_get_file_upwards() {
 
 _autoenv_chpwd_prev_dir=$PWD
 _autoenv_chpwd_handler() {
-  local env_file="$PWD/$AUTOENV_FILE_ENTER"
-
   _autoenv_debug "Calling chpwd handler: PWD=$PWD"
+
+  if (( $AUTOENV_DISABLED )); then
+    _autoenv_debug "Disabled (AUTOENV_DISABLED)."
+    return
+  fi
+
+  local env_file="$PWD/$AUTOENV_FILE_ENTER"
+  _autoenv_debug "env_file: $env_file"
 
   # Handle leave event for previously sourced env files.
   if [[ $AUTOENV_HANDLE_LEAVE == 1 ]] && (( $#_autoenv_stack_entered )); then
