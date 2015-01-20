@@ -88,3 +88,28 @@ Test that .env is sourced only once with AUTOENV_HANDLE_LEAVE=0.
   ENTERED
   $ cd ..
   $ cd sub
+
+
+Test that "leave" is not triggered when entering an outside dir via symlink.
+
+  $ AUTOENV_HANDLE_LEAVE=1
+  $ cd ..
+  LEFT
+  $ mkdir outside
+  $ cd outside
+  $ echo 'echo ENTERED outside: PWD:${PWD:t} pwd:${${"$(pwd)"}:t} from:${autoenv_from_dir:t} to:${autoenv_to_dir:t} event:${autoenv_event}' > .env
+  $ echo 'echo LEFT outside: PWD:${PWD:t} pwd:${${"$(pwd)"}:t} from:${autoenv_from_dir:t} to:${autoenv_to_dir:t} event:${autoenv_event}' > .env.leave
+  $ test_autoenv_auth_env_files
+
+  $ cd ..
+  $ ln -s ../outside sub/symlink
+  $ cd sub
+  ENTERED
+  $ cd symlink
+  ENTERED outside: PWD:symlink pwd:symlink from:sub to:symlink event:enter
+
+  $ cd ../..
+  LEFT
+  LEFT outside: PWD:leave.t pwd:leave.t from:symlink to:leave.t event:leave
+  $ cd sub/symlink
+  ENTERED outside: PWD:symlink pwd:symlink from:leave.t to:symlink event:enter

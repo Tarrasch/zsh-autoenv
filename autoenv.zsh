@@ -74,11 +74,24 @@ _autoenv_stack_entered_remove() {
 }
 
 # Is the given entry already in the stack?
+# This checks for the env_file ($1) as-is and with symlinks resolved.
 _autoenv_stack_entered_contains() {
   local env_file=$1
+  local f i
   if (( ${+_autoenv_stack_entered[(r)${env_file}]} )); then
     # Entry is in stack.
-    if [[ $_autoenv_stack_entered_mtime[$env_file] == $(_autoenv_get_file_mtime $env_file) ]]; then
+    f=$env_file
+  else
+    for i in $_autoenv_stack_entered; do
+      if [[ ${i:A} == ${env_file:A} ]]; then
+        # Entry is in stack (compared with resolved symlinks).
+        f=$i
+        break
+      fi
+    done
+  fi
+  if [[ -n $f ]]; then
+    if [[ $_autoenv_stack_entered_mtime[$f] == $(_autoenv_get_file_mtime $f) ]]; then
       # Entry has the expected mtime.
       return
     fi
@@ -275,8 +288,8 @@ _autoenv_chpwd_handler() {
   if [[ $AUTOENV_HANDLE_LEAVE == 1 ]] && (( $#_autoenv_stack_entered )); then
     local prev_file prev_dir
     for prev_file in ${_autoenv_stack_entered}; do
-      prev_dir=${prev_file:A:h}
-      if ! [[ ${PWD:A}/ == ${prev_dir}/* ]]; then
+      prev_dir=${prev_file:h}
+      if ! [[ ${PWD}/ == ${prev_dir}/* ]]; then
         local env_file_leave=$prev_dir/$AUTOENV_FILE_LEAVE
         if _autoenv_check_authorized_env_file $env_file_leave; then
           _autoenv_source $env_file_leave leave $prev_dir
