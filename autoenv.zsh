@@ -21,6 +21,9 @@ export AUTOENV_ENV_FILENAME=$HOME/.env_auth
 # Enable debugging. Multiple levels are supported (max 2).
 : ${AUTOENV_DEBUG:=0}
 
+# (Temporarily) disable zsh-autoenv. This gets looked at in the chpwd handler.
+: ${AUTOENV_DISABLED:=0}
+
 # Public helper functions, which can be used from your .env files:
 #
 # Source the next .env file from parent directories.
@@ -280,9 +283,15 @@ _autoenv_get_file_upwards() {
 
 _autoenv_chpwd_prev_dir=$PWD
 _autoenv_chpwd_handler() {
-  local env_file="$PWD/$AUTOENV_FILE_ENTER"
-
   _autoenv_debug "Calling chpwd handler: PWD=$PWD"
+
+  if (( $AUTOENV_DISABLED )); then
+    _autoenv_debug "Disabled (AUTOENV_DISABLED)."
+    return
+  fi
+
+  local env_file="$PWD/$AUTOENV_FILE_ENTER"
+  _autoenv_debug "env_file: $env_file"
 
   # Handle leave event for previously sourced env files.
   if [[ $AUTOENV_HANDLE_LEAVE == 1 ]] && (( $#_autoenv_stack_entered )); then
