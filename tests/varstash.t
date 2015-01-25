@@ -1,6 +1,6 @@
 Test varstash integration.
 
-  $ source $TESTDIR/setup.sh
+  $ source $TESTDIR/setup.sh || return 1
 
 Setup test environment.
 

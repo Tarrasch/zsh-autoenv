@@ -1,6 +1,6 @@
 Test recursing into parent .env files.
 
-  $ source $TESTDIR/setup.sh
+  $ source $TESTDIR/setup.sh || return 1
 
 Setup env actions / output.
 

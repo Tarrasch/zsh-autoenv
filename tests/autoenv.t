@@ -1,4 +1,4 @@
-  $ source $TESTDIR/setup.sh
+  $ source $TESTDIR/setup.sh || return 1
 
 Lets set a simple .env action
 

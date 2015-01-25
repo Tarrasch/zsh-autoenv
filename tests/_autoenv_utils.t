@@ -1,6 +1,6 @@
 Tests for internal util methods.
 
-  $ source $TESTDIR/setup.sh
+  $ source $TESTDIR/setup.sh || return 1
 
 Non-existing entries are allowed and handled without error.
 
