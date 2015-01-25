@@ -71,3 +71,17 @@ Re-add the first one, with a new hash.
   :/tmp/cramtests-*/_autoenv_utils.t/second:7bee8f3b184e1e141ff76efe369c3b8bfc50e64c:1 (glob)
   :/tmp/cramtests-*/_autoenv_utils.t/first:65eb010197b73ddc109b7210080f97a87f53451e:1 (glob)
 }}}
+
+
+Explicit calls to _autoenv_get_file_mtime to test alternative implementation
+of _autoenv_get_file_mtime (via ZDOTDIR.invalid-module_path/).
+
+  $ _autoenv_get_file_mtime non-existing
+  0
+  $ touch -t 201401010101 file
+  $ _autoenv_get_file_mtime file
+  1388538060
+  $ mkdir dir
+  $ touch -t 201401010102 dir
+  $ _autoenv_get_file_mtime dir
+  1388538120

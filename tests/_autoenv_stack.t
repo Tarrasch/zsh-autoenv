@@ -12,6 +12,8 @@ Add existing entries.
 
   $ mkdir -p sub/sub2
   $ touch -t 201401010101 sub/file
+  $ touch -t 201401010102 sub
+  $ touch -t 201401010103 sub/sub2
   $ _autoenv_stack_entered_add sub
   $ _autoenv_stack_entered_add sub/file
   $ _autoenv_stack_entered_add sub/sub2
@@ -26,7 +28,7 @@ Add existing entries.
   sub sub/file sub/sub2 non-existing
 
   $ echo $_autoenv_stack_entered_mtime
-  0 1388538060 0 0 (glob)
+  1388538180 1388538060 1388538120 0
 
 Touch the file and re-add it.
 
