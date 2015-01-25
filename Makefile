@@ -25,3 +25,6 @@ $(_TESTS_REL_AND_ABS):
 .PHONY: $(_TESTS_REL_AND_ABS)
 
 .PHONY: itest test
+
+clean:
+	$(RM) tests/*.err
