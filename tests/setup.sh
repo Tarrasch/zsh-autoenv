@@ -1,3 +1,7 @@
+# Setup for tests.
+#
+# It returns 1 in case of errors, and no tests should be run then!
+#
 # Ensure we have our mocked out AUTOENV_ENV_FILENAME
 # (via .zshenv).
 
@@ -5,7 +9,10 @@
 # Not handled in varstash yet.
 # setopt nounset
 
-[[ $AUTOENV_ENV_FILENAME[0,4] == '/tmp' ]] || return 1
+if [[ $AUTOENV_ENV_FILENAME[0,4] != '/tmp' ]]; then
+  echo "AUTOENV_ENV_FILENAME is not in /tmp. Aborting."
+  return 1
+fi
 
 # Reset any authentication.
 echo -n >| $AUTOENV_ENV_FILENAME
