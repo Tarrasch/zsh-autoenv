@@ -1,4 +1,8 @@
-export ZDOTDIR=${CURDIR}/tests/ZDOTDIR
+# Default, can be overridden using "make test ZDOTDIR=...".
+ZDOTDIR:=${CURDIR}/tests/ZDOTDIR
+
+# Export it, and make it absolute.
+override export ZDOTDIR:=$(abspath $(ZDOTDIR))
 
 test:
 	cram --shell=zsh -v tests
