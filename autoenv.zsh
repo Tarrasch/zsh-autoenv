@@ -60,13 +60,23 @@ _autoenv_stack_entered_add() {
   _autoenv_stack_entered_mtime[$env_file]=$(_autoenv_get_file_mtime $env_file)
 }
 
-_autoenv_get_file_mtime() {
-  if [[ -f $1 ]]; then
-    zstat +mtime $1
-  else
-    echo 0
-  fi
-}
+
+# zstat_mime helper, conditionally defined.
+# Load zstat module, but only its builtin `zstat`.
+if ! zmodload -F zsh/stat b:zstat 2>/dev/null; then
+  # If the module is not available, define a wrapper around `stat`, and use its
+  # terse output instead of format, which is not supported by busybox.
+  # Assume '+mtime' as $1.
+  _autoenv_get_file_mtime() {
+    setopt localoptions pipefail
+    stat -t $1 2>/dev/null | cut -f13 -d ' ' || echo 0
+  }
+else
+  _autoenv_get_file_mtime() {
+    zstat +mtime $1 2>/dev/null || echo 0
+  }
+fi
+
 
 # Remove an entry from the stack.
 _autoenv_stack_entered_remove() {
@@ -131,16 +141,6 @@ _autoenv_debug() {
   done
 }
 # }}}
-
-# Load zstat module, but only its builtin `zstat`.
-if ! zmodload -F zsh/stat b:zstat 2>/dev/null; then
-  # If the module is not available, define a wrapper around `stat`, and use its
-  # terse output instead of format, which is not supported by busybox.
-  # Assume '+mtime' as $1.
-  zstat() {
-    stat -t $2 | cut -f13 -d ' '
-  }
-fi
 
 
 # Generate hash pair for a given file ($1).
