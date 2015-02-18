@@ -4,4 +4,4 @@ python:
 before_script:
   - "sudo apt-get install zsh"
 install: "sudo pip install cram"
-script: "make tests"
+script: "make test_full"

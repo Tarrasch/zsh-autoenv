@@ -1,6 +1,6 @@
 [![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/Tarrasch/zsh-autoenv/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
 
-[![Build Status](https://travis-ci.org/Tarrasch/zsh-autoenv.png)](https://travis-ci.org/Tarrasch/zsh-autoenv)
+[![Build Status](https://travis-ci.org/Tarrasch/zsh-autoenv.svg?branch=master)](https://travis-ci.org/Tarrasch/zsh-autoenv)
 
 # Autoenv for zsh
 
@@ -26,6 +26,13 @@ Add
     zgen load Tarrasch/zsh-autoenv
 
 to your `.zshrc` where you're loading your other plugins.
+### Manually
+
+Clone the repository and source it from your `~/.zshrc` file:
+
+    git clone https://github.com/Tarrasch/zsh-autoenv ~/.dotfiles/lib/zsh-autoenv
+    echo 'source ~/.dotfiles/lib/zsh-autoenv/autoenv.zsh' >> ~/.zshrc
+>>>>>>> upstream/master
 
 ## Credits
 
