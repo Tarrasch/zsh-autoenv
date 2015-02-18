@@ -19,6 +19,14 @@ This is is a zsh optimized version of
 
     antigen-bundle Tarrasch/zsh-autoenv
 
+### Using [zgen](https://github.com/tarjoilija/zgen)
+
+Add
+
+    zgen load Tarrasch/zsh-autoenv
+
+to your `.zshrc` where you're loading your other plugins.
+
 ### Manually
 
 Clone the repository and source it from your `~/.zshrc` file:
