@@ -15,9 +15,17 @@ This is is a zsh optimized version of
 
 ## Installation
 
-Using [antigen](https://github.com/zsh-users/antigen)
+### Using [antigen](https://github.com/zsh-users/antigen)
 
     antigen-bundle Tarrasch/zsh-autoenv
+
+### Using [zgen](https://github.com/tarjoilija/zgen)
+
+Add
+
+    zgen load Tarrasch/zsh-autoenv
+
+to your `.zshrc` where you're loading your other plugins.
 
 ## Credits
 
