@@ -26,13 +26,13 @@ Add
     zgen load Tarrasch/zsh-autoenv
 
 to your `.zshrc` where you're loading your other plugins.
+
 ### Manually
 
 Clone the repository and source it from your `~/.zshrc` file:
 
     git clone https://github.com/Tarrasch/zsh-autoenv ~/.dotfiles/lib/zsh-autoenv
     echo 'source ~/.dotfiles/lib/zsh-autoenv/autoenv.zsh' >> ~/.zshrc
->>>>>>> upstream/master
 
 ## Credits
 
