@@ -14,6 +14,9 @@ if [[ $AUTOENV_ENV_FILENAME[0,4] != '/tmp' ]]; then
   return 1
 fi
 
+TEST_AUTOENV_PLUGIN_FILE="$TESTDIR/../autoenv.plugin.zsh"
+source $TEST_AUTOENV_PLUGIN_FILE
+
 # Reset any authentication.
 echo -n >| $AUTOENV_ENV_FILENAME
 
