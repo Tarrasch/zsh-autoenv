@@ -74,6 +74,7 @@ Now, will it take no for an answer?
 
 Lets also try one more time to ensure it didn't add it.
 
+  $ _autoenv_ask_for_yes() { echo "yes"; return 0 }
   $ cd .
   Attempting to load unauthorized env file!
   -* /tmp/cramtests-*/autoenv.t/.env (glob)
@@ -84,4 +85,11 @@ Lets also try one more time to ensure it didn't add it.
   
   **********************************************
   
-  Would you like to authorize it? (type 'yes') no
+  Would you like to authorize it? (type 'yes') yes
+  ENTERED
+
+Reloading the script should keep the current state, e.g. when reloading your
+~/.zshrc.
+
+  $ source $TEST_AUTOENV_PLUGIN_FILE
+  $ cd .
