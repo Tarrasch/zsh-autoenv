@@ -41,10 +41,8 @@ autoenv_source_parent() {
 # Internal functions. {{{
 # Internal: stack of entered (and handled) directories. {{{
 typeset -g -a _autoenv_stack_entered
-_autoenv_stack_entered=()
 # -g: make it global, this is required when used with antigen.
 typeset -g -A _autoenv_stack_entered_mtime
-_autoenv_stack_entered_mtime=()
 
 # Add an entry to the stack, and remember its mtime.
 _autoenv_stack_entered_add() {
