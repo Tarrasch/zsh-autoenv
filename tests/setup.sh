@@ -14,6 +14,10 @@ if [[ $AUTOENV_ENV_FILENAME[0,4] != '/tmp' ]]; then
   return 1
 fi
 
+# Abort this setup script on any error.
+_save_errexit=${options[errexit]}
+set -e
+
 # Reset any authentication.
 echo -n >| $AUTOENV_ENV_FILENAME
 
@@ -27,3 +31,7 @@ test_autoenv_auth_env_files() {
   test_autoenv_add_to_env $PWD/$AUTOENV_FILE_ENTER
   test_autoenv_add_to_env $PWD/$AUTOENV_FILE_LEAVE
 }
+
+# Now keep on going on errors again.
+options[errexit]=$_save_errexit
+unset _save_errexit
