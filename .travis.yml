@@ -2,10 +2,10 @@ language: python
 python:
   - 3.4
 env:
-  ZDOTDIR=tests/ZDOTDIR
-  ZDOTDIR=tests/ZDOTDIR.clobber
-  ZDOTDIR=tests/ZDOTDIR.invalid-module_path
-  ZDOTDIR=tests/ZDOTDIR.loadviafunction
+  - ZDOTDIR=tests/ZDOTDIR
+  - ZDOTDIR=tests/ZDOTDIR.clobber
+  - ZDOTDIR=tests/ZDOTDIR.invalid-module_path
+  - ZDOTDIR=tests/ZDOTDIR.loadviafunction
 install:
   - sudo apt-get install zsh
   - pip install cram
