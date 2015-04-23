@@ -47,12 +47,3 @@ Activate autoenv in the subshell.
   LEAVE
   empty
   orig_export
-#
-# Exiting the subshell should restore.
-#
-#   $ pwd
-#   */varstash_export.t (glob)
-#   $ echo $MYVAR
-#   changed
-#   $ echo $MYEXPORT
-#   changed_export
