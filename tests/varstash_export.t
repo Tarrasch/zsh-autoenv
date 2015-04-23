@@ -35,14 +35,14 @@ The variable is not available in a subshell, only the exported one.
 
 Activate autoenv in the subshell.
 
-  $ $SHELL -c 'source $TEST_AUTOENV_PLUGIN_FILE; echo ${MYVAR}; echo $MYEXPORT'
+  $ $SHELL -c "$TEST_SOURCE_AUTOENV; echo \${MYVAR}; echo \$MYEXPORT"
   ENTER
   changed
   changed_export
 
 "autounstash" should handle the exported variables.
 
-  $ $SHELL -c 'source $TEST_AUTOENV_PLUGIN_FILE; cd ..; echo ${MYVAR:-empty}; echo $MYEXPORT'
+  $ $SHELL -c "$TEST_SOURCE_AUTOENV; cd ..; echo \${MYVAR:-empty}; echo \$MYEXPORT"
   ENTER
   LEAVE
   empty

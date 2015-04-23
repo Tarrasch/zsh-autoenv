@@ -18,8 +18,12 @@ fi
 _save_errexit=${options[errexit]}
 set -e
 
-export TEST_AUTOENV_PLUGIN_FILE="$TESTDIR/../autoenv.plugin.zsh"
-source $TEST_AUTOENV_PLUGIN_FILE
+if (( ${+functions[antigen-like-loader-function]} )); then
+  TEST_SOURCE_AUTOENV=antigen-like-loader-function
+else
+  TEST_SOURCE_AUTOENV=(source $TESTDIR/../autoenv.plugin.zsh)
+fi
+$TEST_SOURCE_AUTOENV
 
 # Reset any authentication.
 echo -n >| $AUTOENV_ENV_FILENAME

@@ -91,5 +91,5 @@ Lets also try one more time to ensure it didn't add it.
 Reloading the script should keep the current state, e.g. when reloading your
 ~/.zshrc.
 
-  $ source $TEST_AUTOENV_PLUGIN_FILE
+  $ $TEST_SOURCE_AUTOENV
   $ cd .
