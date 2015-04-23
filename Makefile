@@ -12,11 +12,14 @@ itest:
 
 # Run tests with all ZDOTDIRs.
 test_full:
-	ret=0; \
-	for i in $(wildcard tests/ZDOTDIR*); do \
-		echo "ZDOTDIR=$$i"; \
-		ZDOTDIR=${CURDIR}/$$i cram --shell=zsh -v tests || ret=$$?; \
-		echo; \
+	for zsh in zsh /opt/zsh4/bin/zsh; do \
+		command -v $$zsh || { echo "Skipping non-existing shell: $$zsh"; continue; }; \
+		ret=0; \
+		for i in $(wildcard tests/ZDOTDIR*); do \
+			echo "zsh=$zsh ZDOTDIR=$$i"; \
+			SHELL=$$zsh ZDOTDIR=${CURDIR}/$$i cram --shell=zsh -v tests || ret=$$?; \
+			echo; \
+		done; \
 	done; \
 	return $$ret
 
