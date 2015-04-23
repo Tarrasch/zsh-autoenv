@@ -193,7 +193,11 @@ function get_autostash_array_name() {
     local autostash_name=$(_mangle_var AUTOSTASH)
     # Create a scalar variable linked to an array (for exporting).
     local autostash_array_name=${(L)autostash_name}
-    typeset -xT $autostash_name $autostash_array_name
+    if ! (( ${(P)+autostash_array_name} )); then
+        # Conditionally set it, to prevent error with Zsh 4.3:
+        # can't tie already tied scalar: ...
+        typeset -xT $autostash_name $autostash_array_name
+    fi
     ret=$autostash_array_name
 }
 
