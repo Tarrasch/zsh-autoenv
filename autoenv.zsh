@@ -66,8 +66,14 @@ if ! zmodload -F zsh/stat b:zstat 2>/dev/null; then
   # terse output instead of format, which is not supported by busybox.
   # Assume '+mtime' as $1.
   _autoenv_get_file_mtime() {
-    setopt localoptions pipefail
-    stat -t $1 2>/dev/null | cut -f13 -d ' ' || echo 0
+    # setopt localoptions pipefail
+    local stat
+    stat=$(stat -t $1 2>/dev/null)
+    if [[ -n $stat ]]; then
+      echo ${${(s: :)stat}[13]}
+    else
+      echo 0
+    fi
   }
 else
   _autoenv_get_file_mtime() {
