@@ -18,7 +18,7 @@ fi
 _save_errexit=${options[errexit]}
 set -e
 
-TEST_AUTOENV_PLUGIN_FILE="$TESTDIR/../autoenv.plugin.zsh"
+export TEST_AUTOENV_PLUGIN_FILE="$TESTDIR/../autoenv.plugin.zsh"
 source $TEST_AUTOENV_PLUGIN_FILE
 
 # Reset any authentication.
