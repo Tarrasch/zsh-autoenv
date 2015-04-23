@@ -1,7 +1,10 @@
 language: python
 python:
-  - "3.3"
+  - 3.4
 before_script:
-  - "sudo apt-get install zsh"
-install: "sudo pip install cram"
-script: "make test_full"
+  - sudo apt-get install zsh
+install:
+  - sudo pip install cram
+script:
+  - zsh --version
+  - make test_full
