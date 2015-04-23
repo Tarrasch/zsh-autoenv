@@ -188,7 +188,7 @@ function stash() {
             elif [[ $vartype == $pattern" -x"* ]]; then
                 # variable is exported
                 if [[ -z $already_stashed ]]; then
-                    eval "__varstash_export__$stash_name=\"\$$stash_which\""
+                    eval "export __varstash_export__$stash_name=\"\$$stash_which\""
                 fi
                 if [[ $stash_which != $stash_expression && -z $_stashing_alias_assign ]]; then
                     eval "export $stash_which=\"$stash_value\""
@@ -214,7 +214,7 @@ function stash() {
             # (eval):1: command not found: __varstash_nostash___tmp__home_dolszewski_src_smartcd_RANDOM_VARIABLE=1
             # fixed in zsh commit 724fd07a67f, version 4.3.14
             if [[ -z $already_stashed ]]; then
-                eval "__varstash_nostash__$stash_name=1"
+                eval "export __varstash_nostash__$stash_name=1"
             fi
 
             # In the case of a previously unset variable that we're assigning too, export it
@@ -228,6 +228,14 @@ function stash() {
     done
 }
 
+function get_autostash_array_name() {
+    local autostash_name=$(_mangle_var AUTOSTASH)
+    # Create a scalar variable linked to an array (for exporting).
+    local autostash_array_name=${(L)autostash_name}
+    typeset -xT $autostash_name $autostash_array_name
+    ret=$autostash_array_name
+}
+
 function autostash() {
     local run_from_autostash=1
     while [[ -n $1 ]]; do
@@ -239,9 +247,9 @@ function autostash() {
         local already_stashed=
         stash "$1"
         if [[ -z $already_stashed ]]; then
-            local autostash_name=$(_mangle_var AUTOSTASH)
-            local varname=${1%%'='*}
-            apush $autostash_name "$varname"
+            local ret varname=${1%%'='*}
+            get_autostash_array_name
+            apush $ret "$varname"
         fi
         shift
         unset -v _stashing_alias_assign
@@ -322,7 +330,9 @@ function unstash() {
 
 function autounstash() {
     # If there is anything in (mangled) variable AUTOSTASH, then unstash it
-    local autounstash_name=$(_mangle_var AUTOSTASH)
+    local ret
+    get_autostash_array_name
+    local autounstash_name=$ret
     if (( $(alen $autounstash_name) > 0 )); then
         local run_from_autounstash=1
         while (( $(alen $autounstash_name) > 0 )); do
@@ -341,4 +351,4 @@ function _mangle_var() {
     echo "_tmp_${mangle_var_where}_${mangled_name}"
 }
 
-# vim: filetype=sh autoindent expandtab shiftwidth=4 softtabstop=4
+# vim: filetype=zsh autoindent expandtab shiftwidth=4 softtabstop=4
