@@ -1,1 +1,1 @@
-. $(dirname $0)/autoenv.zsh
+. ${0:h}/autoenv.zsh
