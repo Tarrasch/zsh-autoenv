@@ -56,45 +56,6 @@
 ################################################################################
 
 
-# Library functions, from smartcd's lib/core/arrays. {{{
-function apush() {
-    local var=$1; shift
-    eval "$var=(\${$var[@]} \"\$@\")"
-}
-
-function alen() {
-    local var=$1
-
-    if [[ -n $var ]]; then
-        eval "echo \${#$var[@]}"
-    fi
-}
-
-function afirst() {
-    setopt localoptions && setopt ksharrays
-    local var=$1
-
-    if [[ -n $var ]] && (( $(eval "echo \${#$var[@]}") >= 1 )); then
-        eval "echo \"\${$var""[0]}\""
-    fi
-}
-
-function ashift() {
-    setopt localoptions && setopt ksharrays
-    local var=$1
-
-    local _ashift_return=
-
-    if [[ -n $var ]] && (( $(eval "echo \${#$var[@]}") >= 1 )); then
-        eval "_ashift_return=\"\${$var""[0]}\""
-        eval "$var""[0]=()"
-
-        echo "$_ashift_return"
-    fi
-}
-# }}}
-
-
 function stash() {
     if [[ $1 == "-f" ]]; then
         local force=1; shift
@@ -249,7 +210,7 @@ function autostash() {
         if [[ -z $already_stashed ]]; then
             local ret varname=${1%%'='*}
             get_autostash_array_name
-            apush $ret "$varname"
+            eval "$ret=(\$$ret \$varname)"
         fi
         shift
         unset -v _stashing_alias_assign
@@ -332,15 +293,12 @@ function autounstash() {
     # If there is anything in (mangled) variable AUTOSTASH, then unstash it
     local ret
     get_autostash_array_name
-    local autounstash_name=$ret
-    if (( $(alen $autounstash_name) > 0 )); then
+    if (( ${#${(P)ret}} > 0 )); then
         local run_from_autounstash=1
-        while (( $(alen $autounstash_name) > 0 )); do
-            local autounstash_var=$(afirst $autounstash_name)
-            ashift $autounstash_name >/dev/null
+        for autounstash_var in ${(P)ret}; do
             unstash $autounstash_var
         done
-        unset $autounstash_name
+        unset $ret
     fi
 }
 
