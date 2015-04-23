@@ -238,9 +238,9 @@ _autoenv_source() {
   # Change to directory of env file, source it and cd back.
   local new_dir=$PWD
   _autoenv_debug "== SOURCE: ${bold_color:-}$env_file${reset_color:-}\n      PWD: $PWD"
-  (( _autoenv_debug_indent++ ))
+  : $(( _autoenv_debug_indent++ ))
   source $env_file
-  (( _autoenv_debug_indent-- ))
+  : $(( _autoenv_debug_indent-- ))
   _autoenv_debug "== END SOURCE =="
 
   if [[ $autoenv_event == enter ]]; then
@@ -337,7 +337,7 @@ _autoenv_chpwd_handler() {
 
   _autoenv_chpwd_prev_dir=$PWD
 
-  (( _autoenv_debug_indent++ ))
+  : $(( _autoenv_debug_indent++ ))
 }
 # }}}
 
