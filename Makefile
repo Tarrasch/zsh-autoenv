@@ -12,11 +12,13 @@ itest:
 
 # Run tests with all ZDOTDIRs.
 test_full:
+	ret=0; \
 	for i in $(wildcard tests/ZDOTDIR*); do \
 		echo "ZDOTDIR=$$i"; \
-		ZDOTDIR=${CURDIR}/$$i cram --shell=zsh -v tests; \
+		ZDOTDIR=${CURDIR}/$$i cram --shell=zsh -v tests || ret=$$?; \
 		echo; \
-	done
+	done; \
+	return $$ret
 
 # Define targets for test files, with relative and abolute path.
 # Use verbose output, which is useful with Vim's 'errorformat'.
