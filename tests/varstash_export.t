@@ -1,6 +1,6 @@
 Test varstash with exported variables in subshell.
 
-  $ source $TESTDIR/setup.sh || return 1
+  $ source $TESTDIR/setup.zsh || return 1
 
 Setup test environment.
 

@@ -1,6 +1,6 @@
 Test $PWD, $autoenv_event, $autoenv_from_dir and $autoenv_to_dir.
 
-  $ source $TESTDIR/setup.sh || return 1
+  $ source $TESTDIR/setup.zsh || return 1
 
 Setup env actions / output.
 

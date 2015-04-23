@@ -1,6 +1,6 @@
 Tests for internal stack handling.
 
-  $ source $TESTDIR/setup.sh || return 1
+  $ source $TESTDIR/setup.zsh || return 1
 
 Non-existing entries are allowed and handled without error.
 
