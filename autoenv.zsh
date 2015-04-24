@@ -1,8 +1,8 @@
 # Initially based on
 # https://github.com/joshuaclayton/dotfiles/blob/master/zsh_profile.d/autoenv.zsh
 
-export AUTOENV_ENV_FILENAME=$HOME/.env_auth
-[ -e $AUTOENV_ENV_FILENAME ] || touch $AUTOENV_ENV_FILENAME
+# File to store confirmed authentication into.
+: ${AUTOENV_ENV_FILENAME:=~/.env_auth}
 
 # Name of file to look for when entering directories.
 : ${AUTOENV_FILE_ENTER:=.env}
