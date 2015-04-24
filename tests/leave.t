@@ -113,3 +113,12 @@ Test that "leave" is not triggered when entering an outside dir via symlink.
   LEFT outside: PWD:leave.t pwd:leave.t from:symlink to:leave.t event:leave
   $ cd sub/symlink
   ENTERED outside: PWD:symlink pwd:symlink from:leave.t to:symlink event:enter
+
+$autoenv_env_file should be reset when leaving.
+
+  $ echo $autoenv_env_file
+  */leave.t/sub/symlink/.env (glob)
+  $ cd ../..
+  LEFT outside: PWD:leave.t pwd:leave.t from:symlink to:leave.t event:leave
+  $ echo ${autoenv_env_file:-empty}
+  empty

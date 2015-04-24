@@ -256,6 +256,9 @@ _autoenv_source() {
   # This should not get done for recursion (via autoenv_source_parent),
   # and can be useful to have in general after autoenv was used.
   # unset autoenv_event autoenv_from_dir autoenv_to_dir autoenv_env_file
+  if [[ $autoenv_event == leave ]]; then
+    unset autoenv_env_file
+  fi
 }
 
 _autoenv_get_file_upwards() {
