@@ -1,7 +1,3 @@
-test -f "$TESTDIR/.zcompdump" && rm "$TESTDIR/.zcompdump"
+# Base setup/config.
 
-AUTOENV_DEBUG=0
-
-export AUTOENV_ENV_FILENAME="$PWD/.env_auth"
-
-echo -n > $AUTOENV_ENV_FILENAME
+TEST_SOURCE_AUTOENV=(source $TESTDIR/../autoenv.plugin.zsh)

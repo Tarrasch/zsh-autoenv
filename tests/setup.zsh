@@ -9,6 +9,8 @@
 # Not handled in varstash yet.
 # setopt nounset
 
+export AUTOENV_ENV_FILENAME="$CRAMTMP/.env_auth"
+
 if [[ $AUTOENV_ENV_FILENAME[0,4] != '/tmp' ]]; then
   echo "AUTOENV_ENV_FILENAME is not in /tmp. Aborting."
   return 1
@@ -18,11 +20,7 @@ fi
 _save_errexit=${options[errexit]}
 set -e
 
-if (( ${+functions[antigen-like-loader-function]} )); then
-  TEST_SOURCE_AUTOENV=antigen-like-loader-function
-else
-  TEST_SOURCE_AUTOENV=(source $TESTDIR/../autoenv.plugin.zsh)
-fi
+# Defined in .zshenv, e.g. tests/ZDOTDIR/.zshenv.
 $TEST_SOURCE_AUTOENV
 
 # Reset any authentication.
