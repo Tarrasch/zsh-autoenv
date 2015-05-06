@@ -122,9 +122,16 @@ Default: `0`
 
 ## History
 
-This started as a optimized version of
-[autoenv](https://github.com/kennethreitz/autoenv) for Zsh, but grew a lot of
-functionality on top of it (inspired by
-[smartcd](https://github.com/cxreg/smartcd)).
+This started as an optimized version of the bash plugin
+[autoenv](https://github.com/kennethreitz/autoenv) but for Zsh, and grew a lot
+of functionality on top of it (inspired by [smartcd]).
 
-The code was initially based on [Joshua Clayton](https://github.com/joshuaclayton)'s work.
+The code was initially based on
+[@joshuaclayton](https://github.com/joshuaclayton)'s dotfiles.
+In September 2013 [@Tarrasch](https://github.com/Tarrasch) packaged it into a
+nice [antigen]-compatible unit with integration tests. Since November 2014,
+[@blueyed](https://github.com/blueyed) took over and added many many nice
+features, mainly inspired by [smartcd].
+
+[antigen]: https://github.com/Tarrasch/antigen-hs
+[smartcd]: https://github.com/cxreg/smartcd
