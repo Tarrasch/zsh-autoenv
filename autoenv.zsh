@@ -4,14 +4,14 @@
 # File to store confirmed authentication into.
 : ${AUTOENV_ENV_FILENAME:=~/.env_auth}
 
-# Name of file to look for when entering directories.
+# Name of the file to look for when entering directories.
 : ${AUTOENV_FILE_ENTER:=.env}
 
-# Name of file to look for when leaving directories.
+# Name of the file to look for when leaving directories.
 # Requires AUTOENV_HANDLE_LEAVE=1.
 : ${AUTOENV_FILE_LEAVE:=.env.leave}
 
-# Look for .env in parent dirs?
+# Look for .env files in parent dirs?
 : ${AUTOENV_LOOK_UPWARDS:=1}
 
 # Handle leave events when changing away from a subtree, where an "enter"
