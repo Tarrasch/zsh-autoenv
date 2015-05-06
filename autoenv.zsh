@@ -9,7 +9,7 @@
 
 # Name of file to look for when leaving directories.
 # Requires AUTOENV_HANDLE_LEAVE=1.
-: ${AUTOENV_FILE_LEAVE:=.env.leave}
+: ${AUTOENV_FILE_LEAVE:=.env_leave}
 
 # Look for .env in parent dirs?
 : ${AUTOENV_LOOK_UPWARDS:=1}
