@@ -9,7 +9,7 @@ Setup env actions / output.
 Create env files in root dir.
 
   $ echo 'echo ENTERED_root: PWD:${PWD:t} from:${autoenv_from_dir:t} to:${autoenv_to_dir:t}' > .env
-  $ echo 'echo LEFT_root: PWD:${PWD:t} from:${autoenv_from_dir:t} to:${autoenv_to_dir:t}' > .env.leave
+  $ echo 'echo LEFT_root: PWD:${PWD:t} from:${autoenv_from_dir:t} to:${autoenv_to_dir:t}' > .env_leave
   $ test_autoenv_auth_env_files
 
 Create env files in sub dir.
@@ -19,7 +19,7 @@ Create env files in sub dir.
   ENTERED_root: PWD:sub from:recurse-upwards.t to:sub
 
   $ echo 'echo ENTERED_sub: PWD:${PWD:t} from:${autoenv_from_dir:t} to:${autoenv_to_dir:t}' > .env
-  $ echo 'echo LEFT_sub: PWD:${PWD:t} from:${autoenv_from_dir:t} to:${autoenv_to_dir:t}' > .env.leave
+  $ echo 'echo LEFT_sub: PWD:${PWD:t} from:${autoenv_from_dir:t} to:${autoenv_to_dir:t}' > .env_leave
   $ test_autoenv_auth_env_files
 
 The actual tests.
