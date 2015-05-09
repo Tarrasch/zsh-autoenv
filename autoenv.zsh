@@ -149,6 +149,7 @@ _autoenv_debug() {
 
 # Generate hash pair for a given file ($1).
 # A fixed hash value can be given as 2nd arg, but is used with tests only.
+# The format is ":$file:$hash:$version".
 _autoenv_hash_pair() {
   local env_file=${1:A}
   local env_shasum=${2:-}
