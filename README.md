@@ -4,8 +4,8 @@
 
 # Autoenv for Zsh
 
-zsh-autoenv automatically sources `.env` files, typically used in project
-root directories.
+zsh-autoenv automatically sources (known/whitelisted) `.env` files, typically
+used in project root directories.
 
 It handles "enter" and leave" events, nesting, and stashing of
 variables (overwriting and restoring).
@@ -14,8 +14,9 @@ variables (overwriting and restoring).
 
  - Support for enter and leave events, which can use the same file.
    By default `.env` is used for entering, and `.env_leave` for leaving.
- - Asks for confirmation / authentication before sourcing a `.env` file, and
-   remembers whitelisted files by its hash.
+ - Interactively asks for confirmation / authentication before sourcing an
+   unknown `.env` file, and remembers whitelisted files by their hashed
+   content.
  - Test suite.
  - Written in Zsh.
 
