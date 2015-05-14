@@ -163,13 +163,6 @@ _autoenv_hash_pair() {
   echo ":${env_file}:${env_shasum}:1"
 }
 
-_autoenv_authorized_env_file() {
-  local env_file=$1
-  local pair=$(_autoenv_hash_pair $env_file)
-  test -f $AUTOENV_ENV_FILENAME \
-    && \grep -qF $pair $AUTOENV_ENV_FILENAME
-}
-
 _autoenv_authorize() {
   local env_file=${1:A}
   _autoenv_deauthorize $env_file
@@ -197,30 +190,46 @@ _autoenv_ask_for_yes() {
   fi
 }
 
+typeset -g -A _autoenv_asked_already
+_autoenv_asked_already=()
+
 # Args: 1: absolute path to env file (resolved symlinks).
 _autoenv_check_authorized_env_file() {
-  if ! [[ -f $1 ]]; then
+  local env_file=${1:A}
+  if ! [[ -f $env_file ]]; then
     return 1
   fi
-  if ! _autoenv_authorized_env_file $1; then
+
+  local pair=$(_autoenv_hash_pair $env_file)
+
+  if [[ -n ${_autoenv_asked_already[$pair]} ]]; then
+    _autoenv_debug "Asked already: ${_autoenv_asked_already[$pair]}"
+    return ${_autoenv_asked_already[$pair]}
+  fi
+
+  if [[ -f $AUTOENV_ENV_FILENAME ]] && \grep -qF $pair $AUTOENV_ENV_FILENAME; then
+    _autoenv_asked_already[$pair]=0
+  else
     echo "Attempting to load unauthorized env file!"
-    command ls -l $1
+    command ls -l $env_file
     echo ""
     echo "**********************************************"
     echo ""
-    cat $1
+    cat $env_file
     echo ""
     echo "**********************************************"
     echo ""
     echo -n "Would you like to authorize it? (type 'yes') "
 
-    if ! _autoenv_ask_for_yes; then
-      return 1
+    if _autoenv_ask_for_yes; then
+      _autoenv_authorize $env_file
+      _autoenv_asked_already[$pair]=0
+    else
+      _autoenv_asked_already[$pair]=1
     fi
 
-    _autoenv_authorize $1
   fi
-  return 0
+  return ${_autoenv_asked_already[$pair]}
 }
 
 # Get directory of this file (absolute, with resolved symlinks).

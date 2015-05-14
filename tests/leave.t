@@ -42,6 +42,7 @@ Leave the directory and answer "no".
 
   $ cd sub
   ENTERED
+  $ _autoenv_asked_already=()
   $ _autoenv_ask_for_yes() { echo "yes"; return 0 }
   $ cd ..
   Attempting to load unauthorized env file!

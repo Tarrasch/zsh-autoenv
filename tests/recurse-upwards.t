@@ -110,6 +110,7 @@ Changing the root .env should trigger re-authentication via autoenv_source_paren
 First, let's answer "no".
 
   $ echo "echo NEW" >| .env
+  $ _autoenv_asked_already=()
   $ _autoenv_ask_for_yes() { echo "no"; return 1 }
   $ cd sub
   autoenv_source_parent_from_sub:
@@ -135,6 +136,7 @@ This currently does not trigger re-execution of the .env file.
 
 Touching the .env file will now source the parent env file.
 
+  $ _autoenv_asked_already=()
   $ touch -t 201401010104 .env
   $ cd .
   autoenv_source_parent_from_sub:
