@@ -2,16 +2,16 @@
 # https://github.com/joshuaclayton/dotfiles/blob/master/zsh_profile.d/autoenv.zsh
 
 # File to store confirmed authentication into.
-: ${AUTOENV_ENV_FILENAME:=~/.env_auth}
+: ${AUTOENV_ENV_FILENAME:=~/.autoenv_auth}
 
 # Name of the file to look for when entering directories.
-: ${AUTOENV_FILE_ENTER:=.env}
+: ${AUTOENV_FILE_ENTER:=.autoenv.zsh}
 
 # Name of the file to look for when leaving directories.
 # Requires AUTOENV_HANDLE_LEAVE=1.
-: ${AUTOENV_FILE_LEAVE:=.env_leave}
+: ${AUTOENV_FILE_LEAVE:=.autoenv_leave.zsh}
 
-# Look for .env files in parent dirs?
+# Look for .autoenv.zsh files in parent dirs?
 : ${AUTOENV_LOOK_UPWARDS:=1}
 
 # Handle leave events when changing away from a subtree, where an "enter"
@@ -24,10 +24,11 @@
 # (Temporarily) disable zsh-autoenv. This gets looked at in the chpwd handler.
 : ${AUTOENV_DISABLED:=0}
 
-# Public helper functions, which can be used from your .env files:
+# Public helper functions, which can be used from your .autoenv.zsh files:
 #
-# Source the next .env file from parent directories.
-# This is useful if you want to use a base .env file for a directory subtree.
+# Source the next .autoenv.zsh file from parent directories.
+# This is useful if you want to use a base .autoenv.zsh file for a directory
+# subtree.
 autoenv_source_parent() {
   local parent_env_file=$(_autoenv_get_file_upwards ${autoenv_env_file:h})
 
@@ -213,6 +214,8 @@ _autoenv_check_authorized_env_file() {
     echo "**********************************************"
     echo ""
     echo -n "Would you like to authorize it? (type 'yes') "
+    # echo "Would you like to authorize it?"
+    # echo "('yes' to allow, 'no' to not being asked again; otherwise ignore it for the shell) "
 
     if ! _autoenv_ask_for_yes; then
       return 1

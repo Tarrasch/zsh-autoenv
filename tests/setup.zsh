@@ -9,7 +9,7 @@
 # Not handled in varstash yet.
 # setopt nounset
 
-export AUTOENV_ENV_FILENAME="$CRAMTMP/.env_auth"
+export AUTOENV_ENV_FILENAME="$CRAMTMP/.autoenv_auth"
 
 if [[ $AUTOENV_ENV_FILENAME[0,4] != '/tmp' ]]; then
   echo "AUTOENV_ENV_FILENAME is not in /tmp. Aborting."

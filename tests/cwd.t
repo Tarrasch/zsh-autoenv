@@ -7,8 +7,8 @@ Setup env actions / output.
   $ AUTOENV_LOOK_UPWARDS=1
   $ mkdir -p sub/sub2
   $ cd sub
-  $ echo 'echo ENTERED: PWD:${PWD:t} pwd:${${"$(pwd)"}:t} from:${autoenv_from_dir:t} to:${autoenv_to_dir:t} event:${autoenv_event}' > .env
-  $ echo 'echo LEFT: PWD:${PWD:t} pwd:${${"$(pwd)"}:t} from:${autoenv_from_dir:t} to:${autoenv_to_dir:t} event:${autoenv_event}' > .env_leave
+  $ echo 'echo ENTERED: PWD:${PWD:t} pwd:${${"$(pwd)"}:t} from:${autoenv_from_dir:t} to:${autoenv_to_dir:t} event:${autoenv_event}' > .autoenv.zsh
+  $ echo 'echo LEFT: PWD:${PWD:t} pwd:${${"$(pwd)"}:t} from:${autoenv_from_dir:t} to:${autoenv_to_dir:t} event:${autoenv_event}' > .autoenv_leave.zsh
 
 Manually create auth files.
 
