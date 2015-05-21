@@ -2,17 +2,17 @@
 #
 # It returns 1 in case of errors, and no tests should be run then!
 #
-# Ensure we have our mocked out AUTOENV_ENV_FILENAME
+# Ensure we have our mocked out AUTOENV_AUTH_FILE
 # (via .zshenv).
 
 # Treat unset variables as errors.
 # Not handled in varstash yet.
 # setopt nounset
 
-export AUTOENV_ENV_FILENAME="$CRAMTMP/.env_auth"
+export AUTOENV_AUTH_FILE="$CRAMTMP/.autoenv_auth"
 
-if [[ $AUTOENV_ENV_FILENAME[0,4] != '/tmp' ]]; then
-  echo "AUTOENV_ENV_FILENAME is not in /tmp. Aborting."
+if [[ $AUTOENV_AUTH_FILE[0,4] != '/tmp' ]]; then
+  echo "AUTOENV_AUTH_FILE is not in /tmp. Aborting."
   return 1
 fi
 
@@ -24,11 +24,11 @@ set -e
 $TEST_SOURCE_AUTOENV
 
 # Reset any authentication.
-echo -n >| $AUTOENV_ENV_FILENAME
+echo -n >| $AUTOENV_AUTH_FILE
 
 # Add file $1 (with optional hash $2) to authentication file.
 test_autoenv_add_to_env() {
-  _autoenv_hash_pair $1 ${2:-} >>| $AUTOENV_ENV_FILENAME
+  _autoenv_hash_pair $1 ${2:-} >>| $AUTOENV_AUTH_FILE
 }
 
 # Add enter and leave env files to authentication file.

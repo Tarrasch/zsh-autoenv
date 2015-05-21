@@ -1,4 +1,4 @@
-Test recursing into parent .env files.
+Test recursing into parent .autoenv.zsh files.
 
   $ source $TESTDIR/setup.zsh || return 1
 
@@ -8,8 +8,8 @@ Setup env actions / output.
 
 Create env files in root dir.
 
-  $ echo 'echo ENTERED_root: PWD:${PWD:t} from:${autoenv_from_dir:t} to:${autoenv_to_dir:t}' > .env
-  $ echo 'echo LEFT_root: PWD:${PWD:t} from:${autoenv_from_dir:t} to:${autoenv_to_dir:t}' > .env_leave
+  $ echo 'echo ENTERED_root: PWD:${PWD:t} from:${autoenv_from_dir:t} to:${autoenv_to_dir:t}' > .autoenv.zsh
+  $ echo 'echo LEFT_root: PWD:${PWD:t} from:${autoenv_from_dir:t} to:${autoenv_to_dir:t}' > .autoenv_leave.zsh
   $ test_autoenv_auth_env_files
 
 Create env files in sub dir.
@@ -18,8 +18,8 @@ Create env files in sub dir.
   $ cd sub
   ENTERED_root: PWD:sub from:recurse-upwards.t to:sub
 
-  $ echo 'echo ENTERED_sub: PWD:${PWD:t} from:${autoenv_from_dir:t} to:${autoenv_to_dir:t}' > .env
-  $ echo 'echo LEFT_sub: PWD:${PWD:t} from:${autoenv_from_dir:t} to:${autoenv_to_dir:t}' > .env_leave
+  $ echo 'echo ENTERED_sub: PWD:${PWD:t} from:${autoenv_from_dir:t} to:${autoenv_to_dir:t}' > .autoenv.zsh
+  $ echo 'echo LEFT_sub: PWD:${PWD:t} from:${autoenv_from_dir:t} to:${autoenv_to_dir:t}' > .autoenv_leave.zsh
   $ test_autoenv_auth_env_files
 
 The actual tests.
@@ -35,45 +35,45 @@ The actual tests.
 
   $ cd ..
 
-Changing the .env file should re-source it.
+Changing the .autoenv.zsh file should re-source it.
 
-  $ echo 'echo ENTER2' >> .env
+  $ echo 'echo ENTER2' >> .autoenv.zsh
 
 Set timestamp of auth file into the past, so it gets seen as new below.
 
-  $ touch -t 201401010101 .env
+  $ touch -t 201401010101 .autoenv.zsh
 
   $ test_autoenv_auth_env_files
   $ cd .
   ENTERED_sub: PWD:sub from:sub to:sub
   ENTER2
 
-Add sub/sub2/.env file, with a call to autoenv_source_parent.
+Add sub/sub2/.autoenv.zsh file, with a call to autoenv_source_parent.
 
-  $ echo "echo autoenv_source_parent_from_sub2:\nautoenv_source_parent\necho done_sub2\n" > sub2/.env
-  $ test_autoenv_add_to_env sub2/.env
+  $ echo "echo autoenv_source_parent_from_sub2:\nautoenv_source_parent\necho done_sub2\n" > sub2/.autoenv.zsh
+  $ test_autoenv_add_to_env sub2/.autoenv.zsh
   $ cd sub2
   autoenv_source_parent_from_sub2:
   ENTERED_sub: PWD:sub2 from:sub to:sub2
   ENTER2
   done_sub2
 
-Move sub/.env away, now the root .env file should get sourced.
+Move sub/.autoenv.zsh away, now the root .autoenv.zsh file should get sourced.
 
-  $ mv ../.env ../.env.out
-  $ touch -t 201401010102 .env
+  $ mv ../.autoenv.zsh ../.autoenv.zsh.out
+  $ touch -t 201401010102 .autoenv.zsh
   $ cd .
   autoenv_source_parent_from_sub2:
   ENTERED_root: PWD:sub2 from:sub2 to:sub2
   done_sub2
-  $ mv ../.env.out ../.env
+  $ mv ../.autoenv.zsh.out ../.autoenv.zsh
 
-Prepend call to autoenv_source_parent to sub/.env file.
+Prepend call to autoenv_source_parent to sub/.autoenv.zsh file.
 
   $ cd ..
-  $ sed -i -e "1s/^/echo autoenv_source_parent_from_sub:\nautoenv_source_parent\n/" .env
-  $ echo "echo done_sub" >> .env
-  $ touch -t 201401010103 .env
+  $ sed -i -e "1s/^/echo autoenv_source_parent_from_sub:\nautoenv_source_parent\n/" .autoenv.zsh
+  $ echo "echo done_sub" >> .autoenv.zsh
+  $ touch -t 201401010103 .autoenv.zsh
   $ test_autoenv_auth_env_files
 
   $ cd .
@@ -84,10 +84,10 @@ Prepend call to autoenv_source_parent to sub/.env file.
   done_sub
 
 
-Add sub/sub2/.env file.
+Add sub/sub2/.autoenv.zsh file.
 
-  $ echo -e "echo autoenv_source_parent_from_sub2:\nautoenv_source_parent\necho done_sub2\n" >| sub2/.env
-  $ test_autoenv_add_to_env sub2/.env
+  $ echo -e "echo autoenv_source_parent_from_sub2:\nautoenv_source_parent\necho done_sub2\n" >| sub2/.autoenv.zsh
+  $ test_autoenv_add_to_env sub2/.autoenv.zsh
   $ cd sub2
   autoenv_source_parent_from_sub2:
   autoenv_source_parent_from_sub:
@@ -105,16 +105,17 @@ autoenv_source_parent already.
   LEFT_sub: PWD:recurse-upwards.t from:sub2 to:recurse-upwards.t
 
 
-Changing the root .env should trigger re-authentication via autoenv_source_parent.
+Changing the root .autoenv.zsh should trigger re-authentication via
+autoenv_source_parent.
 
 First, let's answer "no".
 
-  $ echo "echo NEW" >| .env
+  $ echo "echo NEW" >| .autoenv.zsh
   $ _autoenv_ask_for_yes() { echo "no"; return 1 }
   $ cd sub
   autoenv_source_parent_from_sub:
   Attempting to load unauthorized env file!
-  -* /tmp/cramtests-*/recurse-upwards.t/.env (glob)
+  -* /tmp/cramtests-*/recurse-upwards.t/.autoenv.zsh (glob)
   
   **********************************************
   
@@ -128,18 +129,18 @@ First, let's answer "no".
   done_sub
 
 Now with "yes".
-This currently does not trigger re-execution of the .env file.
+This currently does not trigger re-execution of the .autoenv.zsh file.
 
   $ _autoenv_ask_for_yes() { echo "yes"; return 0 }
   $ cd .
 
-Touching the .env file will now source the parent env file.
+Touching the .autoenv.zsh file will now source the parent env file.
 
-  $ touch -t 201401010104 .env
+  $ touch -t 201401010104 .autoenv.zsh
   $ cd .
   autoenv_source_parent_from_sub:
   Attempting to load unauthorized env file!
-  -* /tmp/cramtests-*/recurse-upwards.t/.env (glob)
+  -* /tmp/cramtests-*/recurse-upwards.t/.autoenv.zsh (glob)
   
   **********************************************
   

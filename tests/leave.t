@@ -1,18 +1,18 @@
   $ source $TESTDIR/setup.zsh || return 1
 
-Lets set a simple .env action
+Lets set a simple .autoenv.zsh action
 
   $ mkdir sub
   $ cd sub
-  $ echo 'echo ENTERED' > .env
-  $ echo 'echo LEFT' > .env_leave
+  $ echo 'echo ENTERED' > .autoenv.zsh
+  $ echo 'echo LEFT' > .autoenv_leave.zsh
 
 Change to the directory.
 
   $ _autoenv_ask_for_yes() { echo "yes"; return 0 }
   $ cd .
   Attempting to load unauthorized env file!
-  -* /tmp/cramtests-*/leave.t/sub/.env (glob)
+  -* /tmp/cramtests-*/leave.t/sub/.autoenv.zsh (glob)
   
   **********************************************
   
@@ -29,7 +29,7 @@ Leave the directory and answer "no".
   $ _autoenv_ask_for_yes() { echo "no"; return 1 }
   $ cd ..
   Attempting to load unauthorized env file!
-  -* /tmp/cramtests-*/leave.t/sub/.env_leave (glob)
+  -* /tmp/cramtests-*/leave.t/sub/.autoenv_leave.zsh (glob)
   
   **********************************************
   
@@ -45,7 +45,7 @@ Leave the directory and answer "no".
   $ _autoenv_ask_for_yes() { echo "yes"; return 0 }
   $ cd ..
   Attempting to load unauthorized env file!
-  -* /tmp/cramtests-*/leave.t/sub/.env_leave (glob)
+  -* /tmp/cramtests-*/leave.t/sub/.autoenv_leave.zsh (glob)
   
   **********************************************
   
@@ -80,7 +80,7 @@ Now check with subdirs, not looking at parent dirs.
   LEFT
 
 
-Test that .env is sourced only once with AUTOENV_HANDLE_LEAVE=0.
+Test that .autoenv.zsh is sourced only once with AUTOENV_HANDLE_LEAVE=0.
 
   $ unset _autoenv_stack_entered
   $ AUTOENV_HANDLE_LEAVE=0
@@ -97,8 +97,8 @@ Test that "leave" is not triggered when entering an outside dir via symlink.
   LEFT
   $ mkdir outside
   $ cd outside
-  $ echo 'echo ENTERED outside: PWD:${PWD:t} pwd:${${"$(pwd)"}:t} from:${autoenv_from_dir:t} to:${autoenv_to_dir:t} event:${autoenv_event}' > .env
-  $ echo 'echo LEFT outside: PWD:${PWD:t} pwd:${${"$(pwd)"}:t} from:${autoenv_from_dir:t} to:${autoenv_to_dir:t} event:${autoenv_event}' > .env_leave
+  $ echo 'echo ENTERED outside: PWD:${PWD:t} pwd:${${"$(pwd)"}:t} from:${autoenv_from_dir:t} to:${autoenv_to_dir:t} event:${autoenv_event}' > .autoenv.zsh
+  $ echo 'echo LEFT outside: PWD:${PWD:t} pwd:${${"$(pwd)"}:t} from:${autoenv_from_dir:t} to:${autoenv_to_dir:t} event:${autoenv_event}' > .autoenv_leave.zsh
   $ test_autoenv_auth_env_files
 
   $ cd ..
@@ -117,7 +117,7 @@ Test that "leave" is not triggered when entering an outside dir via symlink.
 $autoenv_env_file should be reset when leaving.
 
   $ echo $autoenv_env_file
-  */leave.t/sub/symlink/.env (glob)
+  */leave.t/sub/symlink/.autoenv.zsh (glob)
   $ cd ../..
   LEFT outside: PWD:leave.t pwd:leave.t from:symlink to:leave.t event:leave
   $ echo ${autoenv_env_file:-empty}
