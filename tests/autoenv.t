@@ -13,7 +13,7 @@ Manually create auth file
 Now try to make it accept it
 
   $ _autoenv_stack_entered=()
-  $ rm $AUTOENV_ENV_FILENAME
+  $ rm $AUTOENV_AUTH_FILE
   $ _autoenv_ask_for_yes() { echo "yes" }
   $ cd .
   Attempting to load unauthorized env file!
@@ -38,7 +38,7 @@ Now lets see that it actually checks the shasum value.
   ENTERED
 
   $ _autoenv_stack_entered=()
-  $ rm $AUTOENV_ENV_FILENAME
+  $ rm $AUTOENV_AUTH_FILE
   $ test_autoenv_add_to_env $PWD/.autoenv.zsh mischief
   $ cd .
   Attempting to load unauthorized env file!
@@ -57,7 +57,7 @@ Now lets see that it actually checks the shasum value.
 Now, will it take no for an answer?
 
   $ _autoenv_stack_entered=()
-  $ rm $AUTOENV_ENV_FILENAME
+  $ rm $AUTOENV_AUTH_FILE
   $ _autoenv_ask_for_yes() { echo "no"; return 1 }
   $ cd .
   Attempting to load unauthorized env file!
