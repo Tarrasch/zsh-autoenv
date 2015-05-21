@@ -2,16 +2,34 @@
 # https://github.com/joshuaclayton/dotfiles/blob/master/zsh_profile.d/autoenv.zsh
 
 # File to store confirmed authentication into.
-: ${AUTOENV_ENV_FILENAME:=~/.env_auth}
+# This handles the deprecated, old location(s).
+if [[ -z $AUTOENV_AUTH_FILE ]]; then
+  if [[ -n $AUTOENV_ENV_FILENAME ]]; then
+    echo "zsh-autoenv: using deprecated setting for AUTOENV_AUTH_FILE from AUTOENV_ENV_FILENAME." >&2
+    echo "Please set AUTOENV_AUTH_FILE instead." >&2
+    AUTOENV_AUTH_FILE=$AUTOENV_ENV_FILENAME
+  else
+    if [[ -n $XDG_DATA_HOME ]]; then
+      AUTOENV_AUTH_FILE=$XDG_DATA_HOME/autoenv_auth
+    else
+      AUTOENV_AUTH_FILE=~/.local/share/autoenv_auth
+    fi
+    if [[ -f ~/.env_auth ]]; then
+      echo "zsh-autoenv: using deprecated location for AUTOENV_AUTH_FILE." >&2
+      echo "Please move it: mv ~/.env_auth ${(D)AUTOENV_AUTH_FILE}." >&2
+      AUTOENV_AUTH_FILE=~/.env_auth
+    fi
+  fi
+fi
 
 # Name of the file to look for when entering directories.
-: ${AUTOENV_FILE_ENTER:=.env}
+: ${AUTOENV_FILE_ENTER:=.autoenv.zsh}
 
 # Name of the file to look for when leaving directories.
 # Requires AUTOENV_HANDLE_LEAVE=1.
-: ${AUTOENV_FILE_LEAVE:=.env_leave}
+: ${AUTOENV_FILE_LEAVE:=.autoenv_leave.zsh}
 
-# Look for .env files in parent dirs?
+# Look for zsh-autoenv "enter" files in parent dirs?
 : ${AUTOENV_LOOK_UPWARDS:=1}
 
 # Handle leave events when changing away from a subtree, where an "enter"
@@ -24,10 +42,11 @@
 # (Temporarily) disable zsh-autoenv. This gets looked at in the chpwd handler.
 : ${AUTOENV_DISABLED:=0}
 
-# Public helper functions, which can be used from your .env files:
+# Public helper functions, which can be used from your .autoenv.zsh files:
 #
-# Source the next .env file from parent directories.
-# This is useful if you want to use a base .env file for a directory subtree.
+# Source the next .autoenv.zsh file from parent directories.
+# This is useful if you want to use a base .autoenv.zsh file for a directory
+# subtree.
 autoenv_source_parent() {
   local parent_env_file=$(_autoenv_get_file_upwards ${autoenv_env_file:h})
 
@@ -166,14 +185,14 @@ _autoenv_hash_pair() {
 _autoenv_authorized_env_file() {
   local env_file=$1
   local pair=$(_autoenv_hash_pair $env_file)
-  test -f $AUTOENV_ENV_FILENAME \
-    && \grep -qF $pair $AUTOENV_ENV_FILENAME
+  test -f $AUTOENV_AUTH_FILE \
+    && \grep -qF $pair $AUTOENV_AUTH_FILE
 }
 
 _autoenv_authorize() {
   local env_file=${1:A}
   _autoenv_deauthorize $env_file
-  _autoenv_hash_pair $env_file >>| $AUTOENV_ENV_FILENAME
+  _autoenv_hash_pair $env_file >>| $AUTOENV_AUTH_FILE
 }
 
 # Deauthorize a given filename, by removing it from the auth file.
@@ -181,8 +200,8 @@ _autoenv_authorize() {
 # allow for writing to the same file again.
 _autoenv_deauthorize() {
   local env_file=${1:A}
-  if [[ -s $AUTOENV_ENV_FILENAME ]]; then
-    echo "$(\grep -vF :${env_file}: $AUTOENV_ENV_FILENAME)" >| $AUTOENV_ENV_FILENAME
+  if [[ -s $AUTOENV_AUTH_FILE ]]; then
+    echo "$(\grep -vF :${env_file}: $AUTOENV_AUTH_FILE)" >| $AUTOENV_AUTH_FILE
   fi
 }
 
@@ -213,6 +232,8 @@ _autoenv_check_authorized_env_file() {
     echo "**********************************************"
     echo ""
     echo -n "Would you like to authorize it? (type 'yes') "
+    # echo "Would you like to authorize it?"
+    # echo "('yes' to allow, 'no' to not being asked again; otherwise ignore it for the shell) "
 
     if ! _autoenv_ask_for_yes; then
       return 1

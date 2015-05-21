@@ -4,8 +4,8 @@
 
 # Autoenv for Zsh
 
-zsh-autoenv automatically sources (known/whitelisted) `.env` files, typically
-used in project root directories.
+zsh-autoenv automatically sources (known/whitelisted) `.autoenv.zsh` files,
+typically used in project root directories.
 
 It handles "enter" and leave" events, nesting, and stashing of
 variables (overwriting and restoring).
@@ -13,23 +13,25 @@ variables (overwriting and restoring).
 ## Features
 
  - Support for enter and leave events, which can use the same file.
-   By default `.env` is used for entering, and `.env_leave` for leaving.
+   By default `.autoenv.zsh` is used for entering, and `.autoenv_leave.zsh`
+   for leaving.
  - Interactively asks for confirmation / authentication before sourcing an
-   unknown `.env` file, and remembers whitelisted files by their hashed
-   content.
+   unknown `.autoenv.zsh` file, and remembers whitelisted files by their
+   hashed content.
  - Test suite.
  - Written in Zsh.
 
 ### Variable stashing
 
-You can use `autostash` in your `.env` files to overwrite some variable, e.g.
-`$PATH`.  When leaving the directory, it will be automatically restored.
+You can use `autostash` in your `.autoenv.zsh` files to overwrite some
+variable, e.g.  `$PATH`.  When leaving the directory, it will be automatically
+restored.
 
-    % echo 'echo ENTERED; autostash FOO=changed' > project/.env
+    % echo 'echo ENTERED; autostash FOO=changed' > project/.autoenv.zsh
     % FOO=orig
     % cd project
     Attempting to load unauthorized env file!
-    -rw-rw-r-- 1 user user 36 Mai  6 20:38 /tmp/project/.env
+    -rw-rw-r-- 1 user user 36 Mai  6 20:38 /tmp/project/.autoenv.zsh
 
     **********************************************
 
@@ -51,13 +53,13 @@ have more control.
 The varstash library has been taken from smartcd, and was optimized for Zsh.
 
 
-## Writing your .env file
+## Writing your .autoenv.zsh file
 
 ### `autoenv_source_parent()`
 
-zsh-autoenv will stop looking for `.env` files after the first one has been
-found.  But you can use the function `autoenv_source_parent` to source a
-parent `.env` file from there.
+zsh-autoenv will stop looking for `.autoenv.zsh` files after the first one has
+been found.  But you can use the function `autoenv_source_parent` to source a
+parent `.autoenv.zsh` file from there.
 
 
 ## Installation
@@ -86,16 +88,16 @@ Add them to your `~/.zshrc` file, before sourcing/loading zsh-autoenv.
 ### AUTOENV\_FILE\_ENTER
 Name of the file to look for when entering directories.
 
-Default: `.env`
+Default: `.autoenv.zsh`
 
 ### AUTOENV\_FILE\_LEAVE
 Name of the file to look for when leaving directories.
 Requires `AUTOENV_HANDLE_LEAVE=1`.
 
-Default: `.env_leave`
+Default: `.autoenv_leave.zsh`
 
 ### AUTOENV\_LOOK\_UPWARDS
-Look for .env files in parent dirs?
+Look for zsh-autoenv "enter" files in parent dirs?
 
 Default: `1`
 
