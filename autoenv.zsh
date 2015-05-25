@@ -355,3 +355,7 @@ add-zsh-hook chpwd _autoenv_chpwd_handler
 
 # Look in current directory already.
 _autoenv_chpwd_handler
+
+# Unset global varaibles
+unset _autoenv_source_dir
+unset _autoenv_chpwd_prev_dir
