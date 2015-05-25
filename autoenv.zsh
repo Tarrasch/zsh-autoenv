@@ -244,21 +244,18 @@ _autoenv_check_authorized_env_file() {
   return 0
 }
 
-# Get directory of this file (absolute, with resolved symlinks).
-_autoenv_source_dir=${0:A:h}
-
 _autoenv_source() {
   local env_file=$1
   autoenv_event=$2
   local _autoenv_envfile_dir=${3:-${1:A:h}}
 
-  autoenv_from_dir=$_autoenv_chpwd_prev_dir
+  autoenv_from_dir=$OLDPWD
   autoenv_to_dir=$PWD
   autoenv_env_file=$env_file
 
   # Source varstash library once.
   if [[ -z "$functions[(I)autostash]" ]]; then
-    source $_autoenv_source_dir/lib/varstash
+    source ${${funcsourcetrace[1]%:*}:h}/lib/varstash
     # NOTE: Varstash uses $PWD as default for varstash_dir, we might set it to
     # ${env_file:h}.
   fi
@@ -309,7 +306,6 @@ _autoenv_get_file_upwards() {
 }
 
 
-_autoenv_chpwd_prev_dir=$PWD
 _autoenv_chpwd_handler() {
   _autoenv_debug "Calling chpwd handler: PWD=$PWD"
 
@@ -343,7 +339,6 @@ _autoenv_chpwd_handler() {
   if ! [[ -f $env_file ]] && [[ $AUTOENV_LOOK_UPWARDS == 1 ]]; then
     env_file=$(_autoenv_get_file_upwards $PWD)
     if [[ -z $env_file ]]; then
-      _autoenv_chpwd_prev_dir=$PWD
       return
     fi
   fi
@@ -352,20 +347,16 @@ _autoenv_chpwd_handler() {
   # directories.
   if _autoenv_stack_entered_contains $env_file; then
     _autoenv_debug "Already in stack: $env_file"
-    _autoenv_chpwd_prev_dir=$PWD
     return
   fi
 
   if ! _autoenv_check_authorized_env_file $env_file; then
-    _autoenv_chpwd_prev_dir=$PWD
     return
   fi
 
   # Source the enter env file.
   _autoenv_debug "Sourcing from chpwd handler: $env_file"
   _autoenv_source $env_file enter
-
-  _autoenv_chpwd_prev_dir=$PWD
 
   : $(( _autoenv_debug_indent++ ))
 }
