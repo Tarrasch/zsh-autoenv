@@ -224,13 +224,13 @@ _autoenv_check_authorized_env_file() {
   if ! _autoenv_authorized_env_file $1; then
     echo "Attempting to load unauthorized env file!" >&2
     command ls -l $1 >&2
-    echo "" >&2
+    echo >&2
     echo "**********************************************" >&2
-    echo "" >&2
+    echo >&2
     command cat $1 >&2
-    echo "" >&2
+    echo >&2
     echo "**********************************************" >&2
-    echo "" >&2
+    echo >&2
     echo -n "Would you like to authorize it? (type 'yes') " >&2
     # echo "Would you like to authorize it?"
     # echo "('yes' to allow, 'no' to not being asked again; otherwise ignore it for the shell) "
