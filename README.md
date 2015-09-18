@@ -112,7 +112,7 @@ Default: `1`
 
 Default: 0
 
-### `AUTOENV_DEBUG`
+### AUTOENV\_DEBUG
 Enable debugging. Multiple levels are supported (max 2).
 
 Default: `0`
