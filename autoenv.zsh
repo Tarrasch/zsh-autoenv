@@ -48,7 +48,9 @@ fi
 # This is useful if you want to use a base .autoenv.zsh file for a directory
 # subtree.
 autoenv_source_parent() {
-  local parent_env_file=$(_autoenv_get_file_upwards ${autoenv_env_file:h})
+  local look_until=${1:-/}
+  local parent_env_file=$(_autoenv_get_file_upwards \
+    ${autoenv_env_file:h} ${AUTOENV_FILE_ENTER} $look_until)
 
   if [[ -n $parent_env_file ]] \
     && _autoenv_check_authorized_env_file $parent_env_file; then
@@ -283,6 +285,7 @@ _autoenv_source() {
 _autoenv_get_file_upwards() {
   local look_from=${1:-$PWD}
   local look_for=${2:-$AUTOENV_FILE_ENTER}
+  local look_until=${${3:-/}:A}
 
   # Manually look in parent dirs. An extended Zsh glob should use Y1 for
   # performance reasons, which is only available in zsh-5.0.5-146-g9381bb6.
@@ -300,6 +303,9 @@ _autoenv_get_file_upwards() {
       break
     fi
 
+    if [[ $parent_dir == $look_until ]]; then
+      break
+    fi
     last=$parent_dir
     parent_dir="${parent_dir}/.."
   done
