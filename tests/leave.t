@@ -99,6 +99,7 @@ Test that "leave" is not triggered when entering an outside dir via symlink.
   $ cd outside
   $ echo 'echo ENTERED outside: PWD:${PWD:t} pwd:${${"$(pwd)"}:t} from:${autoenv_from_dir:t} to:${autoenv_to_dir:t} event:${autoenv_event}' > .autoenv.zsh
   $ echo 'echo LEFT outside: PWD:${PWD:t} pwd:${${"$(pwd)"}:t} from:${autoenv_from_dir:t} to:${autoenv_to_dir:t} event:${autoenv_event}' > .autoenv_leave.zsh
+  $ echo 'echo LEFT: autoenv_env_file:${autoenv_env_file}' >> .autoenv_leave.zsh
   $ test_autoenv_auth_env_files
 
   $ cd ..
@@ -111,14 +112,19 @@ Test that "leave" is not triggered when entering an outside dir via symlink.
   $ cd ../..
   LEFT
   LEFT outside: PWD:leave.t pwd:leave.t from:symlink to:leave.t event:leave
+  LEFT: autoenv_env_file:*/leave.t/sub/symlink/.autoenv_leave.zsh (glob)
   $ cd sub/symlink
   ENTERED outside: PWD:symlink pwd:symlink from:leave.t to:symlink event:enter
 
+$autoenv_env_file should not be exported.
+
+  $ echo -n $autoenv_env_file
+
 $autoenv_env_file should be reset when leaving.
 
-  $ echo $autoenv_env_file
-  */leave.t/sub/symlink/.autoenv.zsh (glob)
+  $ echo -n $autoenv_env_file
   $ cd ../..
   LEFT outside: PWD:leave.t pwd:leave.t from:symlink to:leave.t event:leave
+  LEFT: autoenv_env_file:*/leave.t/sub/symlink/.autoenv_leave.zsh (glob)
   $ echo ${autoenv_env_file:-empty}
   empty
