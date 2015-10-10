@@ -57,10 +57,16 @@ The varstash library has been taken from smartcd, and was optimized for Zsh.
 
 ### `autoenv_source_parent()`
 
-zsh-autoenv will stop looking for `.autoenv.zsh` files after the first one has
-been found.  But you can use the function `autoenv_source_parent` to source a
-parent `.autoenv.zsh` file from there.
+zsh-autoenv will stop looking for `.autoenv.zsh` files upwards after the first
+one has been found, but you can use the function `autoenv_source_parent` to
+source the next `.autoenv.zsh` file upwards the directory tree from there.
 
+The function accepts an optional argument, which allows to stop looking before
+the file system root is reached:
+
+```zsh
+autoenv_source_parent ../..
+```
 
 ## Installation
 
