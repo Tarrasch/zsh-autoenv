@@ -247,38 +247,28 @@ _autoenv_check_authorized_env_file() {
 }
 
 _autoenv_source() {
-  local env_file=$1
-  autoenv_event=$2
-  local _autoenv_envfile_dir=${3:-${1:A:h}}
-
-  autoenv_from_dir=$OLDPWD
-  autoenv_to_dir=$PWD
-  autoenv_env_file=$env_file
+  # Public API for the .autoenv.zsh script.
+  local autoenv_env_file=$1
+  local autoenv_event=$2
+  local autoenv_from_dir=$OLDPWD
+  local autoenv_to_dir=$PWD
 
   # Source varstash library once.
   if [[ -z "$functions[(I)autostash]" ]]; then
     source ${${funcsourcetrace[1]%:*}:h}/lib/varstash
     # NOTE: Varstash uses $PWD as default for varstash_dir, we might set it to
-    # ${env_file:h}.
+    # ${autoenv_env_file:h}.
   fi
 
   # Source the env file.
-  _autoenv_debug "== SOURCE: ${bold_color:-}$env_file${reset_color:-}\n      PWD: $PWD"
+  _autoenv_debug "== SOURCE: ${bold_color:-}$autoenv_env_file${reset_color:-}\n      PWD: $PWD"
   : $(( _autoenv_debug_indent++ ))
-  source $env_file
+  source $autoenv_env_file
   : $(( _autoenv_debug_indent-- ))
   _autoenv_debug "== END SOURCE =="
 
   if [[ $autoenv_event == enter ]]; then
-    _autoenv_stack_entered_add $env_file
-  fi
-
-  # Unset vars set for enter/leave scripts.
-  # This should not get done for recursion (via autoenv_source_parent),
-  # and can be useful to have in general after autoenv was used.
-  # unset autoenv_event autoenv_from_dir autoenv_to_dir autoenv_env_file
-  if [[ $autoenv_event == leave ]]; then
-    unset autoenv_env_file
+    _autoenv_stack_entered_add $autoenv_env_file
   fi
 }
 
