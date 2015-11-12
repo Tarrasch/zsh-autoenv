@@ -125,6 +125,7 @@ Default: `0`
 
 
 ## Related projects
+- https://github.com/direnv/direnv
 - https://github.com/cxreg/smartcd
 - https://github.com/kennethreitz/autoenv
 
