@@ -140,7 +140,7 @@ _autoenv_stack_entered_contains() {
 
 # Internal function for debug output. {{{
 _autoenv_debug() {
-  local msg="$1"
+  local msg="$1"  # Might trigger a bug in Zsh 5.0.5 with shwordsplit.
   local level=${2:-1}
   if [[ $AUTOENV_DEBUG -lt $level ]]; then
     return
