@@ -21,7 +21,7 @@ test_full:
 			echo; \
 		done; \
 	done; \
-	return $$ret
+	exit $$ret
 
 # Define targets for test files, with relative and abolute path.
 # Use verbose output, which is useful with Vim's 'errorformat'.
