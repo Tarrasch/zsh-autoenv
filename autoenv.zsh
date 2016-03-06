@@ -186,7 +186,7 @@ _autoenv_hash_pair() {
 
 _autoenv_authorized_env_file() {
   local env_file=$1
-  local pair=$(_autoenv_hash_pair $env_file)
+  local pair="$(_autoenv_hash_pair $env_file)"
   test -f $AUTOENV_AUTH_FILE \
     && \grep -qF $pair $AUTOENV_AUTH_FILE
 }
@@ -286,7 +286,7 @@ _autoenv_get_file_upwards() {
     if [[ $parent_dir == $last ]]; then
       break
     fi
-    parent_file="${parent_dir}/${look_for}"
+    local parent_file="${parent_dir}/${look_for}"
 
     if [[ -f $parent_file ]]; then
       echo $parent_file
