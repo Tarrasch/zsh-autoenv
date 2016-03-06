@@ -210,6 +210,12 @@ _autoenv_deauthorize() {
 # This function can be mocked in tests
 _autoenv_ask_for_yes() {
   local answer
+
+  # Handle/catch Ctrl-C and return, instead of letting it potentially abort the
+  # shell setup process.
+  setopt localtraps
+  trap 'return 1' INT
+
   read answer
   if [[ $answer == "yes" ]]; then
     return 0
