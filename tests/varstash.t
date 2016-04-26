@@ -6,11 +6,22 @@ Setup test environment.
 
   $ mkdir sub
   $ cd sub
+
+The varstash library should not get loaded always.
+
+  $ echo 'echo ENTER' > $AUTOENV_FILE_ENTER
+  $ echo 'echo LEAVE' > $AUTOENV_FILE_LEAVE
+  $ test_autoenv_auth_env_files
+  $ cd .
+  ENTER
+  $ type -w autostash
+  autostash: none
+  [1]
+
+Now on to some stashing.
+
   $ echo 'echo ENTER; autostash FOO=changed' > $AUTOENV_FILE_ENTER
   $ echo 'echo LEAVE; autounstash' > $AUTOENV_FILE_LEAVE
-
-Manually create auth file
-
   $ test_autoenv_auth_env_files
 
 Set environment variable.
@@ -19,8 +30,12 @@ Set environment variable.
 
 Activating the env stashes it and applies a new value.
 
-  $ cd .
+  $ cd ..
+  LEAVE
+  $ cd sub
   ENTER
+  $ type -w autostash
+  autostash: function
   $ echo $FOO
   changed
 
