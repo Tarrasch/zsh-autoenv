@@ -260,8 +260,12 @@ _autoenv_source() {
   local autoenv_to_dir=$PWD
 
   # Source varstash library once.
+  # XXX: pollutes environment with e.g. `stash`, and `autostash` will cause
+  # an overwritten `stash` function to be called!
   if [[ -z "$functions[(I)autostash]" ]]; then
-    source ${${funcsourcetrace[1]%:*}:h}/lib/varstash
+    if \grep -qE '\b(autostash|autounstash|stash)\b' $autoenv_env_file; then
+      source ${${funcsourcetrace[1]%:*}:h}/lib/varstash
+    fi
     # NOTE: Varstash uses $PWD as default for varstash_dir, we might set it to
     # ${autoenv_env_file:h}.
   fi
@@ -331,7 +335,9 @@ _autoenv_chpwd_handler() {
         fi
 
         # Unstash any autostashed stuff.
-        varstash_dir=$prev_dir autounstash
+        if [[ -n "$functions[(I)autostash]" ]]; then
+          varstash_dir=$prev_dir autounstash
+        fi
 
         _autoenv_stack_entered_remove $prev_file
       fi
