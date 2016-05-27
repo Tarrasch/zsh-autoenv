@@ -85,6 +85,11 @@ Add the following to your `.zshrc` where you are loading your plugins:
 
     zgen load Tarrasch/zsh-autoenv
 
+### Using [zplug](https://github.com/zplug/zplug)
+
+Add the following to your `.zshrc` where you are loading your plugins:
+
+    zplug "Tarrasch/zsh-autoenv"
 
 ## Configuration
 
