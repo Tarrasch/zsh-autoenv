@@ -9,7 +9,7 @@
 # Not handled in varstash yet.
 # setopt nounset
 
-export AUTOENV_AUTH_FILE="$CRAMTMP/.autoenv_auth"
+export AUTOENV_AUTH_FILE="$CRAMTMP/autoenv/.autoenv_auth"
 
 if [[ $AUTOENV_AUTH_FILE[0,4] != '/tmp' ]]; then
   echo "AUTOENV_AUTH_FILE is not in /tmp. Aborting."
@@ -24,7 +24,9 @@ set -e
 $TEST_SOURCE_AUTOENV
 
 # Reset any authentication.
-echo -n >| $AUTOENV_AUTH_FILE
+if [[ -f $AUTOENV_AUTH_FILE ]]; then
+  echo -n >| $AUTOENV_AUTH_FILE
+fi
 
 # Add file $1 (with optional hash $2) to authentication file.
 test_autoenv_add_to_env() {
