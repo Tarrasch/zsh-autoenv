@@ -21,7 +21,7 @@ Tests for _autoenv_authorize. {{{
 Auth file is empty.
 
   $ cd ../..
-  $ cat $AUTOENV_AUTH_FILE
+  $ ! [[ -f "$AUTOENV_AUTH_FILE" ]] || cat $AUTOENV_AUTH_FILE
 
 Failed authorization should keep the auth file empty.
 
