@@ -16,7 +16,7 @@ if [[ -z $AUTOENV_AUTH_FILE ]]; then
     fi
     if [[ -f ~/.env_auth ]]; then
       echo "zsh-autoenv: using deprecated location for AUTOENV_AUTH_FILE." >&2
-      echo "Please move it: mv ~/.env_auth ${(D)AUTOENV_AUTH_FILE}." >&2
+      echo "Please move it: mv ~/.env_auth ${(D)AUTOENV_AUTH_FILE}" >&2
       AUTOENV_AUTH_FILE=~/.env_auth
     fi
   fi
