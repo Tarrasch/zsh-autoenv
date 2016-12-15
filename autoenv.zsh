@@ -179,7 +179,7 @@ _autoenv_hash_pair() {
       echo "Missing file argument for _autoenv_hash_pair!" >&2
       return 1
     fi
-    env_shasum=$(shasum $env_file | cut -d' ' -f1)
+    env_shasum=$(sha1sum $env_file | cut -d' ' -f1)
   fi
   echo ":${env_file}:${env_shasum}:1"
 }
