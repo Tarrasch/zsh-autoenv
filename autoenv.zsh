@@ -179,6 +179,7 @@ _autoenv_hash_pair() {
       echo "Missing file argument for _autoenv_hash_pair!" >&2
       return 1
     fi
+    # Get the output from `cksum` and join the first two words with a dot.
     env_cksum=${(j:.:)${:-$(cksum "$env_file")}[1,2]}
   fi
   echo ":${env_file}:${env_cksum}:1"
