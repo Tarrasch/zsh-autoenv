@@ -213,6 +213,8 @@ _autoenv_authorized_env_file() {
     if _autoenv_authorized_pair $pair; then
       # Upgrade v1 entries to v2
       _autoenv_authorize $env_file
+    else
+      return 1
     fi
   fi
 }
