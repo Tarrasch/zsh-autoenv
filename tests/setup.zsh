@@ -28,9 +28,9 @@ if [[ -f $AUTOENV_AUTH_FILE ]]; then
   echo -n >| $AUTOENV_AUTH_FILE
 fi
 
-# Add file $1 (with optional hash $2) to authentication file.
+# Add file ($1), version ($2), and optional hash ($3) to authentication file.
 test_autoenv_add_to_env() {
-  _autoenv_hash_pair $1 ${2:-} >>| $AUTOENV_AUTH_FILE
+  _autoenv_hash_pair $1 1 ${2:-} >>| $AUTOENV_AUTH_FILE
 }
 
 # Add enter and leave env files to authentication file.
