@@ -168,28 +168,50 @@ _autoenv_debug() {
 # }}}
 
 
-# Generate hash pair for a given file ($1).
-# A fixed hash value can be given as 2nd arg, but is used with tests only.
+# Generate hash pair for a given file ($1) and version ($2).
+# A fixed hash value can be given as 3rd arg, but is used with tests only.
 # The format is ":$file:$hash:$version".
 _autoenv_hash_pair() {
   local env_file=${1:A}
-  local env_cksum=${2:-}
+  local cksum_version=${2:-2}
+  local env_cksum=${3:-}
   if [[ -z $env_cksum ]]; then
     if ! [[ -e $env_file ]]; then
       echo "Missing file argument for _autoenv_hash_pair!" >&2
       return 1
     fi
-    # Get the output from `cksum` and join the first two words with a dot.
-    env_cksum=${(j:.:)${:-$(cksum "$env_file")}[1,2]}
+    if [ $cksum_version = 2 ]; then
+      env_cksum=$(cksum $env_file | cut -d' ' -f1)
+    elif [ $cksum_version = 1 ]; then
+      env_cksum=$(shasum $env_file | cut -d' ' -f1)
+    else
+      echo "Invalid version argument (${cksum_version}) for _autoenv_hash_pair!" >&2
+      return 1
+    fi
   fi
-  echo ":${env_file}:${env_cksum}:1"
+  echo ":${env_file}:${env_cksum}:${cksum_version}"
 }
+
+
+# Checks for the existence of a hash signature in the auth file
+_autoenv_authorized_pair() {
+  local pair=$1
+  test -f $AUTOENV_AUTH_FILE \
+    && \grep -qF $pair $AUTOENV_AUTH_FILE
+}
+
 
 _autoenv_authorized_env_file() {
   local env_file=$1
-  local pair="$(_autoenv_hash_pair $env_file)"
-  test -f $AUTOENV_AUTH_FILE \
-    && \grep -qF $pair $AUTOENV_AUTH_FILE
+  local pair
+  pair=$(_autoenv_hash_pair $env_file)
+  _autoenv_debug "v2 pair: ${pair}"
+  if ! _autoenv_authorized_pair $pair; then
+    # Fallback for v1 (SHA-1) pairs
+    pair=$(_autoenv_hash_pair $env_file 1)
+    _autoenv_debug "v1 pair: ${pair}"
+    _autoenv_authorized_pair $pair
+  fi
 }
 
 _autoenv_authorize() {
