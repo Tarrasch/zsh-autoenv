@@ -181,7 +181,8 @@ _autoenv_hash_pair() {
       return 1
     fi
     if [ $cksum_version = 2 ]; then
-      env_cksum=$(cksum $env_file | cut -d' ' -f1)
+      # Get the output from `cksum` and join the first two words with a dot.
+      env_cksum=${(j:.:)${:-$(cksum "$env_file")}[1,2]}
     elif [ $cksum_version = 1 ]; then
       env_cksum=$(shasum $env_file | cut -d' ' -f1)
     else
