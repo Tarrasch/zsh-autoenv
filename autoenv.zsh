@@ -228,12 +228,12 @@ _autoenv_authorize() {
 }
 
 # Deauthorize a given filename, by removing it from the auth file.
-# This uses `test -s` to only handle non-empty files, and a subshell to
-# allow for writing to the same file again.
+# This uses `test -s` to only handle non-empty files.
 _autoenv_deauthorize() {
   local env_file=${1:A}
   if [[ -s $AUTOENV_AUTH_FILE ]]; then
-    echo "$(\grep -vF :${env_file}: $AUTOENV_AUTH_FILE)" >| $AUTOENV_AUTH_FILE
+    \grep -vF :${env_file}: $AUTOENV_AUTH_FILE >| $AUTOENV_AUTH_FILE.tmp
+    mv $AUTOENV_AUTH_FILE.tmp $AUTOENV_AUTH_FILE
   fi
 }
 
