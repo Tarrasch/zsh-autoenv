@@ -210,7 +210,10 @@ _autoenv_authorized_env_file() {
     # Fallback for v1 (SHA-1) pairs
     pair=$(_autoenv_hash_pair $env_file 1)
     _autoenv_debug "v1 pair: ${pair}"
-    _autoenv_authorized_pair $pair
+    if _autoenv_authorized_pair $pair; then
+      # Upgrade v1 entries to v2
+      _autoenv_authorize $env_file
+    fi
   fi
 }
 
