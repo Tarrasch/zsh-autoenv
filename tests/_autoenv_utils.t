@@ -35,41 +35,41 @@ Now adding some auth pair.
   $ echo first > first
   $ _autoenv_authorize first
   $ cat $AUTOENV_AUTH_FILE
-  :/tmp/cramtests-*/_autoenv_utils.t/first:271ac93c44ac198d92e706c6d6f1d84aefcfa337:1 (glob)
+  :/tmp/cramtests-*/_autoenv_utils.t/first:2715464726.6:1 (glob)
 
 And a second one.
 
   $ echo second > second
   $ _autoenv_authorize second
   $ cat $AUTOENV_AUTH_FILE
-  :/tmp/cramtests-*/_autoenv_utils.t/first:271ac93c44ac198d92e706c6d6f1d84aefcfa337:1 (glob)
-  :/tmp/cramtests-*/_autoenv_utils.t/second:7bee8f3b184e1e141ff76efe369c3b8bfc50e64c:1 (glob)
+  :/tmp/cramtests-*/_autoenv_utils.t/first:2715464726.6:1 (glob)
+  :/tmp/cramtests-*/_autoenv_utils.t/second:594940475.7:1 (glob)
 
 And a third.
 
   $ echo third > third
   $ _autoenv_authorize third
   $ cat $AUTOENV_AUTH_FILE
-  :/tmp/cramtests-*/_autoenv_utils.t/first:271ac93c44ac198d92e706c6d6f1d84aefcfa337:1 (glob)
-  :/tmp/cramtests-*/_autoenv_utils.t/second:7bee8f3b184e1e141ff76efe369c3b8bfc50e64c:1 (glob)
-  :/tmp/cramtests-*/_autoenv_utils.t/third:ad180453bf8a374a15df3e90a78c180230146a7c:1 (glob)
+  :/tmp/cramtests-*/_autoenv_utils.t/first:2715464726.6:1 (glob)
+  :/tmp/cramtests-*/_autoenv_utils.t/second:594940475.7:1 (glob)
+  :/tmp/cramtests-*/_autoenv_utils.t/third:451243482.6:1 (glob)
 
 Re-add the second one, with the same hash.
 
   $ _autoenv_authorize second
   $ cat $AUTOENV_AUTH_FILE
-  :/tmp/cramtests-*/_autoenv_utils.t/first:271ac93c44ac198d92e706c6d6f1d84aefcfa337:1 (glob)
-  :/tmp/cramtests-*/_autoenv_utils.t/third:ad180453bf8a374a15df3e90a78c180230146a7c:1 (glob)
-  :/tmp/cramtests-*/_autoenv_utils.t/second:7bee8f3b184e1e141ff76efe369c3b8bfc50e64c:1 (glob)
+  :/tmp/cramtests-*/_autoenv_utils.t/first:2715464726.6:1 (glob)
+  :/tmp/cramtests-*/_autoenv_utils.t/third:451243482.6:1 (glob)
+  :/tmp/cramtests-*/_autoenv_utils.t/second:594940475.7:1 (glob)
 
 Re-add the first one, with a new hash.
 
   $ echo one more line >> first
   $ _autoenv_authorize first
   $ cat $AUTOENV_AUTH_FILE
-  :/tmp/cramtests-*/_autoenv_utils.t/third:ad180453bf8a374a15df3e90a78c180230146a7c:1 (glob)
-  :/tmp/cramtests-*/_autoenv_utils.t/second:7bee8f3b184e1e141ff76efe369c3b8bfc50e64c:1 (glob)
-  :/tmp/cramtests-*/_autoenv_utils.t/first:65eb010197b73ddc109b7210080f97a87f53451e:1 (glob)
+  :/tmp/cramtests-*/_autoenv_utils.t/third:451243482.6:1 (glob)
+  :/tmp/cramtests-*/_autoenv_utils.t/second:594940475.7:1 (glob)
+  :/tmp/cramtests-*/_autoenv_utils.t/first:3620404822.20:1 (glob)
 }}}
 
 

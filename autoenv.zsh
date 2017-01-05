@@ -173,15 +173,16 @@ _autoenv_debug() {
 # The format is ":$file:$hash:$version".
 _autoenv_hash_pair() {
   local env_file=${1:A}
-  local env_shasum=${2:-}
-  if [[ -z $env_shasum ]]; then
+  local env_cksum=${2:-}
+  if [[ -z $env_cksum ]]; then
     if ! [[ -e $env_file ]]; then
       echo "Missing file argument for _autoenv_hash_pair!" >&2
       return 1
     fi
-    env_shasum=$(sha1sum $env_file | cut -d' ' -f1)
+    # Get the output from `cksum` and join the first two words with a dot.
+    env_cksum=${(j:.:)${:-$(cksum "$env_file")}[1,2]}
   fi
-  echo ":${env_file}:${env_shasum}:1"
+  echo ":${env_file}:${env_cksum}:1"
 }
 
 _autoenv_authorized_env_file() {
