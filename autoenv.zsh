@@ -233,7 +233,7 @@ _autoenv_deauthorize() {
   local env_file=${1:A}
   if [[ -s $AUTOENV_AUTH_FILE ]]; then
     \grep -vF :${env_file}: $AUTOENV_AUTH_FILE >| $AUTOENV_AUTH_FILE.tmp
-    mv $AUTOENV_AUTH_FILE.tmp $AUTOENV_AUTH_FILE
+    \mv $AUTOENV_AUTH_FILE.tmp $AUTOENV_AUTH_FILE
   fi
 }
 
