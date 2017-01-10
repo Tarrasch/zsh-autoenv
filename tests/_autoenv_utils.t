@@ -35,41 +35,41 @@ Now adding some auth pair.
   $ echo first > first
   $ _autoenv_authorize first
   $ cat $AUTOENV_AUTH_FILE
-  :/tmp/cramtests-*/_autoenv_utils.t/first:2715464726.6:1 (glob)
+  :/tmp/cramtests-*/_autoenv_utils.t/first:2715464726.6:2 (glob)
 
 And a second one.
 
   $ echo second > second
   $ _autoenv_authorize second
   $ cat $AUTOENV_AUTH_FILE
-  :/tmp/cramtests-*/_autoenv_utils.t/first:2715464726.6:1 (glob)
-  :/tmp/cramtests-*/_autoenv_utils.t/second:594940475.7:1 (glob)
+  :/tmp/cramtests-*/_autoenv_utils.t/first:2715464726.6:2 (glob)
+  :/tmp/cramtests-*/_autoenv_utils.t/second:594940475.7:2 (glob)
 
 And a third.
 
   $ echo third > third
   $ _autoenv_authorize third
   $ cat $AUTOENV_AUTH_FILE
-  :/tmp/cramtests-*/_autoenv_utils.t/first:2715464726.6:1 (glob)
-  :/tmp/cramtests-*/_autoenv_utils.t/second:594940475.7:1 (glob)
-  :/tmp/cramtests-*/_autoenv_utils.t/third:451243482.6:1 (glob)
+  :/tmp/cramtests-*/_autoenv_utils.t/first:2715464726.6:2 (glob)
+  :/tmp/cramtests-*/_autoenv_utils.t/second:594940475.7:2 (glob)
+  :/tmp/cramtests-*/_autoenv_utils.t/third:451243482.6:2 (glob)
 
 Re-add the second one, with the same hash.
 
   $ _autoenv_authorize second
   $ cat $AUTOENV_AUTH_FILE
-  :/tmp/cramtests-*/_autoenv_utils.t/first:2715464726.6:1 (glob)
-  :/tmp/cramtests-*/_autoenv_utils.t/third:451243482.6:1 (glob)
-  :/tmp/cramtests-*/_autoenv_utils.t/second:594940475.7:1 (glob)
+  :/tmp/cramtests-*/_autoenv_utils.t/first:2715464726.6:2 (glob)
+  :/tmp/cramtests-*/_autoenv_utils.t/third:451243482.6:2 (glob)
+  :/tmp/cramtests-*/_autoenv_utils.t/second:594940475.7:2 (glob)
 
 Re-add the first one, with a new hash.
 
   $ echo one more line >> first
   $ _autoenv_authorize first
   $ cat $AUTOENV_AUTH_FILE
-  :/tmp/cramtests-*/_autoenv_utils.t/third:451243482.6:1 (glob)
-  :/tmp/cramtests-*/_autoenv_utils.t/second:594940475.7:1 (glob)
-  :/tmp/cramtests-*/_autoenv_utils.t/first:3620404822.20:1 (glob)
+  :/tmp/cramtests-*/_autoenv_utils.t/third:451243482.6:2 (glob)
+  :/tmp/cramtests-*/_autoenv_utils.t/second:594940475.7:2 (glob)
+  :/tmp/cramtests-*/_autoenv_utils.t/first:3620404822.20:2 (glob)
 }}}
 
 
