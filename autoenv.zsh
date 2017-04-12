@@ -341,8 +341,15 @@ _autoenv_get_file_upwards() {
   done
 }
 
+# Manually trigger the chpwd handler
+autoenv() {
+  _autoenv_chpwd_handler 1
+}
 
+# Args: 1: Ignore that directory is already in entered stack
 _autoenv_chpwd_handler() {
+  local ignore_entered=${1:-0}
+
   _autoenv_debug "Calling chpwd handler: PWD=$PWD"
 
   if (( $AUTOENV_DISABLED )); then
@@ -383,7 +390,7 @@ _autoenv_chpwd_handler() {
 
   # Load the env file only once: check if $env_file is in the stack of entered
   # directories.
-  if _autoenv_stack_entered_contains $env_file; then
+  if ! [[ $ignore_entered = 1 ]] && _autoenv_stack_entered_contains $env_file; then
     _autoenv_debug "Already in stack: $env_file"
     return
   fi
