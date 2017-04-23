@@ -19,7 +19,7 @@ test_full:
 	ret=0; \
 	for i in $(wildcard tests/ZDOTDIR*); do \
 		echo "== ZDOTDIR=$$i =="; \
-		SHELL=$(TEST_SHELL) ZDOTDIR=${CURDIR}/$$i cram --shell=$(TEST_SHELL) -v tests || ret=$$((ret+1)); \
+		$(MAKE) test TEST_SHELL=$(TEST_SHELL) ZDOTDIR=${CURDIR}/$$i || ret=$$((ret+1)); \
 		echo; \
 	done; \
 	exit $$ret
