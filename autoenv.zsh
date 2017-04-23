@@ -241,7 +241,10 @@ _autoenv_ask_for_yes() {
   # Handle/catch Ctrl-C and return, instead of letting it potentially abort the
   # shell setup process.
   setopt localtraps
-  trap 'return 1' INT
+  autoload -Uz is-at-least
+  if is-at-least 5.2; then
+    trap 'return 1' INT
+  fi
 
   read answer
   if [[ $answer == "yes" ]]; then
