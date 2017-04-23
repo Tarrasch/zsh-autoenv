@@ -16,9 +16,13 @@ install:
         exit 1
       fi
     else
-      (curl -SL https://downloads.sourceforge.net/project/zsh/zsh/$TEST_ZSH/zsh-$TEST_ZSH.tar.xz | tar --xz -xf -
-      cd zsh-$TEST_ZSH
-      ./configure && sudo make && sudo make install)
+      if [ "$TEST_ZSH" = 5.0.8 ]; then
+        curl -SL https://downloads.sourceforge.net/project/zsh/zsh/$TEST_ZSH/zsh-$TEST_ZSH.tar.bz2 | tar --bzip2 -xf -
+      else
+        curl -SL https://downloads.sourceforge.net/project/zsh/zsh/$TEST_ZSH/zsh-$TEST_ZSH.tar.xz | tar --xz -xf -
+      fi
+      (cd zsh-$TEST_ZSH
+       ./configure && sudo make && sudo make install)
     fi
   - pip install --user cram
   - export SHELL=zsh
