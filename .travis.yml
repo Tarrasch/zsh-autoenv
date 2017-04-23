@@ -18,7 +18,7 @@ install:
       fi
     else
       if [ "$TEST_ZSH" = 4.3.17 ]; then
-        curl -SL https://sourceforge.net/projects/zsh/files/zsh-dev/4.3.17/zsh-4.3.17.tar.bz2 | tar --bzip2 -xf -
+        curl -SL https://sourceforge.net/projects/zsh/files/zsh-dev/$TEST_ZSH/zsh-$TEST_ZSH.tar.bz2 | tar --bzip2 -xf -
       elif [ "$TEST_ZSH" = 5.0.8 ]; then
         curl -SL https://downloads.sourceforge.net/project/zsh/zsh/$TEST_ZSH/zsh-$TEST_ZSH.tar.bz2 | tar --bzip2 -xf -
       else
