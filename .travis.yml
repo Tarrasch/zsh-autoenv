@@ -18,4 +18,5 @@ install:
   - export SHELL=zsh
 script:
   - zsh --version
+  - which zsh
   - make test
