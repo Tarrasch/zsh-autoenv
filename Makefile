@@ -18,7 +18,7 @@ test_full:
 	$(TEST_SHELL) --version
 	ret=0; \
 	for i in $(wildcard tests/ZDOTDIR*); do \
-		echo "zsh=$zsh ZDOTDIR=$$i"; \
+		echo "== ZDOTDIR=$$i =="; \
 		SHELL=$(TEST_SHELL) ZDOTDIR=${CURDIR}/$$i cram --shell=$(TEST_SHELL) -v tests || ret=$$((ret+1)); \
 		echo; \
 	done; \
