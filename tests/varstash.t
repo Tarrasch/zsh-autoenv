@@ -20,8 +20,8 @@ The varstash library should not get loaded always.
 
 Now on to some stashing.
 
-  $ echo 'echo ENTER; autostash FOO=changed' > $AUTOENV_FILE_ENTER
-  $ echo 'echo LEAVE; autounstash' > $AUTOENV_FILE_LEAVE
+  $ echo 'echo ENTER; autostash FOO=changed' >| $AUTOENV_FILE_ENTER
+  $ echo 'echo LEAVE; autounstash' >| $AUTOENV_FILE_LEAVE
   $ test_autoenv_auth_env_files
 
 Set environment variable.
