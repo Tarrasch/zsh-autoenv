@@ -135,19 +135,13 @@ function stash() {
         # Handle any variable that may exist under this name
         local vartype="$(declare -p $stash_which 2>/dev/null)"
         if [[ -n $vartype ]]; then
-            if [[ -n $ZSH_VERSION ]]; then
-                local pattern="typeset"
-            else
-                local pattern="declare"
-            fi
-            if [[ $vartype == $pattern" -a"* ]]; then
+            if [[ $vartype == 'typeset -a'* ]]; then
                 # varible is an array
                 if [[ -z $already_stashed ]]; then
                     eval "__varstash_array__$stash_name=(\"\${$stash_which""[@]}\")"
                 fi
 
-            elif ([[ -n $ZSH_VERSION ]] && [[ $vartype == "export "* ]]) \
-                || [[ $vartype == $pattern" -x"* ]]; then
+            elif [[ $vartype == "export "* || $vartype == 'typeset -x'* ]]; then
                 # variable is exported
                 if [[ -z $already_stashed ]]; then
                     eval "export __varstash_export__$stash_name=\"\$$stash_which\""
