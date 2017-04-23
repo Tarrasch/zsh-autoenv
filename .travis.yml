@@ -28,6 +28,7 @@ install:
        ./configure && sudo make && sudo make install)
     fi
   - pip install --user cram
+  - cram --version
   - export SHELL=zsh
 script:
   - zsh --version
