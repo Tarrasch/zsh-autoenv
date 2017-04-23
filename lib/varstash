@@ -146,7 +146,8 @@ function stash() {
                     eval "__varstash_array__$stash_name=(\"\${$stash_which""[@]}\")"
                 fi
 
-            elif [[ $vartype == $pattern" -x"* ]]; then
+            elif ([[ -n $ZSH_VERSION ]] && [[ $vartype == "export "* ]]) \
+                || [[ $vartype == $pattern" -x"* ]]; then
                 # variable is exported
                 if [[ -z $already_stashed ]]; then
                     eval "export __varstash_export__$stash_name=\"\$$stash_which\""
