@@ -29,4 +29,5 @@ install:
 script:
   - zsh --version
   - which zsh
+  - python -c 'from cram import _main; print(_main._which("zsh"))'
   - make test_full
