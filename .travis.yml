@@ -1,12 +1,8 @@
 language: generic
 sudo: false
 env:
-  - TEST_ZSH=5.3.1
-  - TEST_ZSH=5.2
-  - TEST_ZSH=5.1.1
   - TEST_ZSH=5.0.8
   - TEST_ZSH=4.3.17
-  - TEST_ZSH=4.3.17-travis
 
 install:
   - |
