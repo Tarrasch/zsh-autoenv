@@ -17,7 +17,7 @@ test_full:
 	ret=0; \
 	for i in $(wildcard tests/ZDOTDIR*); do \
 		echo "zsh=$zsh ZDOTDIR=$$i"; \
-		SHELL=$(TEST_SHELL) ZDOTDIR=${CURDIR}/$$i cram --shell=$(TEST_SHELL) -v tests || ret=$$(ret+1)); \
+		SHELL=$(TEST_SHELL) ZDOTDIR=${CURDIR}/$$i cram --shell=$(TEST_SHELL) -v tests || ret=$$((ret+1)); \
 		echo; \
 	done; \
 	exit $$ret
