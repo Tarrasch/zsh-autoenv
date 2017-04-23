@@ -4,20 +4,22 @@ ZDOTDIR:=${CURDIR}/tests/ZDOTDIR
 # Export it, and make it absolute.
 override export ZDOTDIR:=$(abspath $(ZDOTDIR))
 
+TEST_SHELL:=zsh
+
 test:
-	cram --shell=zsh -v tests
+	cram --shell=$(TEST_SHELL) -v tests
 
 itest:
-	cram -i --shell=zsh tests
+	cram -i --shell=$(TEST_SHELL) tests
 
 # Run tests with all ZDOTDIRs.
 test_full:
-	for zsh in zsh /opt/zsh4/bin/zsh; do \
+	for zsh in zsh /opt/zsh-4.3.9/bin/zsh; do \
 		command -v $$zsh || { echo "Skipping non-existing shell: $$zsh"; continue; }; \
 		ret=0; \
 		for i in $(wildcard tests/ZDOTDIR*); do \
 			echo "zsh=$zsh ZDOTDIR=$$i"; \
-			SHELL=$$zsh ZDOTDIR=${CURDIR}/$$i cram --shell=zsh -v tests || ret=$$?; \
+			SHELL=$$zsh ZDOTDIR=${CURDIR}/$$i cram --shell=$$zsh -v tests || ret=$$?; \
 			echo; \
 		done; \
 	done; \
@@ -30,7 +32,7 @@ TESTS:=$(wildcard tests/*.t)
 uniq = $(if $1,$(firstword $1) $(call uniq,$(filter-out $(firstword $1),$1)))
 _TESTS_REL_AND_ABS:=$(call uniq,$(abspath $(TESTS)) $(TESTS))
 $(_TESTS_REL_AND_ABS):
-	cram --shell=zsh -v $@
+	cram --shell=$(TEST_SHELL) -v $@
 .PHONY: $(_TESTS_REL_AND_ABS)
 
 .PHONY: itest test
