@@ -1,19 +1,26 @@
 language: generic
 sudo: false
 env:
-  - ZSH=4 ZDOTDIR=tests/ZDOTDIR
-  - ZSH=4 ZDOTDIR=tests/ZDOTDIR.clobber
-  - ZSH=4 ZDOTDIR=tests/ZDOTDIR.invalid-module_path
-  - ZSH=4 ZDOTDIR=tests/ZDOTDIR.loadviafunction
-
-  - ZSH=5 ZDOTDIR=tests/ZDOTDIR
-  - ZSH=5 ZDOTDIR=tests/ZDOTDIR.clobber
-  - ZSH=5 ZDOTDIR=tests/ZDOTDIR.invalid-module_path
-  - ZSH=5 ZDOTDIR=tests/ZDOTDIR.loadviafunction
+  - ZSH=4.3.17
+  - ZSH=5.0.8
+  - ZSH=5.1.1
+  - ZSH=5.2
+  - ZSH=5.3.1
 
 install:
-  - if [ "$ZSH" = 4 ]; then sudo apt-get install zsh; fi
-  - if [ "$ZSH" = 5 ]; then wget http://downloads.sourceforge.net/project/zsh/zsh/5.0.7/zsh-5.0.7.tar.bz2; tar xf zsh-5.0.7.tar.bz2; cd zsh-5.0.7; ./configure && sudo make && sudo make install; cd ..; fi
+  - |
+    if [ "$ZSH" = 4.3.17 ]; then
+      sudo apt-get install zsh
+      if [ "$(zsh --version)" != "zsh 4.3.17 (x86_64-unknown-linux-gnu)" ]; then
+        echo "Unexpected Zsh version: $(zsh --version)"
+        exit 1
+      fi
+    else
+      (wget http://downloads.sourceforge.net/project/zsh/zsh/$ZSH/zsh-$ZSH.tar.bz2
+      tar xf zsh-$ZSH.tar.bz2
+      cd zsh-$ZSH
+      ./configure && sudo make && sudo make install)
+    fi
   - pip install --user cram
   - export SHELL=zsh
 script:
