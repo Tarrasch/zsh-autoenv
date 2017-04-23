@@ -8,7 +8,7 @@ TEST_SHELL:=zsh
 
 test:
 	$(TEST_SHELL) --version
-	cram --shell=$(TEST_SHELL) -v tests
+	cram --debug --shell=$(TEST_SHELL) tests
 
 itest:
 	cram -i --shell=$(TEST_SHELL) tests
