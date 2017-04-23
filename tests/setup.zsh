@@ -30,6 +30,7 @@ fi
 
 # Add file ($1), version ($2), and optional hash ($3) to authentication file.
 test_autoenv_add_to_env() {
+  [[ -d ${AUTOENV_AUTH_FILE:h} ]] || mkdir -p ${AUTOENV_AUTH_FILE:h}
   _autoenv_hash_pair $1 1 ${2:-} >>| $AUTOENV_AUTH_FILE
 }
 
