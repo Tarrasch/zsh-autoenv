@@ -1,22 +1,25 @@
 language: generic
 sudo: false
 env:
-  - TEST_ZSH=4.3.17
-  - TEST_ZSH=5.0.8
-  - TEST_ZSH=5.1.1
-  - TEST_ZSH=5.2
   - TEST_ZSH=5.3.1
+  - TEST_ZSH=5.2
+  - TEST_ZSH=5.1.1
+  - TEST_ZSH=5.0.8
+  - TEST_ZSH=4.3.17
+  - TEST_ZSH=4.3.17-travis
 
 install:
   - |
-    if [ "$TEST_ZSH" = 4.3.17 ]; then
+    if [ "$TEST_ZSH" = 4.3.17-travis ]; then
       sudo apt-get install zsh
       if [ "$(zsh --version)" != "zsh 4.3.17 (x86_64-unknown-linux-gnu)" ]; then
         echo "Unexpected Zsh version: $(zsh --version)"
         exit 1
       fi
     else
-      if [ "$TEST_ZSH" = 5.0.8 ]; then
+      if [ "$TEST_ZSH" = 4.3.17 ]; then
+        curl -SL https://sourceforge.net/projects/zsh/files/zsh-dev/4.3.17/zsh-4.3.17.tar.bz2 | tar --bzip2 -xf -
+      elif [ "$TEST_ZSH" = 5.0.8 ]; then
         curl -SL https://downloads.sourceforge.net/project/zsh/zsh/$TEST_ZSH/zsh-$TEST_ZSH.tar.bz2 | tar --bzip2 -xf -
       else
         curl -SL https://downloads.sourceforge.net/project/zsh/zsh/$TEST_ZSH/zsh-$TEST_ZSH.tar.xz | tar --xz -xf -
