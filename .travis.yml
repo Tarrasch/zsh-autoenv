@@ -16,7 +16,7 @@ install:
         exit 1
       fi
     else
-      (wget http://downloads.sourceforge.net/project/zsh/zsh/$TEST_ZSH/zsh-$TEST_ZSH.tar.bz2
+      (wget http://downloads.sourceforge.net/project/zsh/zsh/$TEST_ZSH/zsh-$TEST_ZSH.tar.xz
       tar xf zsh-$TEST_ZSH.tar.bz2
       cd zsh-$TEST_ZSH
       ./configure && sudo make && sudo make install)
