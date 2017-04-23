@@ -10,7 +10,7 @@ Create a single v1 hash entry.
   $ echo 'echo ENTERED' > sub/$AUTOENV_FILE_ENTER
   $ echo 'echo LEAVE' > sub/$AUTOENV_FILE_LEAVE
 
-  $ echo :$PWD/sub/$AUTOENV_FILE_ENTER:4c403f1870af2ab5472370a42b6b2b488cefe83c:1 > $AUTOENV_AUTH_FILE
+  $ echo :$PWD/sub/$AUTOENV_FILE_ENTER:4c403f1870af2ab5472370a42b6b2b488cefe83c:1 >| $AUTOENV_AUTH_FILE
   $ cd sub
   ENTERED
 
@@ -23,8 +23,8 @@ de-authenticating the old hash.
 
 Re-create auth file with v1 hashes for both auth files.
 
-  $ echo :$PWD/$AUTOENV_FILE_LEAVE:882cf0333ea3c35537c9459c08d8987f25087ea9:1 > $AUTOENV_AUTH_FILE
-  $ echo :$PWD/$AUTOENV_FILE_ENTER:4c403f1870af2ab5472370a42b6b2b488cefe83c:1 >> $AUTOENV_AUTH_FILE
+  $ echo :$PWD/$AUTOENV_FILE_LEAVE:882cf0333ea3c35537c9459c08d8987f25087ea9:1 >| $AUTOENV_AUTH_FILE
+  $ echo :$PWD/$AUTOENV_FILE_ENTER:4c403f1870af2ab5472370a42b6b2b488cefe83c:1 >>| $AUTOENV_AUTH_FILE
 
 Only the leave file's hash should get updated.
 
