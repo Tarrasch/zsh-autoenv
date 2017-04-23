@@ -7,6 +7,7 @@ override export ZDOTDIR:=$(abspath $(ZDOTDIR))
 TEST_SHELL:=zsh
 
 test:
+	$(TEST_SHELL) --version
 	cram --shell=$(TEST_SHELL) -v tests
 
 itest:
@@ -14,6 +15,7 @@ itest:
 
 # Run tests with all ZDOTDIRs.
 test_full:
+	$(TEST_SHELL) --version
 	ret=0; \
 	for i in $(wildcard tests/ZDOTDIR*); do \
 		echo "zsh=$zsh ZDOTDIR=$$i"; \
