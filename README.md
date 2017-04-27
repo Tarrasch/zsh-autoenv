@@ -150,6 +150,7 @@ if [[ $autoenv_event == 'enter' ]]; then
       return
     fi
 
+    setopt localoptions extendedglob
     local -a venv
     venv=(./(../)#.venv(NY1:A))
 
