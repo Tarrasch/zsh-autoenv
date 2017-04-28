@@ -126,6 +126,13 @@ Default: 0
 ### AUTOENV\_DEBUG
 Enable debugging. Multiple levels are supported (max 2).
 
+- 0: no debug messages
+- 1: generic debug logging
+- 2: more verbose messages
+  - messages about adding/removing files on the internal stack
+- 3: everything
+  - sets xtrace option (`set -x`) while sourcing env files
+
 Default: `0`
 
 ## Recipes
