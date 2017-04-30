@@ -303,7 +303,16 @@ _autoenv_source() {
   # Source the env file.
   _autoenv_debug "== SOURCE: ${bold_color:-}$autoenv_env_file${reset_color:-}\n      PWD: $PWD"
   : $(( _autoenv_debug_indent++ ))
+
+  local restore_xtrace
+  if [[ $AUTOENV_DEBUG -gt 2 && ! -o xtrace ]]; then
+    restore_xtrace=1
+    setopt localoptions xtrace
+  fi
   source $autoenv_env_file
+  if (( restore_xtrace )); then
+    setopt noxtrace
+  fi
   : $(( _autoenv_debug_indent-- ))
   _autoenv_debug "== END SOURCE =="
 
