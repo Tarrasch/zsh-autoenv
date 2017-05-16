@@ -106,3 +106,23 @@ And once again where a value gets restored.
   orig_2
 
 }}}
+
+autostash does not issue a warning, and no other output. {{{
+
+  $ autostash something=1 something_else=2
+  $ echo $something $something_else
+  1 2
+  $ stash something=1.2 something_else=2.2
+  $ echo $something $something_else
+  1.2 2.2
+  $ stash something something_else
+  You have already stashed something, please specify "-f" if you want to overwrite another stashed value.
+  You have already stashed something_else, please specify "-f" if you want to overwrite another stashed value.
+
+Should not be set anymore.
+
+  $ autounstash
+  $ echo ${+something} ${+something_else}
+  0 0
+
+}}}
