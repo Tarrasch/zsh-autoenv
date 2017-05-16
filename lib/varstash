@@ -44,7 +44,7 @@
 #
 #       $ stash FOO
 #       $ stash FOO
-#       You have already stashed FOO, please specify "-f" if you want to overwrite another stashed value
+#       You have already stashed FOO, please specify "-f" if you want to overwrite another stashed value.
 #       $ stash -f FOO
 #       $
 #
@@ -94,7 +94,7 @@ function stash() {
 
             if [[ $stash_which == $stash_expression ]]; then
                 if [[ -z $run_from_smartcd ]]; then
-                    echo "You have already stashed $stash_which, please specify \"-f\" if you want to overwrite another stashed value"
+                    echo "You have already stashed $stash_which, please specify \"-f\" if you want to overwrite another stashed value."
                 fi
 
                 # Skip remaining work if we're not doing an assignment
@@ -197,16 +197,18 @@ function get_autostash_array_name() {
 
 function autostash() {
     local run_from_autostash=1
+    local ret varname
+    local already_stashed=
     while [[ -n $1 ]]; do
         if [[ $1 == "alias" && $2 == *=* ]]; then
             shift
             local _stashing_alias_assign=1
         fi
 
-        local already_stashed=
+        already_stashed=
         stash "$1"
         if [[ -z $already_stashed ]]; then
-            local ret varname=${1%%'='*}
+            varname=${1%%'='*}
             get_autostash_array_name
             eval "$ret=(\$$ret \$varname)"
         fi
