@@ -161,17 +161,17 @@ if [[ $autoenv_event == 'enter' ]]; then
     local -a venv
     venv=(./(../)#.venv(NY1:A))
 
-    if [[ -n "$_ZSH_ACTIVATED_VIRTUALENV" ]]; then
+    if [[ -n "$_ZSH_ACTIVATED_VIRTUALENV" && -n "$VIRTUAL_ENV" ]]; then
       if ! (( $#venv )) || [[ "$_ZSH_ACTIVATED_VIRTUALENV" != "$venv[1]" ]]; then
-        echo "De-activating virtualenv: $VIRTUAL_ENV" >&2
-        deactivate
         unset _ZSH_ACTIVATED_VIRTUALENV
+        echo "De-activating virtualenv: ${(D)VIRTUAL_ENV}" >&2
+        deactivate
       fi
     fi
 
     if [[ -z "$VIRTUAL_ENV" ]]; then
       if (( $#venv )); then
-        echo "Activating virtualenv: $venv" >&2
+        echo "Activating virtualenv: ${(D)venv}" >&2
         source $venv[1]/bin/activate
         _ZSH_ACTIVATED_VIRTUALENV="$venv[1]"
       fi
