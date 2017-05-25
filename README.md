@@ -18,6 +18,7 @@ variables (overwriting and restoring).
  - Interactively asks for confirmation / authentication before sourcing an
    unknown `.autoenv.zsh` file, and remembers whitelisted files by their
    hashed content.
+ - Includes manual trigger via `autoenv` shell command.
  - Test suite.
  - Written in Zsh.
 
