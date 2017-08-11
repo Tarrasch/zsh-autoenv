@@ -135,6 +135,13 @@ Enable debugging. Multiple levels are supported (max 2).
 
 Default: `0`
 
+## Usage
+
+zsh-autoenv works automatically once installed.
+
+You can use ``autoenv-edit`` to edit the nearest/current autoenv files.
+It will use ``$AUTOENV_EDITOR``, ``$EDITOR``, or ``vim`` for editing.
+
 ## Recipes
 
 ### Automatically activate Python virtualenvs
