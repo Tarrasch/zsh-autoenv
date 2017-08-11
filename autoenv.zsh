@@ -330,19 +330,24 @@ _autoenv_get_file_upwards() {
   # performance reasons, which is only available in zsh-5.0.5-146-g9381bb6.
   local last
   local parent_dir="$look_from/.."
+  local abs_parent_dir
   while true; do
-    parent_dir=${parent_dir:A}
-    if [[ $parent_dir == $last ]]; then
+    abs_parent_dir=${parent_dir:A}
+    if [[ $abs_parent_dir == $last ]]; then
       break
     fi
     local parent_file="${parent_dir}/${look_for}"
 
     if [[ -f $parent_file ]]; then
-      echo $parent_file
+      if [[ ${parent_file[1,2]} == './' ]]; then
+        echo ${parent_file#./}
+      else
+        echo ${parent_file:A}
+      fi
       break
     fi
 
-    if [[ $parent_dir == $look_until ]]; then
+    if [[ $abs_parent_dir == $look_until ]]; then
       break
     fi
     last=$parent_dir
