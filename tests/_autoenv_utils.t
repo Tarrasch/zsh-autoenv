@@ -13,6 +13,8 @@ Should not get the file from the current dir.
 
   $ cd sub/sub2
   $ _autoenv_get_file_upwards . file
+  ../file
+  $ _autoenv_get_file_upwards $PWD file
   */_autoenv_utils.t/sub/file (glob)
 
 
