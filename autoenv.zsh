@@ -43,7 +43,7 @@ fi
 : ${AUTOENV_DISABLED:=0}
 
 # Public helper functions, which can be used from your .autoenv.zsh files:
-#
+
 # Source the next .autoenv.zsh file from parent directories.
 # This is useful if you want to use a base .autoenv.zsh file for a directory
 # subtree.

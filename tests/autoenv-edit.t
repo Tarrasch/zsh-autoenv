@@ -1,7 +1,5 @@
   $ source $TESTDIR/setup.zsh || return 1
 
-  $ set | sort > before
-
   $ export EDITOR=echo
 
   $ autoenv-edit
