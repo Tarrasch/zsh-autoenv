@@ -60,7 +60,7 @@ autoenv_source_parent() {
 }
 
 # Internal functions. {{{
-# Internal: stack of entered (and handled) directories. {{{
+# Internal: stack of loaded env files (i.e. entered directories). {{{
 typeset -g -a _autoenv_stack_entered
 # -g: make it global, this is required when used with antigen.
 typeset -g -A _autoenv_stack_entered_mtime
@@ -292,7 +292,7 @@ _autoenv_source() {
   # Source varstash library once.
   # XXX: pollutes environment with e.g. `stash`, and `autostash` will cause
   # an overwritten `stash` function to be called!
-  if [[ -z "$functions[(I)autostash]" ]]; then
+  if ! (( $+functions[autostash] )); then
     if \grep -qE '\b(autostash|autounstash|stash)\b' $autoenv_env_file; then
       source ${${funcsourcetrace[1]%:*}:h}/lib/varstash
     fi
@@ -410,7 +410,7 @@ _autoenv_chpwd_handler() {
         fi
 
         # Unstash any autostashed stuff.
-        if [[ -n "$functions[(I)autostash]" ]]; then
+        if (( $+functions[autostash] )); then
           varstash_dir=$prev_dir autounstash
         fi
 
