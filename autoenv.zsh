@@ -72,13 +72,11 @@ _autoenv_stack_entered_add() {
   # Remove any existing entry.
   _autoenv_stack_entered_remove $env_file
 
-  _autoenv_debug "[stack] adding: $env_file" 2
-
   # Append it to the stack, and remember its mtime.
+  _autoenv_debug "[stack] adding: $env_file" 2
   _autoenv_stack_entered+=($env_file)
   _autoenv_stack_entered_mtime[$env_file]=$(_autoenv_get_file_mtime $env_file)
 }
-
 
 # zstat_mime helper, conditionally defined.
 # Load zstat module, but only its builtin `zstat`.
@@ -101,7 +99,6 @@ else
     zstat +mtime $1 2>/dev/null || echo 0
   }
 fi
-
 
 # Remove an entry from the stack.
 _autoenv_stack_entered_remove() {
@@ -140,11 +137,11 @@ _autoenv_stack_entered_contains() {
 
 # Internal function for debug output. {{{
 _autoenv_debug() {
-  local msg="$1"  # Might trigger a bug in Zsh 5.0.5 with shwordsplit.
   local level=${2:-1}
-  if [[ $AUTOENV_DEBUG -lt $level ]]; then
+  if (( AUTOENV_DEBUG < level )); then
     return
   fi
+  local msg="$1"  # Might trigger a bug in Zsh 5.0.5 with shwordsplit.
   # Load zsh color support.
   if [[ -z $color ]]; then
     autoload colors
@@ -396,7 +393,7 @@ _autoenv_chpwd_handler() {
   fi
 
   local env_file="$PWD/$AUTOENV_FILE_ENTER"
-  _autoenv_debug "looking for env_file: $env_file"
+  _autoenv_debug "Looking for env_file: $env_file"
 
   # Handle leave event for previously sourced env files.
   if [[ $AUTOENV_HANDLE_LEAVE == 1 ]] && (( $#_autoenv_stack_entered )); then
