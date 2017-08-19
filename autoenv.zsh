@@ -299,7 +299,7 @@ _autoenv_source() {
 
   # Source the env file.
   _autoenv_debug "== SOURCE: ${bold_color:-}$autoenv_env_file${reset_color:-}\n      PWD: $PWD"
-  : $(( _autoenv_debug_indent++ ))
+  (( ++_autoenv_debug_indent ))
 
   local restore_xtrace
   if [[ $AUTOENV_DEBUG -gt 2 && ! -o xtrace ]]; then
@@ -310,7 +310,7 @@ _autoenv_source() {
   if (( restore_xtrace )); then
     setopt noxtrace
   fi
-  : $(( _autoenv_debug_indent-- ))
+  (( --_autoenv_debug_indent ))
   _autoenv_debug "== END SOURCE =="
 
   if [[ $autoenv_event == enter ]]; then
@@ -440,7 +440,7 @@ _autoenv_chpwd_handler() {
   _autoenv_debug "Sourcing from chpwd handler: $env_file"
   _autoenv_source $env_file enter
 
-  : $(( _autoenv_debug_indent++ ))
+  (( ++_autoenv_debug_indent ))
 }
 # }}}
 
