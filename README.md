@@ -1,5 +1,3 @@
-[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/Tarrasch/zsh-autoenv/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
-
 [![Build Status](https://travis-ci.org/Tarrasch/zsh-autoenv.svg?branch=master)](https://travis-ci.org/Tarrasch/zsh-autoenv)
 
 # Autoenv for Zsh
@@ -12,14 +10,14 @@ variables (overwriting and restoring).
 
 ## Features
 
- - Support for enter and leave events, which can use the same file.
-   By default `.autoenv.zsh` is used for entering, and `.autoenv_leave.zsh`
-   for leaving.
- - Interactively asks for confirmation / authentication before sourcing an
-   unknown `.autoenv.zsh` file, and remembers whitelisted files by their
-   hashed content.
- - Test suite.
- - Written in Zsh.
+- Support for enter and leave events, which can use the same file.
+  By default it uses `.autoenv.zsh` for entering, and `.autoenv_leave.zsh`
+  for leaving.
+- Interactively asks for confirmation / authentication before sourcing an
+  unknown `.autoenv.zsh` file, and remembers whitelisted files by their
+  hashed content.
+- Test suite.
+- Written in Zsh.
 
 ### Variable stashing
 
@@ -51,7 +49,6 @@ There is also `stash`, `unstash` and `autounstash`, in case you want to
 have more control.
 
 The varstash library has been taken from smartcd, and was optimized for Zsh.
-
 
 ## Writing your .autoenv.zsh file
 
@@ -96,35 +93,41 @@ Add the following to your `.zshrc` where you are loading your plugins:
 You can use the following variables to control zsh-autoenv's behavior.
 Add them to your `~/.zshrc` file, before sourcing/loading zsh-autoenv.
 
-### AUTOENV\_FILE\_ENTER
+### AUTOENV_FILE_ENTER
+
 Name of the file to look for when entering directories.
 
 Default: `.autoenv.zsh`
 
-### AUTOENV\_FILE\_LEAVE
+### AUTOENV_FILE_LEAVE
+
 Name of the file to look for when leaving directories.
 Requires `AUTOENV_HANDLE_LEAVE=1`.
 
 Default: `.autoenv_leave.zsh`
 
-### AUTOENV\_LOOK\_UPWARDS
+### AUTOENV_LOOK_UPWARDS
+
 Look for zsh-autoenv "enter" files in parent dirs?
 
 Default: `1`
 
-### AUTOENV\_HANDLE\_LEAVE
+### AUTOENV_HANDLE_LEAVE
+
 Handle leave events when changing away from a subtree, where an "enter"
 event was handled?
 
 Default: `1`
 
 ### AUTOENV\_DISABLED
+
 (Temporarily) disable zsh-autoenv. This gets looked at in the chpwd handler.
 
 Default: 0
 
 ### AUTOENV\_DEBUG
-Enable debugging. Multiple levels are supported (max 2).
+
+Set debug level. If enabled (> 0) it will print information to stderr.
 
 - 0: no debug messages
 - 1: generic debug logging
@@ -193,10 +196,10 @@ fi
 ```
 
 ## Related projects
-- https://github.com/direnv/direnv
-- https://github.com/cxreg/smartcd
-- https://github.com/kennethreitz/autoenv
 
+- <https://github.com/direnv/direnv>
+- <https://github.com/cxreg/smartcd>
+- <https://github.com/kennethreitz/autoenv>
 
 ## History
 
@@ -208,7 +211,7 @@ The code was initially based on
 [@joshuaclayton](https://github.com/joshuaclayton)'s dotfiles.
 In September 2013 [@Tarrasch](https://github.com/Tarrasch) packaged it into a
 nice [antigen]-compatible unit with integration tests. Since November 2014,
-[@blueyed](https://github.com/blueyed) took over and added many many nice
+[@blueyed](https://github.com/blueyed) took over and added many nice
 features, mainly inspired by [smartcd].
 
 [antigen]: https://github.com/Tarrasch/antigen-hs
