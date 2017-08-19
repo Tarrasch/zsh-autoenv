@@ -396,7 +396,7 @@ _autoenv_chpwd_handler() {
   fi
 
   local env_file="$PWD/$AUTOENV_FILE_ENTER"
-  _autoenv_debug "env_file: $env_file"
+  _autoenv_debug "looking for env_file: $env_file"
 
   # Handle leave event for previously sourced env files.
   if [[ $AUTOENV_HANDLE_LEAVE == 1 ]] && (( $#_autoenv_stack_entered )); then
@@ -422,8 +422,10 @@ _autoenv_chpwd_handler() {
   if ! [[ -f $env_file ]] && [[ $AUTOENV_LOOK_UPWARDS == 1 ]]; then
     env_file=$(_autoenv_get_file_upwards $PWD)
     if [[ -z $env_file ]]; then
+      _autoenv_debug "No env_file found when looking upwards"
       return
     fi
+    _autoenv_debug "Found env_file: $env_file"
   fi
 
   # Load the env file only once: check if $env_file is in the stack of entered
