@@ -72,13 +72,11 @@ _autoenv_stack_entered_add() {
   # Remove any existing entry.
   _autoenv_stack_entered_remove $env_file
 
-  _autoenv_debug "[stack] adding: $env_file" 2
-
   # Append it to the stack, and remember its mtime.
+  _autoenv_debug "[stack] adding: $env_file" 2
   _autoenv_stack_entered+=($env_file)
   _autoenv_stack_entered_mtime[$env_file]=$(_autoenv_get_file_mtime $env_file)
 }
-
 
 # zstat_mime helper, conditionally defined.
 # Load zstat module, but only its builtin `zstat`.
@@ -101,7 +99,6 @@ else
     zstat +mtime $1 2>/dev/null || echo 0
   }
 fi
-
 
 # Remove an entry from the stack.
 _autoenv_stack_entered_remove() {
@@ -140,11 +137,11 @@ _autoenv_stack_entered_contains() {
 
 # Internal function for debug output. {{{
 _autoenv_debug() {
-  local msg="$1"  # Might trigger a bug in Zsh 5.0.5 with shwordsplit.
   local level=${2:-1}
-  if [[ $AUTOENV_DEBUG -lt $level ]]; then
+  if (( AUTOENV_DEBUG < level )); then
     return
   fi
+  local msg="$1"  # Might trigger a bug in Zsh 5.0.5 with shwordsplit.
   # Load zsh color support.
   if [[ -z $color ]]; then
     autoload colors
@@ -293,7 +290,7 @@ _autoenv_source() {
   # XXX: pollutes environment with e.g. `stash`, and `autostash` will cause
   # an overwritten `stash` function to be called!
   if ! (( $+functions[autostash] )); then
-    if \grep -qE '\b(autostash|autounstash|stash)\b' $autoenv_env_file; then
+    if \grep -qE '\b(autostash|autounstash|stash|unstash)\b' $autoenv_env_file; then
       source ${${funcsourcetrace[1]%:*}:h}/lib/varstash
     fi
     # NOTE: Varstash uses $PWD as default for varstash_dir, we might set it to
@@ -302,7 +299,7 @@ _autoenv_source() {
 
   # Source the env file.
   _autoenv_debug "== SOURCE: ${bold_color:-}$autoenv_env_file${reset_color:-}\n      PWD: $PWD"
-  : $(( _autoenv_debug_indent++ ))
+  (( ++_autoenv_debug_indent ))
 
   local restore_xtrace
   if [[ $AUTOENV_DEBUG -gt 2 && ! -o xtrace ]]; then
@@ -313,7 +310,7 @@ _autoenv_source() {
   if (( restore_xtrace )); then
     setopt noxtrace
   fi
-  : $(( _autoenv_debug_indent-- ))
+  (( --_autoenv_debug_indent ))
   _autoenv_debug "== END SOURCE =="
 
   if [[ $autoenv_event == enter ]]; then
@@ -396,7 +393,7 @@ _autoenv_chpwd_handler() {
   fi
 
   local env_file="$PWD/$AUTOENV_FILE_ENTER"
-  _autoenv_debug "looking for env_file: $env_file"
+  _autoenv_debug "Looking for env_file: $env_file"
 
   # Handle leave event for previously sourced env files.
   if [[ $AUTOENV_HANDLE_LEAVE == 1 ]] && (( $#_autoenv_stack_entered )); then
@@ -443,7 +440,7 @@ _autoenv_chpwd_handler() {
   _autoenv_debug "Sourcing from chpwd handler: $env_file"
   _autoenv_source $env_file enter
 
-  : $(( _autoenv_debug_indent++ ))
+  (( ++_autoenv_debug_indent ))
 }
 # }}}
 
