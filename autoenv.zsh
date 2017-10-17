@@ -406,7 +406,7 @@ _autoenv_chpwd_handler() {
       if ! [[ ${PWD}/ == ${prev_dir}/* ]]; then
         local env_file_leave=$prev_dir/$AUTOENV_FILE_LEAVE
         if _autoenv_check_authorized_env_file $env_file_leave; then
-          _autoenv_source $env_file_leave leave $prev_dir
+          varstash_dir=$prev_dir _autoenv_source $env_file_leave leave $prev_dir
         fi
 
         # Unstash any autostashed stuff.
