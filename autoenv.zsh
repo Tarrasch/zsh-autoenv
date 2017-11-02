@@ -339,7 +339,7 @@ _autoenv_get_file_upwards() {
       if [[ ${parent_file[1,2]} == './' ]]; then
         echo ${parent_file#./}
       else
-        echo ${parent_file:A}
+        echo ${parent_file:a}
       fi
       break
     fi

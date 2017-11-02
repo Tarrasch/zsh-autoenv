@@ -17,6 +17,15 @@ Should not get the file from the current dir.
   $ _autoenv_get_file_upwards $PWD file
   */_autoenv_utils.t/sub/file (glob)
 
+_autoenv_get_file_upwards should not dereference symlinks.
+
+  $ cd ../..
+  $ ln -s sub symlink
+  $ cd symlink/sub2
+  $ _autoenv_get_file_upwards . file
+  ../file
+  $ _autoenv_get_file_upwards $PWD file
+  */_autoenv_utils.t/symlink/file (glob)
 
 Tests for _autoenv_authorize. {{{
 
