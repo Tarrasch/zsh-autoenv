@@ -169,7 +169,7 @@ if [[ $autoenv_event == 'enter' ]]; then
 
     setopt localoptions extendedglob
     local -a venv
-    venv=(./(../)#.venv(NY1:A))
+    venv=(./(../)#.venv(NY1:a))
 
     if [[ -n "$_ZSH_ACTIVATED_VIRTUALENV" && -n "$VIRTUAL_ENV" ]]; then
       if ! (( $#venv )) || [[ "$_ZSH_ACTIVATED_VIRTUALENV" != "$venv[1]" ]]; then
