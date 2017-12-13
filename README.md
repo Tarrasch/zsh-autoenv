@@ -119,13 +119,13 @@ event was handled?
 
 Default: `1`
 
-### AUTOENV\_DISABLED
+### AUTOENV_DISABLED
 
 (Temporarily) disable zsh-autoenv. This gets looked at in the chpwd handler.
 
 Default: 0
 
-### AUTOENV\_DEBUG
+### AUTOENV_DEBUG
 
 Set debug level. If enabled (> 0) it will print information to stderr.
 

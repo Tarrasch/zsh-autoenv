@@ -298,7 +298,7 @@ _autoenv_source() {
   fi
 
   # Source the env file.
-  _autoenv_debug "== SOURCE: ${bold_color:-}$autoenv_env_file${reset_color:-}\n      PWD: $PWD"
+  _autoenv_debug "== SOURCE: $autoenv_event: ${bold_color:-}$autoenv_env_file${reset_color:-} (in $PWD)"
   (( ++_autoenv_debug_indent ))
 
   local restore_xtrace
@@ -402,6 +402,7 @@ _autoenv_chpwd_handler() {
       prev_dir=${prev_file:h}
       if ! [[ ${PWD}/ == ${prev_dir}/* ]]; then
         local env_file_leave=$prev_dir/$AUTOENV_FILE_LEAVE
+        _autoenv_debug "Handling leave event: $env_file_leave"
         if _autoenv_check_authorized_env_file $env_file_leave; then
           varstash_dir=$prev_dir _autoenv_source $env_file_leave leave $prev_dir
         fi
@@ -439,8 +440,6 @@ _autoenv_chpwd_handler() {
   # Source the enter env file.
   _autoenv_debug "Sourcing from chpwd handler: $env_file"
   _autoenv_source $env_file enter
-
-  (( ++_autoenv_debug_indent ))
 }
 # }}}
 
