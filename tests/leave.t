@@ -12,7 +12,7 @@ Change to the directory.
   $ _autoenv_ask_for_yes() { echo "yes"; return 0 }
   $ cd .
   Attempting to load unauthorized env file!
-  -* /tmp/cramtests-*/leave.t/sub/.autoenv.zsh (glob)
+  -* /*/cramtests-*/leave.t/sub/.autoenv.zsh (glob)
   
   **********************************************
   
@@ -29,7 +29,7 @@ Leave the directory and answer "no".
   $ _autoenv_ask_for_yes() { echo "no"; return 1 }
   $ cd ..
   Attempting to load unauthorized env file!
-  -* /tmp/cramtests-*/leave.t/sub/.autoenv_leave.zsh (glob)
+  -* /*/cramtests-*/leave.t/sub/.autoenv_leave.zsh (glob)
   
   **********************************************
   
@@ -45,7 +45,7 @@ Leave the directory and answer "no".
   $ _autoenv_ask_for_yes() { echo "yes"; return 0 }
   $ cd ..
   Attempting to load unauthorized env file!
-  -* /tmp/cramtests-*/leave.t/sub/.autoenv_leave.zsh (glob)
+  -* /*/cramtests-*/leave.t/sub/.autoenv_leave.zsh (glob)
   
   **********************************************
   
