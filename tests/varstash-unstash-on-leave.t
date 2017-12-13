@@ -4,7 +4,7 @@ Test unstash behavior on leaving.
 
 Setup test environment.
 
-  $ mkdir sub
+  $ mkdir -p sub/sub2
   $ echo 'echo ENTER; stash FOO=changed' >| sub/$AUTOENV_FILE_ENTER
   $ echo 'echo LEAVE; unstash FOO' >| sub/$AUTOENV_FILE_LEAVE
   $ test_autoenv_auth_env_files sub
@@ -12,14 +12,14 @@ Setup test environment.
 
 Activating the env stashes it and applies a new value.
 
-  $ cd sub
+  $ cd sub/sub2
   ENTER
   $ echo $FOO
   changed
 
 Leaving the directory unstashes it (varstash_dir is set to prev dir).
 
-  $ cd ..
+  $ cd -
   LEAVE
   $ echo $FOO
   orig
