@@ -17,7 +17,7 @@ Now try to make it accept it
   $ _autoenv_ask_for_yes() { echo "yes" }
   $ cd .
   Attempting to load unauthorized env file!
-  -* /tmp/cramtests-*/autoenv.t/.autoenv.zsh (glob)
+  -* /*/cramtests-*/autoenv.t/.autoenv.zsh (glob)
   
   **********************************************
   
@@ -42,7 +42,7 @@ Now lets see that it actually checks the shasum value.
   $ test_autoenv_add_to_env $PWD/.autoenv.zsh mischief
   $ cd .
   Attempting to load unauthorized env file!
-  -* /tmp/cramtests-*/autoenv.t/.autoenv.zsh (glob)
+  -* /*/cramtests-*/autoenv.t/.autoenv.zsh (glob)
   
   **********************************************
   
@@ -61,7 +61,7 @@ Now, will it take no for an answer?
   $ _autoenv_ask_for_yes() { echo "no"; return 1 }
   $ cd .
   Attempting to load unauthorized env file!
-  -* /tmp/cramtests-*/autoenv.t/.autoenv.zsh (glob)
+  -* /*/cramtests-*/autoenv.t/.autoenv.zsh (glob)
   
   **********************************************
   
@@ -77,7 +77,7 @@ Lets also try one more time to ensure it didn't add it.
   $ _autoenv_ask_for_yes() { echo "yes"; return 0 }
   $ cd .
   Attempting to load unauthorized env file!
-  -* /tmp/cramtests-*/autoenv.t/.autoenv.zsh (glob)
+  -* /*/cramtests-*/autoenv.t/.autoenv.zsh (glob)
   
   **********************************************
   

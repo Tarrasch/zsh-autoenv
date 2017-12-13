@@ -11,11 +11,6 @@
 
 export AUTOENV_AUTH_FILE="$CRAMTMP/autoenv/.autoenv_auth"
 
-if [[ $AUTOENV_AUTH_FILE[0,4] != '/tmp' ]]; then
-  echo "AUTOENV_AUTH_FILE is not in /tmp. Aborting."
-  return 1
-fi
-
 # Abort this setup script on any error.
 _save_errexit=${options[errexit]}
 set -e

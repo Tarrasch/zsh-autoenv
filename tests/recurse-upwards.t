@@ -115,7 +115,7 @@ First, let's answer "no".
   $ cd sub
   autoenv_source_parent_from_sub:
   Attempting to load unauthorized env file!
-  -* /tmp/cramtests-*/recurse-upwards.t/.autoenv.zsh (glob)
+  -* /*/cramtests-*/recurse-upwards.t/.autoenv.zsh (glob)
   
   **********************************************
   
@@ -140,7 +140,7 @@ Touching the .autoenv.zsh file will now source the parent env file.
   $ cd .
   autoenv_source_parent_from_sub:
   Attempting to load unauthorized env file!
-  -* /tmp/cramtests-*/recurse-upwards.t/.autoenv.zsh (glob)
+  -* /*/cramtests-*/recurse-upwards.t/.autoenv.zsh (glob)
   
   **********************************************
   

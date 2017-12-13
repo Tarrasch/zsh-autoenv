@@ -19,7 +19,7 @@ This also tests that there are no empty lines being added to the auth file when
 de-authenticating the old hash.
 
   $ cat $AUTOENV_AUTH_FILE
-  :/tmp/cramtests-*/upgrade_hash.t/sub/.autoenv.zsh:3679467995.13:2 (glob)
+  :/*/cramtests-*/upgrade_hash.t/sub/.autoenv.zsh:3679467995.13:2 (glob)
 
 Re-create auth file with v1 hashes for both auth files.
 
@@ -31,13 +31,13 @@ Only the leave file's hash should get updated.
   $ cd ..
   LEAVE
   $ cat $AUTOENV_AUTH_FILE
-  :/tmp/cramtests-*/upgrade_hash.t/sub/.autoenv.zsh:4c403f1870af2ab5472370a42b6b2b488cefe83c:1 (glob)
-  :/tmp/cramtests-*/upgrade_hash.t/sub/.autoenv_leave.zsh:803077150.11:2 (glob)
+  :/*/cramtests-*/upgrade_hash.t/sub/.autoenv.zsh:4c403f1870af2ab5472370a42b6b2b488cefe83c:1 (glob)
+  :/*/cramtests-*/upgrade_hash.t/sub/.autoenv_leave.zsh:803077150.11:2 (glob)
 
 The enter file's hash should get updated.
 
   $ cd sub
   ENTERED
   $ cat $AUTOENV_AUTH_FILE
-  :/tmp/cramtests-*/upgrade_hash.t/sub/.autoenv_leave.zsh:803077150.11:2 (glob)
-  :/tmp/cramtests-*/upgrade_hash.t/sub/.autoenv.zsh:3679467995.13:2 (glob)
+  :/*/cramtests-*/upgrade_hash.t/sub/.autoenv_leave.zsh:803077150.11:2 (glob)
+  :/*/cramtests-*/upgrade_hash.t/sub/.autoenv.zsh:3679467995.13:2 (glob)
