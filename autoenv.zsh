@@ -293,8 +293,6 @@ _autoenv_source() {
     if \grep -qE '\b(autostash|autounstash|stash|unstash)\b' $autoenv_env_file; then
       source ${${funcsourcetrace[1]%:*}:h}/lib/varstash
     fi
-    # NOTE: Varstash uses $PWD as default for varstash_dir, we might set it to
-    # ${autoenv_env_file:h}.
   fi
 
   # Source the env file.
@@ -306,7 +304,8 @@ _autoenv_source() {
     restore_xtrace=1
     setopt localoptions xtrace
   fi
-  source $autoenv_env_file
+
+  varstash_dir=${autoenv_env_file:h} source $autoenv_env_file
   if (( restore_xtrace )); then
     setopt noxtrace
   fi
