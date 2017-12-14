@@ -1,6 +1,5 @@
-language: python
-python:
-  - 3.4
+language: generic
+sudo: false
 env:
   - ZSH=4 ZDOTDIR=tests/ZDOTDIR
   - ZSH=4 ZDOTDIR=tests/ZDOTDIR.clobber
@@ -15,7 +14,7 @@ env:
 install:
   - if [ "$ZSH" = 4 ]; then sudo apt-get install zsh; fi
   - if [ "$ZSH" = 5 ]; then wget http://downloads.sourceforge.net/project/zsh/zsh/5.0.7/zsh-5.0.7.tar.bz2; tar xf zsh-5.0.7.tar.bz2; cd zsh-5.0.7; ./configure && sudo make && sudo make install; cd ..; fi
-  - pip install cram
+  - pip install --user cram
   - export SHELL=zsh
 script:
   - zsh --version
