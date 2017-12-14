@@ -222,8 +222,8 @@ _autoenv_authorize() {
   local env_file=${1:A}
   _autoenv_deauthorize $env_file
   [[ -d ${AUTOENV_AUTH_FILE:h} ]] || mkdir -p ${AUTOENV_AUTH_FILE:h}
-  local ret_pair
   {
+    local ret_pair
     _autoenv_hash_pair $env_file && echo "$ret_pair"
   } >>| $AUTOENV_AUTH_FILE
 }
