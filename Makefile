@@ -1,16 +1,15 @@
 # Default, can be overridden using "make test ZDOTDIR=...".
 ZDOTDIR:=${CURDIR}/tests/ZDOTDIR
-
-# Export it, and make it absolute.
-override export ZDOTDIR:=$(abspath $(ZDOTDIR))
+# Make it absolute.
+override ZDOTDIR:=$(abspath $(ZDOTDIR))
 
 TEST_SHELL:=zsh
 
 test:
-	cram --shell=$(TEST_SHELL) -v tests
+	ZDOTDIR=$(ZDOTDIR) cram --shell=$(TEST_SHELL) -v tests
 
 itest:
-	cram -i --shell=$(TEST_SHELL) tests
+	ZDOTDIR=$(ZDOTDIR) cram -i --shell=$(TEST_SHELL) tests
 
 # Run tests with all ZDOTDIRs.
 test_full:
