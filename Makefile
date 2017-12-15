@@ -1,5 +1,5 @@
-# Default, can be overridden using "make test ZDOTDIR=...".
-ZDOTDIR:=${CURDIR}/tests/ZDOTDIR
+# Empty by default, can be overridden using "make test ZDOTDIR=…".
+ZDOTDIR:=
 # Make it absolute.
 override ZDOTDIR:=$(abspath $(ZDOTDIR))
 

@@ -1,12 +1,12 @@
 language: generic
 sudo: false
 env:
-  - ZSH=4 ZDOTDIR=tests/ZDOTDIR
+  - ZSH=4
   - ZSH=4 ZDOTDIR=tests/ZDOTDIR.clobber
   - ZSH=4 ZDOTDIR=tests/ZDOTDIR.invalid-module_path
   - ZSH=4 ZDOTDIR=tests/ZDOTDIR.loadviafunction
 
-  - ZSH=5 ZDOTDIR=tests/ZDOTDIR
+  - ZSH=5
   - ZSH=5 ZDOTDIR=tests/ZDOTDIR.clobber
   - ZSH=5 ZDOTDIR=tests/ZDOTDIR.invalid-module_path
   - ZSH=5 ZDOTDIR=tests/ZDOTDIR.loadviafunction

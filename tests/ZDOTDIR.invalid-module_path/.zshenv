@@ -9,6 +9,3 @@ module_path=(/dev/null)
 zstat() {
   echo "Should not get called."
 }
-
-# Source base setup.
-source ${ZDOTDIR}/../ZDOTDIR/.zshenv
