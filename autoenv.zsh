@@ -117,8 +117,9 @@ _autoenv_stack_entered_contains() {
     # Entry is in stack.
     f=$env_file
   else
+    local env_file_abs=${env_file:A}
     for i in $_autoenv_stack_entered; do
-      if [[ ${i:A} == ${env_file:A} ]]; then
+      if [[ ${i:A} == ${env_file_abs} ]]; then
         # Entry is in stack (compared with resolved symlinks).
         f=$i
         break
