@@ -192,30 +192,43 @@ _autoenv_hash_pair() {
 }
 
 
-# Checks for the existence of a hash signature in the auth file
-_autoenv_authorized_pair() {
-  local pair=$1
-  test -f $AUTOENV_AUTH_FILE \
-    && \grep -qF $pair $AUTOENV_AUTH_FILE
-}
-
-
+# Check if a given env_file is authorized.
 _autoenv_authorized_env_file() {
   local env_file=$1
+  local env_file_abs=${env_file:A}
   local ret_pair
-  _autoenv_hash_pair $env_file
-  _autoenv_debug "v2 pair: ${ret_pair}"
-  if ! _autoenv_authorized_pair $ret_pair; then
+
+  local -a lines
+  if [[ -f $AUTOENV_AUTH_FILE ]]; then
+    lines=( ${(M)"${(f@)"$(< $AUTOENV_AUTH_FILE)"}":#:$env_file_abs:*} )
+  fi
+  if [[ -z $lines ]]; then
+    return 1
+  fi
+
+  if (( $#lines != 1 )); then
+    echo "zsh-autoenv: found unexpected number ($#lines) of auth entries for $env_file in $AUTOENV_AUTH_FILE." >&2
+    echo $lines
+  fi
+  line=${lines[-1]}
+
+  if [[ $line == *:2 ]]; then
+    _autoenv_hash_pair $env_file
+    _autoenv_debug "Checking v2 pair: ${ret_pair}"
+    if [[ $line == $ret_pair ]]; then
+      return
+    fi
+  elif [[ $line == *:1 ]]; then
     # Fallback for v1 (SHA-1) pairs
+    _autoenv_debug "Checking v1 pair: ${ret_pair}"
     _autoenv_hash_pair $env_file 1
-    _autoenv_debug "v1 pair: ${ret_pair}"
-    if _autoenv_authorized_pair $ret_pair; then
+    if [[ $line == $ret_pair ]]; then
       # Upgrade v1 entries to v2
       _autoenv_authorize $env_file
-    else
-      return 1
+      return
     fi
   fi
+  return 1
 }
 
 _autoenv_authorize() {
