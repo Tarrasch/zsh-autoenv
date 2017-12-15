@@ -2,20 +2,12 @@ language: generic
 sudo: false
 env:
   - ZSH=4
-  - ZSH=4 ZDOTDIR=tests/ZDOTDIR.options
-  - ZSH=4 ZDOTDIR=tests/ZDOTDIR.invalid-module_path
-  - ZSH=4 ZDOTDIR=tests/ZDOTDIR.loadviafunction
-
   - ZSH=5
-  - ZSH=5 ZDOTDIR=tests/ZDOTDIR.options
-  - ZSH=5 ZDOTDIR=tests/ZDOTDIR.invalid-module_path
-  - ZSH=5 ZDOTDIR=tests/ZDOTDIR.loadviafunction
 
 install:
   - if [ "$ZSH" = 4 ]; then sudo apt-get install zsh; fi
   - if [ "$ZSH" = 5 ]; then wget http://downloads.sourceforge.net/project/zsh/zsh/5.0.7/zsh-5.0.7.tar.bz2; tar xf zsh-5.0.7.tar.bz2; cd zsh-5.0.7; ./configure && sudo make && sudo make install; cd ..; fi
   - pip install --user cram
-  - export SHELL=zsh
 script:
   - zsh --version
-  - make test ZDOTDIR=$ZDOTDIR
+  - make test_full
