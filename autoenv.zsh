@@ -178,11 +178,11 @@ _autoenv_hash_pair() {
       echo "Missing file argument for _autoenv_hash_pair!" >&2
       return 1
     fi
-    if [ $cksum_version = 2 ]; then
+    if [[ $cksum_version = 2 ]]; then
       # Get the output from `cksum` and join the first two words with a dot.
       env_cksum=${(j:.:)${:-$(cksum "$env_file")}[1,2]}
-    elif [ $cksum_version = 1 ]; then
-      env_cksum=$(shasum $env_file | cut -d' ' -f1)
+    elif [[ $cksum_version = 1 ]]; then
+      env_cksum=$(sha1sum $env_file | cut -d' ' -f1)
     else
       echo "Invalid version argument (${cksum_version}) for _autoenv_hash_pair!" >&2
       return 1
