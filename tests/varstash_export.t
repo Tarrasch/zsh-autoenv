@@ -29,20 +29,20 @@ Activating the env stashes it and applies a new value.
 
 The variable is not available in a subshell, only the exported one.
 
-  $ $SHELL -c 'echo ${MYVAR:-empty}; echo $MYEXPORT'
+  $ $TESTSHELL -c 'echo ${MYVAR:-empty}; echo $MYEXPORT'
   empty
   changed_export
 
 Activate autoenv in the subshell.
 
-  $ $SHELL -c "$TEST_SOURCE_AUTOENV; echo \${MYVAR}; echo \$MYEXPORT"
+  $ $TESTSHELL -c "$TEST_SOURCE_AUTOENV; echo \${MYVAR}; echo \$MYEXPORT"
   ENTER
   changed
   changed_export
 
 "autounstash" should handle the exported variables.
 
-  $ $SHELL -c "$TEST_SOURCE_AUTOENV; cd ..; echo \${MYVAR:-empty}; echo \$MYEXPORT"
+  $ $TESTSHELL -c "$TEST_SOURCE_AUTOENV; cd ..; echo \${MYVAR:-empty}; echo \$MYEXPORT"
   ENTER
   LEAVE
   empty
