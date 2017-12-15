@@ -15,7 +15,10 @@ export AUTOENV_AUTH_FILE="$CRAMTMP/autoenv/.autoenv_auth"
 _save_errexit=${options[errexit]}
 set -e
 
-# Defined in .zshenv, e.g. tests/ZDOTDIR/.zshenv.
+# Can be defined in .zshenv, e.g. tests/ZDOTDIR.loadviafunction/.zshenv.
+if [[ -z $TEST_SOURCE_AUTOENV ]]; then
+  TEST_SOURCE_AUTOENV=(source $TESTDIR/../autoenv.plugin.zsh)
+fi
 $TEST_SOURCE_AUTOENV
 
 # Reset any authentication.
