@@ -18,4 +18,4 @@ install:
   - export SHELL=zsh
 script:
   - zsh --version
-  - make test
+  - make test ZDOTDIR=$ZDOTDIR
