@@ -7,6 +7,7 @@ override export ZDOTDIR:=$(abspath $(ZDOTDIR))
 TEST_SHELL:=zsh
 
 test:
+	$(TEST_SHELL) --version
 	cram --shell=$(TEST_SHELL) -v tests
 
 itest:
@@ -14,14 +15,12 @@ itest:
 
 # Run tests with all ZDOTDIRs.
 test_full:
-	for zsh in zsh /opt/zsh-4.3.9/bin/zsh; do \
-		command -v $$zsh || { echo "Skipping non-existing shell: $$zsh"; continue; }; \
-		ret=0; \
-		for i in $(wildcard tests/ZDOTDIR*); do \
-			echo "zsh=$zsh ZDOTDIR=$$i"; \
-			SHELL=$$zsh ZDOTDIR=${CURDIR}/$$i cram --shell=$$zsh -v tests || ret=$$?; \
-			echo; \
-		done; \
+	$(TEST_SHELL) --version
+	ret=0; \
+	for i in $(wildcard tests/ZDOTDIR*); do \
+		echo "== ZDOTDIR=$$i =="; \
+		$(MAKE) test TEST_SHELL=$(TEST_SHELL) ZDOTDIR=${CURDIR}/$$i || ret=$$((ret+1)); \
+		echo; \
 	done; \
 	exit $$ret
 
