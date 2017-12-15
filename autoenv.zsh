@@ -172,6 +172,7 @@ _autoenv_hash_pair() {
   local env_file=${1:A}
   local cksum_version=${2:-2}
   local env_cksum=${3:-}
+  ret_pair=
   if [[ -z $env_cksum ]]; then
     if ! [[ -e $env_file ]]; then
       echo "Missing file argument for _autoenv_hash_pair!" >&2
@@ -187,7 +188,7 @@ _autoenv_hash_pair() {
       return 1
     fi
   fi
-  echo ":${env_file}:${env_cksum}:${cksum_version}"
+  ret_pair=":${env_file}:${env_cksum}:${cksum_version}"
 }
 
 
@@ -201,14 +202,14 @@ _autoenv_authorized_pair() {
 
 _autoenv_authorized_env_file() {
   local env_file=$1
-  local pair
-  pair=$(_autoenv_hash_pair $env_file)
-  _autoenv_debug "v2 pair: ${pair}"
-  if ! _autoenv_authorized_pair $pair; then
+  local ret_pair
+  _autoenv_hash_pair $env_file
+  _autoenv_debug "v2 pair: ${ret_pair}"
+  if ! _autoenv_authorized_pair $ret_pair; then
     # Fallback for v1 (SHA-1) pairs
-    pair=$(_autoenv_hash_pair $env_file 1)
-    _autoenv_debug "v1 pair: ${pair}"
-    if _autoenv_authorized_pair $pair; then
+    _autoenv_hash_pair $env_file 1
+    _autoenv_debug "v1 pair: ${ret_pair}"
+    if _autoenv_authorized_pair $ret_pair; then
       # Upgrade v1 entries to v2
       _autoenv_authorize $env_file
     else
@@ -221,7 +222,10 @@ _autoenv_authorize() {
   local env_file=${1:A}
   _autoenv_deauthorize $env_file
   [[ -d ${AUTOENV_AUTH_FILE:h} ]] || mkdir -p ${AUTOENV_AUTH_FILE:h}
-  _autoenv_hash_pair $env_file >>| $AUTOENV_AUTH_FILE
+  {
+    local ret_pair
+    _autoenv_hash_pair $env_file && echo "$ret_pair"
+  } >>| $AUTOENV_AUTH_FILE
 }
 
 # Deauthorize a given filename, by removing it from the auth file.
