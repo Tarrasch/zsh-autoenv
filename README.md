@@ -8,6 +8,10 @@ typically used in project root directories.
 It handles "enter" and leave" events, nesting, and stashing of
 variables (overwriting and restoring).
 
+## Requirements
+
+- Zsh version 4.3.10 or later.
+
 ## Features
 
 - Support for enter and leave events, which can use the same file.
@@ -17,7 +21,7 @@ variables (overwriting and restoring).
   unknown `.autoenv.zsh` file, and remembers whitelisted files by their
   hashed content.
 - Test suite.
-- Written in Zsh.
+- Written in/for Zsh.
 
 ### Variable stashing
 
