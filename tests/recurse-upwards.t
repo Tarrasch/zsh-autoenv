@@ -71,7 +71,7 @@ Move sub/.autoenv.zsh away, now the root .autoenv.zsh file should get sourced.
 Prepend call to autoenv_source_parent to sub/.autoenv.zsh file.
 
   $ cd ..
-  $ sed -i -e "1s/^/echo autoenv_source_parent_from_sub:\nautoenv_source_parent\n/" .autoenv.zsh
+  $ echo -e "echo autoenv_source_parent_from_sub:\nautoenv_source_parent\n$(cat .autoenv.zsh)" >| .autoenv.zsh
   $ echo "echo done_sub" >> .autoenv.zsh
   $ touch -t 201401010103 .autoenv.zsh
   $ test_autoenv_auth_env_files
