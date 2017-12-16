@@ -364,12 +364,13 @@ _autoenv_get_file_upwards() {
     if [[ $abs_parent_dir == $look_until ]]; then
       break
     fi
-    last=$parent_dir
+    last=$abs_parent_dir
     parent_dir="${parent_dir}/.."
   done
 }
 
 autoenv-edit() {
+  emulate -L zsh
   local env_file
   local -a files
   local -A check
@@ -402,6 +403,7 @@ autoenv-edit() {
 }
 
 _autoenv_chpwd_handler() {
+  emulate -L zsh
   _autoenv_debug "Calling chpwd handler: PWD=$PWD"
 
   if (( $AUTOENV_DISABLED )); then

@@ -90,3 +90,19 @@ Look up to "/" (default).
   autoenv_source_parent_from_sub3:
   ENTERED_sub: PWD:sub3 from:sub to:sub3
   done_sub3
+
+Handles dirs with spaces.
+
+  $ mkdir "dir with space"
+  $ echo "echo entered \$PWD\n" >| "dir with space/.autoenv.zsh"
+  $ test_autoenv_add_to_env "dir with space/.autoenv.zsh"
+  $ cd "dir with space"
+  entered */dir with space (glob)
+
+Handles dirs with spaces outside any root (should not hang).
+
+  $ cd $CRAMTMP || exit
+  LEFT_root: * (glob)
+  LEFT_sub: * (glob)
+  $ mkdir "dir with space"
+  $ cd "dir with space"

@@ -96,3 +96,7 @@ of _autoenv_get_file_mtime (via ZDOTDIR.invalid-module_path/).
   $ touch -t 201401010102 dir
   $ _autoenv_get_file_mtime dir
   1388538120
+
+Stops when last (absolute) path does not change anymore.
+
+  $ _autoenv_get_file_upwards / doesnotexist nevermatches
