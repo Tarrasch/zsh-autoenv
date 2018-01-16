@@ -149,6 +149,24 @@ zsh-autoenv works automatically once installed.
 You can use ``autoenv-edit`` to edit the nearest/current autoenv files.
 It will use ``$AUTOENV_EDITOR``, ``$EDITOR``, or ``vim`` for editing.
 
+## Helper functions
+
+The following helper functions are available:
+
+### autoenv_append_path
+
+Appends path(s) to `$path` (`$PATH`), if they are not in there already.
+
+### autoenv_prepend_path
+
+Prepends path(s) to `$path` (`$PATH`), if they are not in there already.
+
+### autoenv_remove_path
+
+Removes path(s) from `$path` (`$PATH`).
+
+Returns 0 in case `$path` has changed, 1 otherwise.
+
 ## Recipes
 
 ### Automatically activate Python virtualenvs
