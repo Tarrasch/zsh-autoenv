@@ -392,19 +392,51 @@ _autoenv_get_file_upwards() {
   done
 }
 
+# Helper function to edit enter/leave files.
 autoenv-edit() {
   emulate -L zsh
-  local env_file
-  local -a files
+
   local -A check
   check[enter]=$AUTOENV_FILE_ENTER
   if [[ "$AUTOENV_FILE_ENTER" != "$AUTOENV_FILE_LEAVE" ]]; then
     check[leave]=$AUTOENV_FILE_LEAVE
   fi
-  local f t
+
+  local -a opts
+  zmodload -i zsh/zutil
+  zparseopts -D -a opts c h l
+  if (( $opts[(I)-h] )); then
+    echo "Edit or create files (${(j:, :)check}) in DIR."
+    echo 'DIR defaults to the current directory (looking upward).'
+    echo "$0 [-h] [-c] [-l] [DIR]"
+    echo ' -h: this help'
+    echo ' -c: create new files (uses non-existing files with the editor)'
+    echo ' -l: list files to be edited'
+    return
+  fi
+  local create=$(( opts[(I)-c] > 0 ))
+  local use_dir=0 dir
+  if [[ -n $1 ]]; then
+    use_dir=1
+    if [[ "$1" == . ]]; then
+      dir=
+    else
+      dir=${1#/}/
+    fi
+  elif (( create )); then
+    use_dir=1
+  fi
+
+  local f t env_file
+  local -a files
   for t f in ${(kv)check}; do
-    env_file="$f"
-    if ! [[ -f $env_file ]]; then
+    env_file=${dir}${f}
+    if (( use_dir )); then
+      if ! (( create )) && ! [[ -f $env_file ]]; then
+        echo "No $f file found ($t)." >&2
+        continue
+      fi
+    elif ! [[ -f $env_file ]]; then
       env_file=$(_autoenv_get_file_upwards . $f)
       if [[ -z $env_file ]]; then
         echo "No $f file found ($t)." >&2
@@ -417,12 +449,18 @@ autoenv-edit() {
     files+=($env_file)
   done
   if [[ -z "$files" ]]; then
+    echo "Use -c to create the file(s)." >&2
     return 1
   fi
-  echo "Editing $files.."
-  local editor
-  editor="${${AUTOENV_EDITOR:-$EDITOR}:-vim}"
-  eval $editor "$files"
+
+  if (( opts[(I)-l] > 0 )); then
+    printf '%s\n' $files
+  else
+    echo "Editing $files.."
+    local editor
+    editor="${${AUTOENV_EDITOR:-$EDITOR}:-vim}"
+    eval $editor "$files"
+  fi
 }
 
 _autoenv_chpwd_handler() {
