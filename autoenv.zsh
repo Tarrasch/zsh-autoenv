@@ -59,6 +59,29 @@ autoenv_source_parent() {
   fi
 }
 
+autoenv_append_path() {
+  local i
+  for i; do
+    (( ${path[(i)$i]} <= ${#path} )) && continue
+    path+=($i)
+  done
+}
+autoenv_prepend_path() {
+  local i
+  for i; do
+    (( ${path[(i)$i]} <= ${#path} )) && continue
+    path=($i $path)
+  done
+}
+autoenv_remove_path() {
+  local i
+  local old_path=$path
+  for i; do
+    path=("${(@)path:#$i}")
+  done
+  [[ $old_path != $path ]]
+}
+
 # Internal functions. {{{
 # Internal: stack of loaded env files (i.e. entered directories). {{{
 typeset -g -a _autoenv_stack_entered
