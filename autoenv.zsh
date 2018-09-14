@@ -476,6 +476,7 @@ _autoenv_chpwd_handler() {
   fi
 
   if ! _autoenv_check_authorized_env_file $env_file; then
+    _autoenv_debug "Not authorized: $env_file"
     return
   fi
 
