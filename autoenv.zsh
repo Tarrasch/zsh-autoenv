@@ -75,7 +75,8 @@ autoenv_prepend_path() {
 }
 autoenv_remove_path() {
   local i
-  local old_path=$path
+  local old_path
+  old_path=$path
   for i; do
     path=("${(@)path:#$i}")
   done
