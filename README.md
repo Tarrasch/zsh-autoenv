@@ -80,6 +80,14 @@ Clone the repository and source it from your `~/.zshrc` file:
 
     antigen-bundle Tarrasch/zsh-autoenv
 
+### Using [Fig](https://fig.io)
+
+Fig adds apps, shortcuts, and autocomplete to your existing terminal.
+
+Install `zsh-autoenv` in just one click.
+
+<a href="https://fig.io/plugins/other/zsh-autoenv_Tarrasch" target="_blank"><img src="https://fig.io/badges/install-with-fig.svg" /></a>
+
 ### Using [zgen](https://github.com/tarjoilija/zgen)
 
 Add the following to your `.zshrc` where you are loading your plugins:
