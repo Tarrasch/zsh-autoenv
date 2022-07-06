@@ -429,6 +429,9 @@ _autoenv_chpwd_handler() {
   emulate -L zsh
   _autoenv_debug "Calling chpwd handler: PWD=$PWD"
 
+  autoload -U add-zsh-hook
+  add-zsh-hook -d precmd _autoenv_chpwd_handler
+
   if (( $AUTOENV_DISABLED )); then
     _autoenv_debug "Disabled (AUTOENV_DISABLED)."
     return
@@ -490,4 +493,5 @@ autoload -U add-zsh-hook
 add-zsh-hook chpwd _autoenv_chpwd_handler
 
 # Look in current directory already.
-_autoenv_chpwd_handler
+add-zsh-hook precmd _autoenv_chpwd_handler
+# _autoenv_chpwd_handler immediately removes itself from this array.
