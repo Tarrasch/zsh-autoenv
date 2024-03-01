@@ -162,6 +162,7 @@ _autoenv_stack_entered_contains() {
 # Internal function for debug output. {{{
 _autoenv_debug() {
   local level=${2:-1}
+  local line
   if (( AUTOENV_DEBUG < level )); then
     return
   fi
