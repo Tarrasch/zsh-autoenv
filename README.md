@@ -146,6 +146,8 @@ Default: `0`
 
 zsh-autoenv works automatically once installed.
 
+### autoenv-edit
+
 You can use ``autoenv-edit`` to edit the nearest/current autoenv files.
 It will use ``$AUTOENV_EDITOR``, ``$EDITOR``, or ``vim`` for editing.
 

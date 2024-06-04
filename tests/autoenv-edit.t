@@ -5,6 +5,7 @@
   $ autoenv-edit
   No .autoenv.zsh file found (enter).
   No .autoenv_leave.zsh file found (leave).
+  Use -c to create the file(s).
   [1]
 
   $ touch .autoenv.zsh
@@ -66,3 +67,21 @@ Note with AUTOENV_LOOK_UPWARDS=0
   $ autoenv-edit
   Note: found ../.autoenv.zsh, but AUTOENV_LOOK_UPWARDS is disabled.
   Editing ../.autoenv.zsh .autoenv_leave.zsh..
+
+autoenv-edit -c edits non-existing files.
+
+  $ EDITOR=true
+  $ AUTOENV_FILE_ENTER=enter-file AUTOENV_FILE_LEAVE=leave-file autoenv-edit -c
+  Editing enter-file leave-file..
+
+  $ AUTOENV_FILE_ENTER=enter-file AUTOENV_FILE_LEAVE=leave-file autoenv-edit -c .
+  Editing enter-file leave-file..
+
+  $ AUTOENV_FILE_ENTER=enter-file AUTOENV_FILE_LEAVE=leave-file autoenv-edit -c ..
+  Editing ../enter-file ../leave-file..
+
+autoenv-edit -l lists files.
+
+  $ AUTOENV_LOOK_UPWARDS=1 autoenv-edit -l
+  ../.autoenv.zsh
+  .autoenv_leave.zsh
