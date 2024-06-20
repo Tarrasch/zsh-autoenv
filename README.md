@@ -249,3 +249,22 @@ features, mainly inspired by [smartcd].
 
 [antigen]: https://github.com/Tarrasch/antigen-hs
 [smartcd]: https://github.com/cxreg/smartcd
+
+## Contributing
+
+Bug reports, contributions and forks are welcome. All bugs or other forms of
+discussion happen on https://github.com/Tarrasch/zsh-autoenv/issues.
+
+### Testing
+
+To run our tests you need to have `cram` installed. You can do this by running:
+
+```bash
+% pip install cram
+```
+
+Then you can run the tests by running:
+```bash
+% make test_full # Run all tests
+% make test tests/varstash-alias.t # Run a single test
+```
