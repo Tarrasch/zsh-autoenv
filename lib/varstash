@@ -108,6 +108,7 @@ function stash() {
             local alias_def="$(eval alias $stash_which 2>/dev/null)"
             if [[ -n $alias_def ]]; then
                 alias_def=${alias_def#alias }
+                alias_def=$(echo "$alias_def" | sed 's/"/\\&/g') # Escape double quotes
                 eval "__varstash_alias__$stash_name=\"$alias_def\""
                 local stashed=1
             fi

@@ -13,9 +13,9 @@ Setup test environment.
 
 Aliases should be stashed.
 
-  $ alias some_alias="echo ORIG_ALIAS"
+  $ alias some_alias='echo "ORIG ALIAS"'
   $ some_alias
-  ORIG_ALIAS
+  ORIG ALIAS
   $ cd .
   ENTER
   $ some_alias
@@ -23,13 +23,13 @@ Aliases should be stashed.
   $ cd ..
   LEAVE
   $ some_alias
-  ORIG_ALIAS
+  ORIG ALIAS
 
 Aliases should be stashed, if there are also environment variables.
 
   $ some_alias=ENV_VAR
   $ some_alias
-  ORIG_ALIAS
+  ORIG ALIAS
   $ cd sub
   ENTER
   $ type -w some_alias
